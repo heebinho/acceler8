@@ -1,55 +1,34 @@
-New log file opened at Sun Sep 18 00:37:10 CEST 2016 by 5715@powercube
-Taking next connection to: 51253
-New client attempting to connect on port: 52800-51253
-  Address = /127.0.1.1:51253
-This client on port 52800 has uuid d77d6e47-5571-45d9-a9da-66201a6b8a8f configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
-Connected Clients: activator-d77d6e47-5571-45d9-a9da-66201a6b8a8f
-Taking next connection to: 51253
+New log file opened at Sun Sep 18 02:59:49 CEST 2016 by 13174@powercube
+Taking next connection to: 46822
+New client attempting to connect on port: 37479-46822
+  Address = /127.0.1.1:46822
+This client on port 37479 has uuid f3ab1aaf-76f2-43c4-930d-7cc7fff39eb2 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-f3ab1aaf-76f2-43c4-930d-7cc7fff39eb2
+Taking next connection to: 46822
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
+Taking next connection to: 46822
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
+Taking next connection to: 46822
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 51253
+Taking next connection to: 46822
+New client attempting to connect on port: 37966-46822
+  Address = /127.0.1.1:46822
+Handshake exception on socket: 37966
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 46822
+New client attempting to connect on port: 37967-46822
+  Address = /127.0.1.1:46822
+This client on port 37967 has uuid 5de114fe-85af-47e8-a794-3091f29d7589 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: activator-f3ab1aaf-76f2-43c4-930d-7cc7fff39eb2, play-fork-run-5de114fe-85af-47e8-a794-3091f29d7589
+Taking next connection to: 46822
