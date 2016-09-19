@@ -11,3 +11,4 @@ target
 project/.sbtserver
 *.log
 .sbtserver
+bin
