@@ -1,7 +1,3 @@
-@*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
 @(message: String)
 
 @*
@@ -9,12 +5,17 @@
  * argument is a `String` with the title of the page, the second
  * argument is an `Html` object containing the body of the page.
  *@
-@main("Welcome to Play") {
+@main("Acceler8") {
 
-    @*
-     * Get an `Html` object by calling the built-in Play welcome
-     * template and passing a `String` message.
-     *@
-    @play20.welcome(message, style = "Java")
 
+<h1>Acceler8</h1>
+<a href="@message">
+	<img src="@routes.Assets.versioned("images/LogInWithStrava2x.png")" alt="Login" style="width:315px;height:63px;">
+</a>
+	<div>This is the link:</div>
+	<a href="@message">@message</a>
+    
+    @* 
+    * @play20.welcome(message, style = "Java")
+    *@
 }
