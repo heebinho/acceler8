@@ -1,15 +1,18 @@
 package controllers;
 
 import play.mvc.*;
+import play.mvc.Http.Cookie;
 import services.ResourceService;
 import services.StravaOAuth2Api;
 import views.html.*;
+
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
 import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
+import javastrava.api.v3.auth.ref.AuthorisationScope;
 
 
 /**
@@ -43,31 +46,22 @@ public class HomeController extends Controller {
     }
     
     public Result callback() {
-    	
-    	
     	return ok("callback...");
-    	
     }
     
     public Result callback(String state, String code) {
     	
-    	
     	AuthorisationService service = new AuthorisationServiceImpl();
     	Integer clientId = ResourceService.getValue(ResourceService.CLIENT_ID);
-    	String secret = ResourceService.getKey(ResourceService.CLIENT_SECRET);
+    	String secret = ResourceService.getKey(ResourceService.CLIENT_SECRET);   	
     	
-    	//Token token = service.tokenExchange(13626, 
-    	//		"7cacfcb4705f11fb9473f555f81719a1361fb23e", 
-    	//		code);
+    	Token token = service.tokenExchange(clientId, secret, code, AuthorisationScope.VIEW_PRIVATE);
+    	Cookie oAuth2TokenCookie = new Cookie("token", token.getToken(), 3600, null, null, false, false);
+    	response().setCookie(oAuth2TokenCookie);
     	
-    	
-    	Token token = service.tokenExchange(clientId, secret, code);
-    	
-        
-
+//    	token.getAthlete().getEmail()
     	
     	return ok("callback..." + token);
-    	
     }
     
 

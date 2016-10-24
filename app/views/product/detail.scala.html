@@ -1,0 +1,29 @@
+@(productForm: Form[Product])
+
+@import helper._
+@* 
+render a product detail form
+
+@helper.input(myForm("username")) { (id, name, value, args) =>
+    <input type="date" name="@name" id="@id" @toHtmlArgs(args)>
+} 
+
+*@
+
+
+@main("Product form") {
+
+	<h1>Product form</h1>
+	@helper.form(action = routes.ProductController.save()) {
+		<fieldset>
+		<legend>Product (@productForm("name").valueOr("New"))</legend>
+		@helper.inputText(productForm("ean"), '_label -> "EAN")
+		@helper.inputText(productForm("name"),'_label -> "Name")
+		@helper.textarea(productForm("description"), '_label -> "Description")
+		</fieldset>
+		<input type="submit" class="btn btn-primary" value="Save">
+		<a class="btn" href="@routes.ProductController.index()">Cancel</a>
+	}
+	
+}
+

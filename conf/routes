@@ -6,6 +6,14 @@
 GET     /                           controllers.HomeController.index
 GET     /callback                   controllers.HomeController.callback(state: String, code: String)
 
+GET		/dashboard					controllers.DashboardController.index
+
+GET		/products					controllers.ProductController.index
+GET		/products/new				controllers.ProductController.newProduct()
+GET		/products/:ean				controllers.ProductController.details(ean: String)
+POST	/products					controllers.ProductController.save()
+DELETE	/products/:ean				controllers.ProductController.delete(ean: String)
+
 
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count

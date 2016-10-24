@@ -3,12 +3,66 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta name="description" content="acceler8">
+	    <meta name="author" content="acceler8">
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
-        <script src="@routes.Assets.versioned("javascripts/hello.js")" type="text/javascript"></script>
+        
+        <!-- Bootstrap Core CSS -->
+    	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
+    	
+    	<!-- Metis Menu CSS -->
+    	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/metisMenu.min.css")">
+    	
+    	<!-- font-awesome CSS -->
+    	<link rel="stylesheet" href="@routes.Assets.versioned("fonts/font-awesome/css/font-awesome.min.css")">
+    	
+  	    <!-- Project CSS -->
+    	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+    	
+    	<!-- Backward compatibility IE -->
+    	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	    <!--[if lt IE 9]>
+	        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+    	
     </head>
     <body>
+	    @if(flash.containsKey("success")){
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			@flash.get("success")
+		</div>
+		}
+		@if(flash.containsKey("error")){
+		<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			@flash.get("error")
+		</div>
+		}
+		
         @content
+    
+	    <!-- jQuery -->
+	    <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+	
+	    <!-- Bootstrap Core JavaScript -->
+	    <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")"></script>
+	
+	    <!-- Metis Menu JavaScript -->
+	    <script src="@routes.Assets.versioned("javascripts/metisMenu.min.js")"></script>
+		    
+		<!-- Project JavaScript -->
+	    <script src="@routes.Assets.versioned("javascripts/core.js")"></script>
+	
+	    <!-- Morris Charts JavaScript -->
+	    <!-- 
+	    <script src="../vendor/raphael/raphael.min.js"></script>
+	    <script src="../vendor/morrisjs/morris.min.js"></script>
+	    <script src="../data/morris-data.js"></script> -->
     </body>
 </html>
