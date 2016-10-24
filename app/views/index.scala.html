@@ -1,22 +1,32 @@
-@(message: String)
+@(signupForm: Form[models.vm.Signup], loginForm: Form[models.vm.Login])
 
-@main("Acceler8") {
+@scripts = { }
 
-	<div class="container">
-	    <div class="row">
-	        <div class="col-md-5 col-md-offset-4">
-	            <div class="login-panel panel panel-default">
-	                <div class="panel-heading">
-	                    <h3 class="panel-title">Acceler8 - Please Log In</h3>
-	                </div>
-	                <div class="panel-body">
-	                	<a href="@message">
-							<img src="@routes.Assets.versioned("images/LogInWithStrava2x.png")" alt="Login" style="width:315px;height:63px;">
-						</a>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
+<style>
 
+body { 
+	background: url("/assets/images/bg1.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+	
+</style>
+
+@main("Acceler8", null, scripts) {
+
+  <div class="col-lg-6">
+      Acceler8 - Coaching4Strava
+  </div>
+
+  <div class="col-lg-6">
+    <div class="well">
+      @login(loginForm)
+    </div>
+
+    <div class="well">
+      @signup(signupForm)
+    </div>
+  </div>
 }

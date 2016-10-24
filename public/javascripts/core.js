@@ -42,9 +42,9 @@ $(function() {
 });
 
 //Delete a ressource on the given URI
-function del(urlToDelete) {
+function del(ressource) {
 	$.ajax({
-		url: urlToDelete,
+		url: ressource,
 		type: 'DELETE',
 		success: function(results) {
 		// Refresh the page
@@ -53,3 +53,14 @@ function del(urlToDelete) {
 	});
 }
 
+//Delete a ressource on the given URI
+function del(ressource, forward) {
+	$.ajax({
+		url: ressource,
+		type: 'DELETE',
+		success: function(results) {
+		// http redirec
+		window.location.replace(forward);
+		}
+	});
+}

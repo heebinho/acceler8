@@ -1,0 +1,38 @@
+@(resetForm: Form[models.vm.Password], token: String)
+
+@import helper._
+
+@implicitFieldConstructor = @{
+    FieldConstructor(bootstrapInputField.render)
+}
+
+
+@main("Reset", null, null) {
+
+    <h3>@Messages("signup.reset.password")</h3>
+
+    <div class="col col-lg-8">
+        @Messages("resetpassword.new.password")
+
+        @form(controllers.account.routes.ResetController.runReset(token)) {
+
+            <div class="form-group">
+                @inputPassword(
+                    resetForm("password"),
+                    'placeholder -> Messages("password"),
+                    '_label -> null,
+                    'class -> "form-control",
+                    '_showConstraints -> false
+                )
+
+            </div>
+
+            <hr>
+
+            <input type="submit" class="btn btn-primary" value="@Messages("validate")">
+            <a href="@routes.HomeController.index" class="btn btn-default">@Messages("goback")</a>
+
+        }
+    </div>
+
+}

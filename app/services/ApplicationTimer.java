@@ -8,24 +8,19 @@ import play.Logger;
 import play.inject.ApplicationLifecycle;
 
 /**
- * This class demonstrates how to run code when the
- * application starts and stops. It starts a timer when the
- * application starts. When the application stops it prints out how
- * long the application was running for.
+ * Log application start and end.
+ * 
+ * @author TEAM RMG
  *
- * This class is registered for Guice dependency injection in the
- * {@link Module} class. We want the class to start when the application
- * starts, so it is registered as an "eager singleton". See the code
- * in the {@link Module} class to see how this happens.
- *
- * This class needs to run code when the server stops. It uses the
- * application's {@link ApplicationLifecycle} to register a stop hook.
  */
 @Singleton
 public class ApplicationTimer {
 
-    private final Clock clock;
-    private final ApplicationLifecycle appLifecycle;
+    @SuppressWarnings("unused")
+	private final Clock clock;
+    @SuppressWarnings("unused")
+	private final ApplicationLifecycle appLifecycle;
+    
     private final Instant start;
 
     @Inject
@@ -34,7 +29,7 @@ public class ApplicationTimer {
         this.appLifecycle = appLifecycle;
         // This code is called when the application starts.
         start = clock.instant();
-        Logger.info("ApplicationTimer demo: Starting application at " + start);
+        Logger.info("Starting application at " + start);
 
         // When the application starts, register a stop hook with the
         // ApplicationLifecycle object. The code inside the stop hook will
@@ -42,7 +37,7 @@ public class ApplicationTimer {
         appLifecycle.addStopHook(() -> {
             Instant stop = clock.instant();
             Long runningTime = stop.getEpochSecond() - start.getEpochSecond();
-            Logger.info("ApplicationTimer demo: Stopping application at " + clock.instant() + " after " + runningTime + "s.");
+            Logger.info("Stopping application at " + clock.instant() + " after " + runningTime + "seconds");
             return CompletableFuture.completedFuture(null);
         });
     }

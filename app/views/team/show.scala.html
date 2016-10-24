@@ -1,0 +1,155 @@
+@(vm: models.vm.TeamViewModel, inviteForm: Form[models.vm.Invite])
+
+@implicitFieldConstructor = @{
+    helper.FieldConstructor(bootstrapInputField.render)
+}
+
+@scripts = {
+<script>
+	$("#inviteForm").on('submit', function() {
+		
+		$.post( '@routes.TeamController.invite()', $(this).serialize())
+		  .done(function( data ) {
+			
+			var mymodal = $('#myModal');
+			var body = mymodal.find('.modal-body');
+			
+			if(data.sent){
+				body.text("The invitation has been sent!");
+			}else{
+				body.text("The invitation has not been sent!");
+			}
+			mymodal.modal('show');
+		  });
+		
+		return false;
+	});
+	
+</script>
+}
+
+@main("Acceler8", null, scripts) {
+
+    
+    @navigation()
+				
+	
+	<div id="page-wrapper">			
+	
+        <div class="row">
+            <div class="col-lg-12">
+		        <h1 class="page-header">@vm.getTeam.getName</h1>
+            </div>
+        </div>
+        
+   		<div class="row">
+			<div class="pull-right">
+	            <div class="col-lg-12">
+	            
+	            @if(vm.isMember) {
+				  	<a href="@routes.TeamController.leave(vm.getTeam.getId)" class="btn btn-warning btn-md" role="button">Leave</a>					
+				}else{
+					<a href="@routes.TeamController.join(vm.getTeam.getId)" class="btn btn-success btn-md" role="button">Join</a>
+				}
+				@if(vm.getTeam.getCoach.getId == vm.getUser.getId) {
+					<a onclick="del('@routes.TeamController.delete(vm.getTeam.getId)', '@routes.TeamController.my')" class="btn btn-danger btn-md" role="button">!Delete Team</a>
+				}
+	            </div>
+            </div>
+		</div>
+   		
+   		<ul class="nav nav-tabs">
+		  <li role="presentation" class="active"><a href="">Team</a></li>
+		  <li role="presentation"><a href="@routes.TeamController.tasks(vm.getTeam.getId)">Tasks</a></li>
+		</ul>
+        
+        
+		
+		<div class="row" id="team">
+	      <ul class="thumbnails list-unstyled" style="margin-top:10px;">
+	      	@for(member <- vm.getMembersOrderedByTotalPoints) {
+	        <li class="col-md-4">
+	          <div class="thumbnail" style="padding: 0">
+	            <div style="padding:4px">
+	              <img alt="Profile picture" class="img-responsive img-circle" style="margin: 0 auto; width: 200px; height: 200px;" src="@member.getProfileImage">
+	            </div>
+                <div class="rank-label-container pull-right">
+                    <span class="label label-default rank-label" style="margin-right:15px;">@member.getTotalPoints Points</span>
+                </div>
+	            <div class="caption">
+	              <h3>@member.getAthlete.getFirstname @member.getAthlete.getLastname</h3>
+	              <p><i class="icon icon-map-marker"></i> @member.getAthlete.getCity</p>
+	            </div>
+	            <div class="modal-footer" style="text-align: left">
+	              <div class="progress">
+	                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+	                    <span class="sr-only">60% Complete</span>
+	                </div>
+	              </div>
+	              <div class="row">
+	                <div class="col-md-4"><b>@member.getTotalPoints Points</b><br/><small>Total</small></div>
+	                <div class="col-md-4"><b>@member.getMonthlyPoints Points</b><br/><small>Month</small></div>
+	                <div class="col-md-4"><b>@member.getWeeklyPoints Points</b><br/><small>Week</small></div>
+	              </div>
+	              @if(vm.getTeam.getCoach.getId == vm.getUser.getId) {
+	              <div class="row">
+	              	<div class="panel-body">
+	                	<div class="controls">
+		              		<a href="@routes.TeamController.removeUser(vm.getTeam.getId(), member.getAthlete.getId())" class="btn btn-danger btn-sm" role="button">Remove</a>
+	              		</div>
+	              	</div>
+	              </div>
+	              }
+	            </div>
+	          </div>
+	        </li>
+	        }
+	      </ul>
+	    </div>
+
+      
+        <div class="row" style="margin-top:150px;">
+	        <div class="col col-lg-4">
+				<form id="inviteForm">
+		            <div class="form-group">
+		            @helper.inputText(
+		                inviteForm("email"),
+		                'placeholder -> Messages("email"),
+		                '_label -> "Invite a friend",
+		                'class -> "form-control",
+		                '_showConstraints -> false
+		            )
+		            <input type="hidden" name="@inviteForm("teamId").name()" value="@vm.getTeam.getId" >
+		            </div>
+		            <input type="submit" class="btn btn-primary" value="Invite">
+				</form>
+	    	</div>
+	    </div>                
+	                    
+
+	</div>
+	
+	
+	
+	
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Invitation</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	
+	
+
+}

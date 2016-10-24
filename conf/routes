@@ -1,24 +1,48 @@
 # Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
 
+GET     /                           controllers.HomeController.index()
 
-GET     /                           controllers.HomeController.index
-GET     /callback                   controllers.HomeController.callback(state: String, code: String)
+POST    /signup                     controllers.account.SignupController.save()
+GET     /confirm/:confirmToken      controllers.account.SignupController.confirm(confirmToken:String)
 
-GET		/dashboard					controllers.DashboardController.index
+POST    /login                      controllers.HomeController.authenticate()
+GET     /logout                     controllers.HomeController.logout()
 
-GET		/products					controllers.ProductController.index
-GET		/products/new				controllers.ProductController.newProduct()
-GET		/products/:ean				controllers.ProductController.details(ean: String)
-POST	/products					controllers.ProductController.save()
-DELETE	/products/:ean				controllers.ProductController.delete(ean: String)
+GET     /reset/ask                  controllers.account.ResetController.ask()
+POST    /reset/ask                  controllers.account.ResetController.runAsk()
+GET     /reset/:token               controllers.account.ResetController.reset(token:String)
+POST    /reset/:token               controllers.account.ResetController.runReset(token:String)
 
+GET     /settings                   controllers.account.SettingsController.index()
+GET     /settings/onauthorized		controllers.account.SettingsController.onauthorized(state: String, code: String ?= "", error: String ?= "")
+POST    /settings			        controllers.account.SettingsController.save()
+GET     /settings/deauthorize       controllers.account.SettingsController.deauthorize()
 
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET     /profile                    controllers.account.ProfileController.index()
+POST    /profile			        controllers.account.ProfileController.save()
+
+GET		/dashboard					controllers.DashboardController.index()
+GET		/dashboard/chart			controllers.DashboardController.chart()
+
+GET		/teams						controllers.TeamController.index
+GET		/teams/new					controllers.TeamController.newTeam()
+GET		/teams/:id					controllers.TeamController.details(id: Integer)
+GET		/teams/join/:id				controllers.TeamController.join(id: Integer)
+GET		/teams/leave/:id			controllers.TeamController.leave(id: Integer)
+POST	/teams/invite				controllers.TeamController.invite()
+GET		/teams/removeUser/:id/:uid	controllers.TeamController.removeUser(id: Integer, uid: Integer)
+POST	/teams						controllers.TeamController.save()
+DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)
+GET		/teams/show/:id				controllers.TeamController.show(id: Integer)
+GET		/teams/my/					controllers.TeamController.my
+GET		/teams/coached/				controllers.TeamController.coached
+GET		/teams/tasks/:id			controllers.TeamController.tasks(id: Integer)
+POST	/teams/tasks/:id			controllers.TeamController.savetask(id: Integer)
+DELETE	/teams/tasks/:id			controllers.TeamController.deletetask(id: Integer)
+
+#Testing
+GET		/ping						controllers.test.TestController.ping
+GET		/echo/:in					controllers.test.TestController.echo(in: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

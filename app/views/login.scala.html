@@ -1,0 +1,40 @@
+@(loginForm: Form[models.vm.Login])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(bootstrapInputField.render) }
+
+<h3>@Messages("signin.signin")</h3>
+
+@form(routes.HomeController.authenticate(), 'class -> "form") {
+
+    @if(loginForm.hasGlobalErrors) {
+        <p class="error">
+            <span class="label label-danger">@loginForm.globalError.message</span>
+        </p>
+    }
+
+    <fieldset>
+        @inputText(
+            loginForm("email"),
+            'placeholder -> Messages("email"),
+            '_label -> null,
+            '_help -> Messages("signin.your.email"),
+            'class -> "form-control"
+        )
+        @inputPassword(
+            loginForm("password"),
+            '_label -> null,
+            'placeholder -> Messages("password"),
+            '_help -> Messages("signin.your.password"),
+            'class -> "form-control"
+        )
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="@Messages("signin.signin")">
+        <small><a href="@controllers.account.routes.ResetController.ask">@Messages("forgot.password")</a></small>
+    </div>
+    
+    
+    
+}

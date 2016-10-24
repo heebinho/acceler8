@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String = "Acceler8", user: User = null, scripts: Html = Html(""))(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +7,7 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <meta name="description" content="acceler8">
-	    <meta name="author" content="acceler8">
+	    <meta name="author" content="TEAM RMG">
         <title>@title</title>
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         
@@ -22,6 +22,9 @@
     	
   	    <!-- Project CSS -->
     	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+    	
+    	<!-- Morris Charts CSS -->
+    	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/morris.css")">
     	
     	<!-- Backward compatibility IE -->
     	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -60,9 +63,10 @@
 	    <script src="@routes.Assets.versioned("javascripts/core.js")"></script>
 	
 	    <!-- Morris Charts JavaScript -->
-	    <!-- 
-	    <script src="../vendor/raphael/raphael.min.js"></script>
-	    <script src="../vendor/morrisjs/morris.min.js"></script>
-	    <script src="../data/morris-data.js"></script> -->
+	    <script src="@routes.Assets.versioned("javascripts/raphael.min.js")"></script>
+	    <script src="@routes.Assets.versioned("javascripts/morris.min.js")"></script>
+
+	    
+	    @scripts
     </body>
 </html>

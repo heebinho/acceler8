@@ -7,8 +7,8 @@ target
 /.settings
 /RUNNING_PID
 *.lock
-.sbtserver
 project/.sbtserver
 *.log
 .sbtserver
 bin
+.metadata

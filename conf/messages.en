@@ -1,0 +1,82 @@
+title=Acceler8
+
+confirm=Confirmation
+email=Email
+fullname=Full Name
+goback=Go Back
+logout=Logout
+password=Password
+error.technical=Technical Error, please Retry
+validate=Validate
+reset=Reset
+
+account.not.validated.check.mail=Account not validated. Check your emails.
+account.successfully.validated=Account successfully validated
+account.settings.email.successful=Email successfully validated ({0})
+invalid.user.or.password=Invalid user or password
+youve.been.logged.out=You've been logged out
+error.sending.email=Error sending email
+error.sending.confirm.email=Error while sending confirmation mail
+error.email.already.exist=Email already exist
+error.account.already.validated=Account already validated
+error.unknown.email=Unknown email
+error.unknown.token=Token not recognized
+error.confirm=Confirmation failed
+error.expiredresetlink=This password reset has expired.
+error.expiredmaillink=This mail change has expired.
+
+signin.signin=Sign In
+signin.your.email=Your email address
+signin.your.password=Your password
+
+forgot.password=Forgot password ?
+
+signup.signup=Sign Up
+signup.successfull=Sign Up - Successful!
+signup.new=New ?
+signup.reset.password=Reset your password
+signup.generate.password=Generate a password
+signup.msg.created=You will receive a confirmation email soon. Check your email to activate your account.
+signup.valid.email=Invalid Email
+
+resetpassword=Reset Password
+resetpassword.notfound=Email not found
+resetpassword.not.valid.password=Not a valid password
+resetpassword.mailsent=A mail has been sent, please check your mail.
+resetpassword.success=Your password has been set.
+resetpassword.new.password=New password :
+
+changemail.mailsent=A mail has been sent, please check your mail.
+
+mail.confirm.subject=Welcome to Acceler8 - Ask for confirmation
+mail.confirm.message=Welcome to Acceler8. <br> Click on this link : {0} to confirm your email.
+
+mail.welcome.subject=Welcome to Acceler8
+mail.welcome.message=Welcome to Acceler8. <br> Your account is validated. Enjoy !
+
+mail.reset.ask.subject=Acceler8 - New password
+# Cannot use You've unescaped here, as the single quote stops the {0}
+mail.reset.ask.message=You asked for your password to be reset.  <br> Click on this link : {0} to change your password.
+
+mail.change.ask.subject=Acceler8 - Validate email
+mail.change.ask.message=You asked for your email to be changed.  <br> Click on this link : {0} to validate your email.
+
+mail.reset.confirm.subject=Acceler8 - New password
+mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
+
+public.token.d=Your public Strava token
+public.token.p=Public token
+settings.saved=Your settings have been saved
+
+strava.tokenexchange.success=We were able to get an access token
+
+profile.load.fail=Cannot load Strava profile - please reconnect your Strava account
+profile.saved=Saved Strava profile
+profile.fullname.p=John Smith
+profile.fullname.l=First name
+profile.city.p=Zürich
+profile.city.l=City
+profile.country.p=Switzerland
+profile.country.l=Country
+profile.weight.p=100
+profile.weight.l=Weight

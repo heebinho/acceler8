@@ -1,0 +1,34 @@
+@(signupForm: Form[models.vm.Signup])
+
+@import helper._
+@implicitFieldConstructor = @{
+    FieldConstructor(bootstrapInputField.render)
+}
+
+<h3>@Messages("signup.new")</h3>
+
+@form(controllers.account.routes.SignupController.save()) {
+
+    <fieldset>
+        @inputText(
+            signupForm("email"),
+            'placeholder -> Messages("email"),
+            '_label -> null,
+            '_help -> Messages("signin.your.email"),
+            'class -> "form-control",
+            '_showConstraints -> false
+        )
+        @inputPassword(
+            signupForm("password"),
+            '_label -> null,
+            'placeholder -> Messages("password"),
+            '_help -> Messages("signin.your.password"),
+            'class -> "form-control",
+            '_showConstraints -> false
+        )
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="@Messages("signup.signup")">
+    </div>
+}
