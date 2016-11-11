@@ -1,0 +1,37 @@
+@(askForm: Form[controllers.account.ResetController.AskForm])
+
+@import helper._
+    @implicitFieldConstructor = @{
+        FieldConstructor(twitterBootstrapInput.render)
+    }
+
+
+@main() {
+
+    <div class="col col-lg-8">
+        <h3>@Messages("resetpassword")</h3>
+
+        @wflash()
+
+        @form(controllers.account.routes.ResetController.runAsk()) {
+
+            <div class="form-group">
+            @inputText(
+                askForm("email"),
+                'placeholder -> Messages("email"),
+                '_label -> null,
+                'class -> "form-control"
+            )
+            </div>
+
+            <hr>
+            <input type="submit" class="btn btn-primary" value="@Messages("reset")">
+
+            <a href="@routes.HomeController.index" class="btn btn-default">@Messages("goback")</a>
+
+        }
+
+    </div>
+
+
+}

@@ -1,11 +1,28 @@
 package controllers;
 
+import play.data.Form;
+import play.data.FormFactory;
+import play.data.validation.Constraints;
+import play.db.jpa.JPAApi;
+import play.db.jpa.Transactional;
+import play.i18n.Messages;
+import play.libs.Json;
 import play.mvc.*;
 import play.mvc.Http.Cookie;
-import services.ResourceService;
-import services.StravaOAuth2Api;
+import services.account.AccountService;
+import services.account.IAccountService;
+import services.settings.Reader;
+import services.strava.StravaOAuth2Api;
 import views.html.*;
+import views.html.defaultpages.todo;
 
+import static play.data.Form.form;
+
+import javax.inject.Inject;
+
+import org.apache.logging.log4j.core.appender.routing.Routes;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
@@ -13,56 +30,84 @@ import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
+import models.Login;
+import models.Register;
+import models.User;
+import models.dao.UserDao;
 
 
 /**
- * This controller contains an action to handle HTTP requests
- * to the application's home page.
+ * 
+ * 
+ * @author TEAM RMG
  */
-public class HomeController extends Controller {
+public class HomeController extends BaseController {
+	
+	@Inject FormFactory formFactory;	
+	
+	/**
+	 * 
+	 * @return http response
+	 */
+	@Transactional
+	public Result index() {
+    	
+        // Check that the email matches a confirmed user before we redirect
+        String email = ctx().session().get("email");
+        if (email != null) {
+            
+        	UserDao dao = new UserDao(jpa.em());
+        	User user = dao.findByEmail(email);
+            
+            if (user != null && user.isValidated()) {
+            	//try to get strava access --> the access code, which we can use to get a token
+            	if(user.getStrava_code() == null){
+            		return redirect(StravaOAuth2Api.getLink());
+            	}
+            	return redirect(routes.DashboardController.index());
+            } else {
+                //Logger.debug("Clearing invalid session credentials");
+                session().clear();
+            }
+        }
+
+        return ok(index.render(
+        		formFactory.form(Register.class), 
+        		formFactory.form(Login.class)));
+    }
+    
+    
 
     /**
-     * An action that renders an HTML page with a welcome message.
-     * The configuration in the <code>routes</code> file means that
-     * this method will be called when the application receives a
-     * <code>GET</code> request with a path of <code>/</code>.
+     * Handle login form submission.
+     *
+     * @return Dashboard if auth OK or login form if auth KO
      */
-    public Result index() {
-    	
-    	ServiceBuilder builder = new ServiceBuilder();
-    	builder.apiKey(ResourceService.getKey(ResourceService.CLIENT_ID));
-    	builder.apiSecret(ResourceService.getKey(ResourceService.CLIENT_SECRET));
-    	builder.callback("http://localhost:9000/callback");
-    	builder.responseType("code");
-    	builder.scope("view_private");
-    	builder.state("onLogon");
-    	OAuth20Service service = builder.build(StravaOAuth2Api.instance());
-    	String authorizationUrl = service.getAuthorizationUrl();
-    	
-    	authorizationUrl += "&approval_prompt=";
-    	authorizationUrl += ResourceService.getKey(ResourceService.APPROVAL_PROMPT);
-    	
-    	return ok(index.render(authorizationUrl));
+    public Result authenticate() {
+        
+    	Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
+        Form<Register> registerForm = formFactory.form(Register.class);
+
+        if (loginForm.hasErrors()) {
+            return badRequest(index.render(registerForm, loginForm));
+        } else {
+            session("email", loginForm.get().email);
+            return redirect(routes.DashboardController.index());
+        }
+    }
+
+    /**
+     * Logout and clean the session.
+     *
+     * @return Index page
+     */
+    public Result logout() {
+        session().clear();
+        flash("success", getMessage("youve.been.logged.out"));
+        return redirect(routes.HomeController.index());
     }
     
-    public Result callback() {
-    	return ok("callback...");
-    }
     
-    public Result callback(String state, String code) {
-    	
-    	AuthorisationService service = new AuthorisationServiceImpl();
-    	Integer clientId = ResourceService.getValue(ResourceService.CLIENT_ID);
-    	String secret = ResourceService.getKey(ResourceService.CLIENT_SECRET);   	
-    	
-    	Token token = service.tokenExchange(clientId, secret, code, AuthorisationScope.VIEW_PRIVATE);
-    	Cookie oAuth2TokenCookie = new Cookie("token", token.getToken(), 3600, null, null, false, false);
-    	response().setCookie(oAuth2TokenCookie);
-    	
-//    	token.getAthlete().getEmail()
-    	
-    	return ok("callback..." + token);
-    }
-    
+
 
 }

@@ -3,7 +3,7 @@ import play.*;
 import play.mvc.EssentialFilter;
 import play.http.HttpFilters;
 import play.mvc.*;
-
+import filters.AuthenticationFilter;
 import filters.ExampleFilter;
 
 /**
@@ -14,32 +14,34 @@ import filters.ExampleFilter;
  * <code>Filters</code> that is placed the root package. You can load filters
  * from a different class by adding a `play.http.filters` setting to
  * the <code>application.conf</code> configuration file.
+ * 
+ * @author TEAM RMG
  */
 @Singleton
 public class Filters implements HttpFilters {
 
     private final Environment env;
-    private final EssentialFilter exampleFilter;
+    private final EssentialFilter authenticationFilter;
 
     /**
      * @param env Basic environment settings for the current application.
      * @param exampleFilter A demonstration filter that adds a header to
      */
     @Inject
-    public Filters(Environment env, ExampleFilter exampleFilter) {
+    public Filters(Environment env, AuthenticationFilter authenticationFilter) {
         this.env = env;
-        this.exampleFilter = exampleFilter;
+        this.authenticationFilter = authenticationFilter;
     }
 
+    /**
+     * The authentication filter is evaluated on every request
+     */
     @Override
-    public EssentialFilter[] filters() {
-      // Use the example filter if we're running development mode. If
-      // we're running in production or test mode then don't use any
-      // filters at all.
+    public EssentialFilter[] filters() {	
       if (env.mode().equals(Mode.DEV)) {
-          return new EssentialFilter[] { exampleFilter };
+          return new EssentialFilter[] { authenticationFilter };
       } else {
-         return new EssentialFilter[] {};
+          return new EssentialFilter[] { authenticationFilter };
       }
     }
 

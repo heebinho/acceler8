@@ -1,0 +1,27 @@
+@(user: User, askForm: Form[controllers.account.settings.EmailController.AskForm])
+
+@import helper._
+
+@views.html.account.settings.index(user) {
+
+    @Messages("account.settings.email")
+
+    @wflash()
+
+    @form(controllers.account.settings.routes.EmailController.runEmail()) {
+
+        <fieldset>
+        @inputText(
+            askForm("email"),
+            'placeholder -> Messages("email"),
+            '_label -> null,
+            'class -> "form-control"
+        )
+        </fieldset>
+
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="@Messages("validate")">
+        </div>
+    }
+
+}

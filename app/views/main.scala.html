@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String = "Acceler8", user: User = null, scripts: Html = Html(""))(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,5 +64,7 @@
 	    <script src="../vendor/raphael/raphael.min.js"></script>
 	    <script src="../vendor/morrisjs/morris.min.js"></script>
 	    <script src="../data/morris-data.js"></script> -->
+	    
+	    @scripts
     </body>
 </html>

@@ -1,0 +1,20 @@
+@(teamForm: Form[Team])
+
+@import helper._
+
+@main("Team") {
+
+	<h1>Team</h1>
+	@helper.form(action = routes.TeamController.save()) {
+		<fieldset>
+		<legend>Product (@teamForm("name").valueOr("New"))</legend>
+		@helper.inputText(teamForm("id"), '_label -> "ID")
+		@helper.inputText(teamForm("name"),'_label -> "Name")
+		@helper.textarea(teamForm("description"), '_label -> "Description")
+		</fieldset>
+		<input type="submit" class="btn btn-primary" value="Save">
+		<a class="btn" href="@routes.TeamController.index()">Cancel</a>
+	}
+	
+}
+

@@ -1,0 +1,36 @@
+@(teams: List[Team])
+
+@main("Teams") {
+<h2>All teams</h2>
+<table class="table table-striped">
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Description</th>
+	</tr>
+</thead>
+<tbody>
+@for(team <- teams) {
+	<tr>
+		<td><a href="@routes.TeamController.details(team.getId)">
+		@team.getId
+		</a></td>
+		<td><a href="@routes.TeamController.details(team.getId)">
+		@team.getName</a></td>
+		<td><a href="@routes.TeamController.details(team.getId)">
+		@team.getDescription</a></td>
+		<td>
+			<a href="@routes.TeamController.details(team.getId)">
+				<i class="glyphicon glyphicon-remove"></i>
+			</a>
+			<a onclick="del('@routes.TeamController.delete(team.getId)')">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+		</td>
+	</tr>
+	}
+	</tbody>
+	</table>
+	<a href="@routes.TeamController.newTeam()" class="btn"><i class="glyphicon glyphicon-new"></i> New team</a>
+}

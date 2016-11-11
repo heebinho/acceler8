@@ -1,0 +1,43 @@
+@(resetForm: Form[controllers.account.ResetController.ResetForm], token: String)
+
+@import helper._
+    @implicitFieldConstructor = @{
+        FieldConstructor(twitterBootstrapInput.render)
+    }
+
+    @scripts = {
+    	<!--  <script src="@routes.Assets.versioned("javascripts/password.js")"></script>-->
+    }
+
+@main(" - Reset", null, scripts) {
+
+    <h3>@Messages("signup.reset.password")</h3>
+
+    @wflash()
+
+    <div class="col col-lg-8">
+        @Messages("resetpassword.new.password")
+
+        @form(controllers.account.routes.ResetController.runReset(token)) {
+
+            <div class="form-group">
+                @inputPassword(
+                    resetForm("inputPassword"),
+                    'placeholder -> Messages("password"),
+                    '_label -> null,
+                    'class -> "form-control"
+                )
+                <h6>@Messages("signup.generate.password")</h6>
+                <input type="text" name="passwordGenerated" class="form-control">
+
+            </div>
+
+            <hr>
+
+            <input type="submit" class="btn btn-primary" value="@Messages("validate")">
+            <a href="@routes.HomeController.index" class="btn btn-default">@Messages("goback")</a>
+
+        }
+    </div>
+
+}

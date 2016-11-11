@@ -1,15 +1,17 @@
 /**
  * 
  */
-package services;
+package services.settings;
 
 import java.util.ResourceBundle;
 
 /**
- * @author heebinho
+ * 
+ * 
+ * @author TEAM RMG
  *
  */
-public class ResourceService {
+public class Reader {
 	
 	
 	/**

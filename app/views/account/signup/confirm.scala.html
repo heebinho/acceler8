@@ -1,0 +1,10 @@
+@main() {
+
+    <h3>@Messages("signup.signup") - @Messages("confirmation")</h3>
+
+    @wflash()
+
+    <div class="form-actions">
+        <a href="@routes.HomeController.index" class="btn btn-default">@Messages("goback")</a>
+    </div>
+}

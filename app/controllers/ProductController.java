@@ -3,7 +3,6 @@ package controllers;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
-import views.html.*;
 import views.html.product.*;
 
 import java.util.List;
@@ -17,11 +16,8 @@ import models.*;
  *
  */
 public class ProductController extends Controller {
-
-	//private static final Form<Product> productForm = Form.form(Product.class);
 	
-	@Inject FormFactory formFactory;
-	
+	@Inject FormFactory formFactory;	
 	
 	public Result index(){
 		List<Product> products = Product.findAll();

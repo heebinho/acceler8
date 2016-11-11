@@ -1,0 +1,17 @@
+@(signupForm: Form[Register])
+
+    @scripts = {
+        <!--  <script src="@routes.Assets.versioned("javascripts/password.js")"></script>-->
+    }
+
+@main(null, null, scripts) {
+    <div class="span3">
+            &nbsp;
+    </div>
+
+    <div class="span12">
+        <div class="well">
+        @createFormOnly(signupForm)
+        </div>
+    </div>
+}
