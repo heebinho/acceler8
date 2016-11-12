@@ -432,3 +432,43 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+
+/**
+ * Profile image component
+ */
+.profile-header-container{
+    margin: 0 auto;
+    text-align: left;
+}
+
+.profile-header-img {
+    padding: 54px;
+}
+
+.profile-header-img > img.img-circle {
+    width: 220px;
+    height: 220px;
+    border: 2px solid blue;
+}
+
+.profile-header {
+    margin-top: 10px;
+}
+
+/**
+ * Ranking component
+ */
+.rank-label-container {
+    margin-top: -5px;
+    /* z-index: 1000; */
+    text-align: left;
+}
+
+.label.label-default.rank-label {
+    background-color: black;
+    padding: 5px 10px 5px 10px;
+    border-radius: 27px;
+}
+
+

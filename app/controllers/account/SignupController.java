@@ -108,10 +108,10 @@ public class SignupController extends BaseController {
             return ok(created.render());
         } catch (EmailException e) {
             Logger.debug("Signup.save Cannot send email", e);
-            flash("error", Messages.get("error.sending.email"));
+            flash("error", getMessage("error.sending.email"));
         } catch (Exception e) {
             Logger.error("Signup.save error", e);
-            flash("error", Messages.get("error.technical"));
+            flash("error", getMessage("error.technical"));
         }
         return badRequest(create.render(registerForm));
     }
@@ -128,7 +128,7 @@ public class SignupController extends BaseController {
     	IUserDao dao = new UserDao(em());
     	
         if (dao.findByEmail(email) != null) {
-            flash("error", Messages.get("error.email.already.exist"));
+            flash("error", getMessage("error.email.already.exist"));
             return badRequest(create.render(registerForm));
         }
 
@@ -143,12 +143,13 @@ public class SignupController extends BaseController {
      * @throws EmailException Exception when sending mail
      */
     private void sendMailAskForConfirmation(User user) throws EmailException, MalformedURLException {
-        String subject = Messages.get("mail.confirm.subject");
+        String subject = getMessage("mail.confirm.subject");
 
         String urlString = "http://" + Configuration.root().getString("server.hostname");
         urlString += "/confirm/" + user.getToken();
         URL url = new URL(urlString); // validate the URL, will throw an exception if bad.
-        String message = Messages.get("mail.confirm.message", url.toString());
+        String message = getMessage("mail.confirm.message");
+        message += url.toString();
 
         Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
         Mail mailer = new Mail(mailerClient);
@@ -172,7 +173,7 @@ public class SignupController extends BaseController {
         }
 
         if (user.isValidated()) {
-            flash("error", Messages.get("error.account.already.validated"));
+            flash("error", getMessage("error.account.already.validated"));
             return badRequest(confirm.render());
         }
 
@@ -180,19 +181,19 @@ public class SignupController extends BaseController {
         	IAccountService accountService = new AccountService(em());
             if (accountService.confirm(user)) {
                 sendMailConfirmation(user);
-                flash("success", Messages.get("account.successfully.validated"));
+                flash("success", getMessage("account.successfully.validated"));
                 return ok(confirm.render());
             } else {
                 Logger.debug("Signup.confirm cannot confirm user");
-                flash("error", Messages.get("error.confirm"));
+                flash("error", getMessage("error.confirm"));
                 return badRequest(confirm.render());
             }
         } catch (EmailException e) {
             Logger.debug("Cannot send email", e);
-            flash("error", Messages.get("error.sending.confirm.email"));
+            flash("error", getMessage("error.sending.confirm.email"));
         } catch (Exception e) {
             Logger.debug("technical exception", e);
-            flash("error", Messages.get("error.sending.confirm.email"));
+            flash("error", getMessage("error.sending.confirm.email"));
         }
         return badRequest(confirm.render());
     }
@@ -204,8 +205,8 @@ public class SignupController extends BaseController {
      * @throws EmailException Exception when sending mail
      */
     private void sendMailConfirmation(User user) throws EmailException {
-        String subject = Messages.get("mail.welcome.subject");
-        String message = Messages.get("mail.welcome.message");
+        String subject = getMessage("mail.welcome.subject");
+        String message = getMessage("mail.welcome.message");
         Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
         Mail mailer = new Mail(mailerClient);
         mailer.sendMail(envelop);

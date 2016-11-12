@@ -60,10 +60,6 @@ public class HomeController extends BaseController {
         	User user = dao.findByEmail(email);
             
             if (user != null && user.isValidated()) {
-            	//try to get strava access --> the access code, which we can use to get a token
-            	if(user.getStrava_code() == null){
-            		return redirect(StravaOAuth2Api.getLink());
-            	}
             	return redirect(routes.DashboardController.index());
             } else {
                 //Logger.debug("Clearing invalid session credentials");
@@ -83,19 +79,34 @@ public class HomeController extends BaseController {
      *
      * @return Dashboard if auth OK or login form if auth KO
      */
+	@Transactional
     public Result authenticate() {
         
     	Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
         Form<Register> registerForm = formFactory.form(Register.class);
-
-        if (loginForm.hasErrors()) {
-            return badRequest(index.render(registerForm, loginForm));
-        } else {
-            session("email", loginForm.get().email);
-            return redirect(routes.DashboardController.index());
+        Login login = loginForm.get();
+        IAccountService accountService = new AccountService(em());
+        
+        try {
+        	User user = accountService.authenticate(login.email, login.password);	
+            
+        	if (user != null && user.isValidated()) {
+        		session("email", loginForm.get().email);
+                return redirect(routes.DashboardController.index());
+            } else if (user == null) {
+            	flash("error", "invalid.user.or.password");
+            }else{
+            	flash("error", "account.not.validated.check.mail");
+            }
+            
+        } catch (Exception e) {
+        	flash("error", getMessage("error.technical"));
         }
+        
+        return badRequest(index.render(registerForm, loginForm));
     }
 
+    
     /**
      * Logout and clean the session.
      *

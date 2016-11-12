@@ -195,7 +195,7 @@ public class AccountService extends Service implements IAccountService {
     * @throws java.net.MalformedURLException if token is wrong.
     */
    public void sendMailResetPassword(User user, MailerClient mc) throws MalformedURLException {
-   		sendMail(user, TypeToken.password, null, mc);
+   		sendMail(user, TypeToken.password, user.getEmail(), mc);
    }
 
    /**

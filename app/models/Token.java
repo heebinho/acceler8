@@ -60,7 +60,7 @@ public class Token {
     public TypeToken type;
 
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date dateCreation;
+    public Date ts;
 
     @Constraints.Required
     @Formats.NonEmpty
@@ -71,7 +71,7 @@ public class Token {
      * @return true if the reset token is too old to use, false otherwise.
      */
     public boolean isExpired() {
-        return dateCreation != null && dateCreation.before(expirationTime());
+        return ts != null && ts.before(expirationTime());
     }
 
     /**

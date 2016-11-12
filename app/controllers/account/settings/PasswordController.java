@@ -1,5 +1,6 @@
 package controllers.account.settings;
 
+import controllers.BaseController;
 import controllers.Secured;
 import models.Token;
 import models.User;
@@ -25,24 +26,12 @@ import java.net.MalformedURLException;
  * Date: 15/05/12
  */
 @Security.Authenticated(Secured.class)
-public class PasswordController extends Controller {
+public class PasswordController extends BaseController {
 
 	JPAApi jpa;
 	
 	@Inject
     MailerClient mailerClient;
-    
-	
-	/**
-	 * ctor 
-	 * @param api java persistence api (injected)
-	 */
-	@Inject
-	public PasswordController(JPAApi api) {
-	    this.jpa = api;
-	}
-
-    
 
     /**
      * Password Page. Ask the user to change his password.
@@ -50,7 +39,7 @@ public class PasswordController extends Controller {
      * @return index settings
      */
     public Result index() {
-        IAccountService accountService = new AccountService(jpa.em());
+        IAccountService accountService = new AccountService(em());
         User user = accountService.findByEmail(request().username());
     	return ok(password.render(user));
     }
@@ -70,11 +59,11 @@ public class PasswordController extends Controller {
             
             accountService.sendMailResetPassword(user, mailerClient);
             
-            flash("success", Messages.get("resetpassword.mailsent"));
+            flash("success", getMessage("resetpassword.mailsent"));
             return ok(password.render(user));
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
-            flash("error", Messages.get("error.technical"));
+            flash("error", getMessage("error.technical"));
         }
         return badRequest(password.render(user));
     }

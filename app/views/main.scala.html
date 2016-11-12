@@ -23,6 +23,9 @@
   	    <!-- Project CSS -->
     	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
     	
+    	<!-- Morris Charts CSS -->
+    	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/morris.css")">
+    	
     	<!-- Backward compatibility IE -->
     	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	    <!--[if lt IE 9]>
@@ -60,10 +63,10 @@
 	    <script src="@routes.Assets.versioned("javascripts/core.js")"></script>
 	
 	    <!-- Morris Charts JavaScript -->
-	    <!-- 
-	    <script src="../vendor/raphael/raphael.min.js"></script>
-	    <script src="../vendor/morrisjs/morris.min.js"></script>
-	    <script src="../data/morris-data.js"></script> -->
+	     
+	    <script src="@routes.Assets.versioned("javascripts/raphael.min.js")"></script>
+	    <script src="@routes.Assets.versioned("javascripts/morris.min.js")"></script>
+	    <script src="@routes.Assets.versioned("javascripts/morris-data.js")"></script>
 	    
 	    @scripts
     </body>

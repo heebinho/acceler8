@@ -8,6 +8,17 @@ import javax.persistence.EntityManager;
 import models.Model;
 import play.db.jpa.Transactional;
 
+
+/**
+ * Dao Base
+ * 
+ * Generic crud methods
+ * 
+ * @author TEAM RMG
+ *
+ * @param <E> Entity type
+ * @param <K> Key
+ */
 public abstract class Dao<E, K extends Serializable> implements IDao<E, K> {
 	
 	private Class<E> persistentClass;
