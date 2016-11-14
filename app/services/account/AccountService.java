@@ -1,9 +1,5 @@
-/**
- * 
- */
 package services.account;
 
-import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
 
 import java.net.MalformedURLException;
@@ -17,7 +13,6 @@ import models.Mail;
 import models.Token;
 import models.Token.TypeToken;
 import models.User;
-import models.dao.IDao;
 import models.dao.ITokenDao;
 import models.dao.IUserDao;
 import models.dao.TokenDao;
@@ -166,7 +161,7 @@ public class AccountService extends Service implements IAccountService {
        String toMail = null;
 
        // Should use reverse routing here.
-       String urlString = urlString = "http://" + externalServer + "/" + type.getUrlPath() + "/" + token.token;
+       String urlString = "http://" + externalServer + "/" + type.getUrlPath() + "/" + token.token;
        URL url = new URL(urlString); // validate the URL
 
        switch (type) {

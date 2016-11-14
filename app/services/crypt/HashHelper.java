@@ -45,6 +45,7 @@ public class HashHelper {
 	    if (encryptedPassword == null) {
 	        return false;
 	    }
+	    
 	    return BCrypt.checkpw(candidate, encryptedPassword);
 	}
 	

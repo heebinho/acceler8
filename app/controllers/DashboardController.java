@@ -72,8 +72,6 @@ public class DashboardController extends BaseController {
     	
     	
     	List<StravaActivity> activities = strava.listAllAuthenticatedAthleteActivities();
-    	StravaActivity a = new Activity();
-    	a.getti
     	
     	return ok(index.render(token.getAthlete(), activities , "aa"));
     }

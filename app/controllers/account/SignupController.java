@@ -94,10 +94,12 @@ public class SignupController extends BaseController {
         }
 
         try {
-            User user = new User();
-
+        	String password = register.getInputPassword();
+        	
+            //create user and persist
+        	User user = new User();
             user.setEmail(register.getEmail());
-            user.setPassword(HashHelper.createPassword(register.getInputPassword()));
+            user.setPassword(password);
             user.setToken(UUID.randomUUID().toString());
 
             IUserDao dao = new UserDao(em());
