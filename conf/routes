@@ -34,19 +34,29 @@ POST    /reset/:token               controllers.account.ResetController.runReset
 GET     /email/:token               controllers.account.settings.EmailController.validateEmail(token:String)
 
 
-
-GET		/products					controllers.ProductController.index
-GET		/products/new				controllers.ProductController.newProduct()
-GET		/products/:ean				controllers.ProductController.details(ean: String)
-POST	/products					controllers.ProductController.save()
-DELETE	/products/:ean				controllers.ProductController.delete(ean: String)
-
 GET		/teams						controllers.TeamController.index
 GET		/teams/new					controllers.TeamController.newTeam()
 GET		/teams/:id					controllers.TeamController.details(id: Integer)
+POST	/teams/join					controllers.TeamController.join()
+
+# würde ich weglasen und unter myteams machen
 POST	/teams						controllers.TeamController.save()
 DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)
 
+#Methodes for MyTeams
+GET		/myteams					controllers.MyTeamController.index
+GET		/myteams/:id				controllers.MyTeamController.details(id: Integer)
+POST	/myteams					controllers.MyTeamController.save()
+DELETE	/myteams/:id				controllers.MyTeamController.delete(id: Integer)
+
+#Methodes for user challenge
+#GET	/userchallenge				controllers.UserChallengeController.index
+#POST	/userchallenge				controllers.UserChallengeController.choose()
+#GET	/userchallenge/:id			controllers.UserChallangeController.details(id: Integer)
+
+#Methodes for team challenge
+#GET	/teamchallenge				controllers.TeamChallengeController.index
+#GET	/teamchallenge/:id			controllers.TeamChallangeController.details(id: Integer)
 
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
@@ -55,3 +65,24 @@ GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#TODO Delete routes
+GET	/products					controllers.ProductController.index
+GET	/products/new				controllers.ProductController.newProduct()
+GET	/products/:ean				controllers.ProductController.details(ean: String)
+POST	/products					controllers.ProductController.save()
+DELETE	/products/:ean				controllers.ProductController.delete(ean: String)
+

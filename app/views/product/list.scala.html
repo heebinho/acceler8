@@ -11,6 +11,10 @@
 	</tr>
 </thead>
 <tbody>
+
+
+
+@*
 @for(product <- products) {
 	<tr>
 		<td><a href="@routes.ProductController.details(product.ean)">
@@ -33,4 +37,5 @@
 	</tbody>
 	</table>
 	<a href="@routes.ProductController.newProduct()" class="btn"><i class="glyphicon glyphicon-new"></i> New product</a>
+*@
 }

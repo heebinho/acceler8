@@ -1,18 +1,35 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import play.data.validation.Constraints.*;
 
-
+/**
+ * Team Model
+ * 
+ * @author Team RMG
+ *
+ */
 @Entity
 public class Team extends Model {
 	
-
 	
 	@Required
 	private String name;
 	
+	@ManyToMany
+	private List<User> users;
+	
+	public List<User> getUsers() {
+		return users;
+		}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -32,7 +49,6 @@ public class Team extends Model {
 		this.description = description;
 	}
 
-	public Team(){}
 	
 	public Team(String name, String description){
 		this.name = name;
@@ -41,7 +57,7 @@ public class Team extends Model {
 	
 	@Override
 	public String toString() {
-		return String.format("%s - %s", getId(), name);
+		return String.format("%s - %s", getId(), getName());
 	}
 	
 

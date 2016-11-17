@@ -23,34 +23,30 @@ import views.html.team.*;
  * 
  * @author Team RMG
  */
-public class TeamController extends Controller {
-	
-	JPAApi jpa;
+public class TeamController extends BaseController {
 	
 	@Inject FormFactory formFactory;	
 
-	
-	/**
-	 * ctor 
-	 * @param api java persistence api (injected)
-	 */
-	@Inject
-	public TeamController(JPAApi api) {
-	    this.jpa = api;
-	}
 	
     /**
      * List all teams
      * 
      * @return http response
      */
-	@Transactional(readOnly=true)
+	@Transactional()
     public Result index() {
 		
 		TeamDao dao = new TeamDao(jpa.em());
 		List<Team> teams = dao.findAll();
 		
     	return ok(list.render(teams));
+    }
+	
+	@Transactional()
+    public Result join() {
+		
+		
+    	return TODO;
     }
 	
 	/**
