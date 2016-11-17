@@ -1,0 +1,21 @@
+@(teams: List[Team])
+
+
+@main("Acceler8") {
+
+    <div id="wrapper">
+    	@views.html.dashboard.navigation("")
+				
+		Keine TEams vorhanden
+		
+		
+        @for(team <- teams) {
+
+			  @team.getName()
+		}
+		
+		
+		
+	</div>
+
+}

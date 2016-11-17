@@ -12,7 +12,7 @@ render a product detail form
 
 
 @main("Product form") {
-
+@*
 	<h1>Product form</h1>
 	@helper.form(action = routes.ProductController.save()) {
 		<fieldset>
@@ -24,6 +24,6 @@ render a product detail form
 		<input type="submit" class="btn btn-primary" value="Save">
 		<a class="btn" href="@routes.ProductController.index()">Cancel</a>
 	}
-	
+*@
 }
 

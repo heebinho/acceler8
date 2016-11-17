@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- * Base entity type. To be extended.
+ * Base entity type.
  * 
  * @author TEAM RMG
  */

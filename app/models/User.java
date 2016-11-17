@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import play.data.format.Formats.NonEmpty;
@@ -10,6 +12,7 @@ import services.crypt.HashHelper;
  * 
  * 
  * @author TEAM RMG
+ * 
  */
 @Entity
 public class User extends Model {
@@ -31,6 +34,12 @@ public class User extends Model {
 	private String strava_code;
 	private String strava_token;
 	private String strava_token_public;
+	
+	@ManyToMany//(mappedBy="Team")
+	//@JoinTable(name = "TeamUser", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "team_id") })
+	private List<Team> teams;
+	
+
 
 	public String getEmail() {
 		return email;
@@ -92,6 +101,14 @@ public class User extends Model {
 	@Override
 	public String toString() {
 		return getEmail();
+	}
+
+	public List<Team> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(List<Team> teams) {
+		this.teams = teams;
 	}
 	
 
