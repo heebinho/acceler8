@@ -1,6 +1,8 @@
 package models;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -35,9 +37,18 @@ public class User extends Model {
 	private String strava_token;
 	private String strava_token_public;
 	
-	@ManyToMany//(mappedBy="Team")
-	//@JoinTable(name = "TeamUser", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "team_id") })
-	private List<Team> teams;
+
+	@ManyToMany(mappedBy = "users") //users --> collection on owner side (Team)
+	private Set<Team> teams = new HashSet<Team>();
+	
+    
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+	public void setTeams(Set<Team> teams) {
+		this.teams = teams;
+	}
 	
 
 
@@ -101,14 +112,6 @@ public class User extends Model {
 	@Override
 	public String toString() {
 		return getEmail();
-	}
-
-	public List<Team> getTeams() {
-		return teams;
-	}
-
-	public void setTeams(List<Team> teams) {
-		this.teams = teams;
 	}
 	
 

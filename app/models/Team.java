@@ -1,6 +1,8 @@
 package models;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -19,14 +21,20 @@ public class Team extends Model {
 	@Required
 	private String name;
 	
-	@ManyToMany
-	private List<User> users;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "TeamMember",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> users = new HashSet<User>();
 	
-	public List<User> getUsers() {
-		return users;
-		}
 
-	public void setUsers(List<User> users) {
+    public Set<User> getUsers() {
+        return users;
+    }
+
+	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
 
@@ -60,5 +68,6 @@ public class Team extends Model {
 		return String.format("%s - %s", getId(), getName());
 	}
 	
+	public Team(){}
 
 }

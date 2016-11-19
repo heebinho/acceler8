@@ -28,12 +28,13 @@ public class TeamDao extends Dao<Team, Integer> implements ITeamDao {
 	public List<Team> getTeamsByUser(Integer userId) {
 		
 		Query query = getEntityManager()
-				.createQuery("select t.* from TEAM t"
-				+ " join TeamUser tu where tu.user_id = :id")
+				.createQuery("select t from Team t"
+				+ " inner join t.users u where u.id = :id")
 				.setParameter("id", userId);
 
 		
-		List<Team> teams = (List<Team>) query.getResultList();
+		@SuppressWarnings("unchecked")
+		List<Team> teams = query.getResultList();
 		
 		return teams;
 	}
