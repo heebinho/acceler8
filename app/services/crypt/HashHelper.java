@@ -1,12 +1,9 @@
-/**
- * 
- */
 package services.crypt;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- * Helper functions - user for password encryption/decryption
+ * Hashing with BCrypt.
  * 
  * @author TEAM RMG
  */
@@ -15,11 +12,9 @@ public class HashHelper {
 	/**
 	 * Create an encrypted password from a clear string.
 	 * 
-	 * @param clearString
-	 *            the clear string
-	 * @return an encrypted password of the clear string
-	 * @throws IllegalArgumentException
-	 *            when given string is null 
+	 * @param clearString the clear password
+	 * @return the encrypted password
+	 * @throws IllegalArgumentException when given string is null 
 	 */
 	public static String createPassword(String clearString) throws IllegalArgumentException {
 	    if (clearString == null) {
@@ -32,10 +27,8 @@ public class HashHelper {
 	 * Method to check if entered user password is the same as the one that is
 	 * stored (encrypted) in the database.
 	 * 
-	 * @param candidate
-	 *            the clear text
-	 * @param encryptedPassword
-	 *            the encrypted password string to check.
+	 * @param candidate the clear candidate
+	 * @param encryptedPassword the encrypted password string to check against.
 	 * @return true if the candidate matches, false otherwise.
 	 */
 	public static boolean checkPassword(String candidate, String encryptedPassword) {

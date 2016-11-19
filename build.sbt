@@ -1,4 +1,4 @@
-name := """acceler8"""
+name := "acceler8"
 
 version := "1.0-SNAPSHOT"
 
@@ -48,3 +48,5 @@ resolvers += "commons-logging" at "https://mvnrepository.com/artifact/commons-lo
 libraryDependencies += "commons-logging" % "commons-logging" % "1.2"
 
 fork in run := false
+
+fork in run := true
