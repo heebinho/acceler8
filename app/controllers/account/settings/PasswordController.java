@@ -22,8 +22,10 @@ import javax.inject.Inject;
 import java.net.MalformedURLException;
 
 /**
- * User: yesnault
- * Date: 15/05/12
+ * 
+ * 
+ * @author TEAM RMG
+ *
  */
 @Security.Authenticated(Secured.class)
 public class PasswordController extends BaseController {

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package services;
 
 import javax.persistence.EntityManager;
@@ -16,9 +13,6 @@ public abstract class Service {
 	
 	private EntityManager entityManager;
 	
-	/**
-	 * empty ctor
-	 */
 	public Service() { }
 	
 	/**

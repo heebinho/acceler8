@@ -11,7 +11,7 @@ import play.mvc.*;
 import play.mvc.Http.Cookie;
 import services.account.AccountService;
 import services.account.IAccountService;
-import services.settings.Reader;
+import services.settings.SettingsReader;
 import services.strava.StravaOAuth2Api;
 import views.html.*;
 import views.html.defaultpages.todo;

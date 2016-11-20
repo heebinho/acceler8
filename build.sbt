@@ -48,5 +48,3 @@ resolvers += "commons-logging" at "https://mvnrepository.com/artifact/commons-lo
 libraryDependencies += "commons-logging" % "commons-logging" % "1.2"
 
 fork in run := false
-
-fork in run := true

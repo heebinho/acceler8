@@ -1,6 +1,3 @@
-/**
- * 
- */
 package controllers;
 
 import java.util.List;
@@ -23,7 +20,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.mvc.Http.Cookie;
-import services.settings.Reader;
+import services.settings.SettingsReader;
 import services.strava.StravaOAuth2Api;
 import views.html.dashboard.*;
 import services.account.*;
@@ -79,8 +76,8 @@ public class DashboardController extends BaseController {
     private Token getToken(String code){
     	
     	AuthorisationService service = new AuthorisationServiceImpl();
-    	Integer clientId = Reader.getValue(Reader.CLIENT_ID);
-    	String secret = Reader.getKey(Reader.CLIENT_SECRET);   	
+    	Integer clientId = SettingsReader.getValue(SettingsReader.CLIENT_ID);
+    	String secret = SettingsReader.getKey(SettingsReader.CLIENT_SECRET);   	
     	
     	Token token = service.tokenExchange(clientId, secret, code, AuthorisationScope.VIEW_PRIVATE);
     	

@@ -26,7 +26,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.mvc.Http.Cookie;
-import services.settings.Reader;
+import services.settings.SettingsReader;
 import services.strava.StravaOAuth2Api;
 import views.html.myteam.*;
 import services.account.*;

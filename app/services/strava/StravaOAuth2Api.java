@@ -7,7 +7,7 @@ import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.builder.api.*;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
-import services.settings.Reader;
+import services.settings.SettingsReader;
 
 
 /**
@@ -23,8 +23,8 @@ public class StravaOAuth2Api extends DefaultApi20 {
 	public static String getLink(){
 		
     	ServiceBuilder builder = new ServiceBuilder();
-    	builder.apiKey(Reader.getKey(Reader.CLIENT_ID));
-    	builder.apiSecret(Reader.getKey(Reader.CLIENT_SECRET));
+    	builder.apiKey(SettingsReader.getKey(SettingsReader.CLIENT_ID));
+    	builder.apiSecret(SettingsReader.getKey(SettingsReader.CLIENT_SECRET));
     	builder.callback("http://localhost:9000/dashboard/callback"); //TODO config
     	builder.responseType("code");
     	builder.scope("view_private");
@@ -33,7 +33,7 @@ public class StravaOAuth2Api extends DefaultApi20 {
     	String authorizationUrl = service.getAuthorizationUrl();
     	
     	authorizationUrl += "&approval_prompt=";
-    	authorizationUrl += Reader.getKey(Reader.APPROVAL_PROMPT);
+    	authorizationUrl += SettingsReader.getKey(SettingsReader.APPROVAL_PROMPT);
     	
     	return authorizationUrl;
 	}

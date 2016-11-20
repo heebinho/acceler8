@@ -62,8 +62,7 @@ DELETE	/myteams/:id				controllers.MyTeamController.delete(id: Integer)
 GET		/ping						controllers.test.TestController.ping
 GET		/echo/:in					controllers.test.TestController.echo(in: String)
 
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
+
 # An example controller showing how to write asynchronous code
 GET     /message                    controllers.AsyncController.message
 
