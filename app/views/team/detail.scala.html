@@ -1,20 +1,61 @@
 @(teamForm: Form[Team])
 
-@import helper._
+
+@implicitFieldConstructor = @{
+    helper.FieldConstructor(bootstrapInputField.render)
+}
 
 @main("Team") {
 
-	<h1>Team</h1>
-	@helper.form(action = routes.TeamController.save()) {
-		<fieldset>
-		<legend>Product (@teamForm("name").valueOr("New"))</legend>
-		@helper.inputText(teamForm("id"), '_label -> "ID")
-		@helper.inputText(teamForm("name"),'_label -> "Name")
-		@helper.textarea(teamForm("description"), '_label -> "Description")
-		</fieldset>
-		<input type="submit" class="btn btn-primary" value="Save">
-		<a class="btn" href="@routes.TeamController.index()">Cancel</a>
-	}
+	@views.html.dashboard.navigation("")
+	<div id="page-wrapper">
 	
+		<!-- title  -->
+	    <div class="row">
+	        <div class="col-lg-12">
+	      		<h1 class="page-header">Team</h1>
+	        </div>
+	    </div>
+	
+		<!-- form -->
+		<div class="row">
+			<div class="col-lg-6 col-md-6">
+			
+			@helper.form(action = routes.TeamController.save(),
+			 'class -> "form-horizontal",
+			 'role -> "form") {
+			<fieldset>
+			
+			@helper.inputText(
+	            teamForm("name"),
+	            'placeholder -> Messages("Team name e.g. Cricket club"),
+	            '_label -> "Name",
+	            'class -> "form-control",
+	            '_showConstraints -> false
+	        )
+	        
+	        @helper.textarea(
+	            teamForm("description"),
+	            'placeholder -> Messages("description"),
+	            '_label -> "Description",
+	            'class -> "form-control",
+	            'rows -> 3
+	        )
+	
+	        
+			
+			<div class="form-group">
+			  <label class="control-label" for="submit"></label>
+			  <div class="controls">
+			    <button id="submit" name="submit" class="btn btn-primary">Save</button>
+			    <a class="btn" href="@routes.TeamController.index()">Cancel</a>
+			  </div>
+			</div>
+			
+			</fieldset>
+				
+			}
+			</div>
+		</div>
+	</div>
 }
-

@@ -1,6 +1,10 @@
 package controllers;
 
 import play.mvc.*;
+import services.account.AccountService;
+import services.account.IAccountService;
+import services.team.ITeamService;
+import services.team.TeamService;
 import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.JPAApi;
@@ -12,6 +16,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import models.Team;
+import models.User;
 import models.dao.TeamDao;
 import views.html.team.*;
 
@@ -43,10 +48,24 @@ public class TeamController extends BaseController {
     }
 	
 	@Transactional()
-    public Result join() {
+    public Result join(int id) {
 		
+    	String email = ctx().session().get("email");
+    	IAccountService authService = new AccountService(em());
+    	User user = authService.findByEmail(email);
+    	ITeamService teamService = new TeamService(em());
+    	
+    	if(teamService.isAlreadyMember(user, id))
+    		return redirect(routes.MyTeamController.details(id));
+    	
+    	if(teamService.addNewMember(user, id)){
+    		
+    	}else{
+    		//
+    	}
+    	
 		
-    	return TODO;
+    	return redirect(routes.MyTeamController.details(id));
     }
 	
 	/**
@@ -58,6 +77,9 @@ public class TeamController extends BaseController {
 	public Result newTeam(){
 
 		Form<Team> form = formFactory.form(Team.class);
+		
+		
+		
 		return ok(detail.render(form));
 	}
     

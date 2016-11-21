@@ -37,8 +37,7 @@ GET     /email/:token               controllers.account.settings.EmailController
 GET		/teams						controllers.TeamController.index
 GET		/teams/new					controllers.TeamController.newTeam()
 GET		/teams/:id					controllers.TeamController.details(id: Integer)
-POST	/teams/join					controllers.TeamController.join()
-
+GET		/teams/join/:id				controllers.TeamController.join(id: Integer)
 # würde ich weglasen und unter myteams machen
 POST	/teams						controllers.TeamController.save()
 DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)

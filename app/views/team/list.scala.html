@@ -1,36 +1,44 @@
 @(teams: List[Team])
 
 @main("Teams") {
-<h2>All teams</h2>
-<table class="table table-striped">
-<thead>
-	<tr>
-		<th>ID</th>
-		<th>Name</th>
-		<th>Description</th>
-	</tr>
-</thead>
-<tbody>
-@for(team <- teams) {
-	<tr>
-		<td><a href="@routes.TeamController.details(team.getId)">
-		@team.getId
-		</a></td>
-		<td><a href="@routes.TeamController.details(team.getId)">
-		@team.getName</a></td>
-		<td><a href="@routes.TeamController.details(team.getId)">
-		@team.getDescription</a></td>
-		<td>
-			<a href="@routes.TeamController.details(team.getId)">
-				<i class="glyphicon glyphicon-remove"></i>
-			</a>
-			<a onclick="del('@routes.TeamController.delete(team.getId)')">
-				<i class="glyphicon glyphicon-edit"></i>
-			</a>
-		</td>
-	</tr>
-	}
-	</tbody>
-	</table>
-	<a href="@routes.TeamController.newTeam()" class="btn"><i class="glyphicon glyphicon-new"></i> New team</a>
+
+
+    @views.html.dashboard.navigation("")
+				
+	
+	<div id="page-wrapper">			
+        <div class="row">
+            <div class="col-lg-12">
+		        <h1 class="page-header">Teams</h1>
+            </div>
+        </div>
+        
+        
+        <div class="row">
+        	<div class="col-lg-12">
+	            <div class="panel panel-default">
+	                <div class="panel-heading">
+	                    <i class="fa fa-sign-in fa-fw"></i> All teams:
+	                </div>
+	
+	                <div class="panel-body">
+	                	@for(team <- teams) {
+	                    <div class="list-group">
+	                        <a href="@routes.TeamController.join(team.getId)" class="list-group-item">
+	                            <i class="fa fa-plus-circle fa-fw"></i> @team.getName
+	                            <span class="pull-right text-muted small"><em>@team.getDescription</em>
+	                            </span>
+	                        </a>
+	                    </div>
+	                    }
+	                    
+	                    
+	                </div>
+	            </div>    
+        	</div>
+        </div>
+	</div>
+
+
+
 }

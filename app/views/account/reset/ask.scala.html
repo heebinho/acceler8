@@ -1,9 +1,10 @@
 @(askForm: Form[controllers.account.ResetController.AskForm])
 
 @import helper._
-    @implicitFieldConstructor = @{
-        FieldConstructor(twitterBootstrapInput.render)
-    }
+
+@implicitFieldConstructor = @{
+    FieldConstructor(bootstrapInputField.render)
+}
 
 
 @main() {

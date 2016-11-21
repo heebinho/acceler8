@@ -64,8 +64,7 @@ public class DashboardController extends BaseController {
     		
     	
     	Strava strava = new Strava(token);
-    	StravaAthlete athlete = strava.getAthlete(15283400);
-    	//athlete.getCreatedAt()
+    	//strava.
     	
     	
     	List<StravaActivity> activities = strava.listAllAuthenticatedAthleteActivities();

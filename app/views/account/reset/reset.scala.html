@@ -1,15 +1,13 @@
 @(resetForm: Form[controllers.account.ResetController.ResetForm], token: String)
 
 @import helper._
-    @implicitFieldConstructor = @{
-        FieldConstructor(twitterBootstrapInput.render)
-    }
 
-    @scripts = {
-    	
-    }
+@implicitFieldConstructor = @{
+    FieldConstructor(bootstrapInputField.render)
+}
 
-@main(" - Reset", null, scripts) {
+
+@main("Reset", null, null) {
 
     <h3>@Messages("signup.reset.password")</h3>
 

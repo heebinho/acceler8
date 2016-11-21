@@ -1,9 +1,9 @@
 @(signupForm: Form[Register])
 
 @import helper._
-    @implicitFieldConstructor = @{
-        FieldConstructor(twitterBootstrapInput.render)
-    }
+@implicitFieldConstructor = @{
+    FieldConstructor(bootstrapInputField.render)
+}
 
 <h3>@Messages("signup.new")</h3>
 
@@ -14,19 +14,22 @@
             signupForm("email"),
             'placeholder -> Messages("email"),
             '_label -> null,
-            'class -> "form-control"
+            'class -> "form-control",
+            '_showConstraints -> false
         )
         @inputText(
             signupForm("fullname"),
             'placeholder -> Messages("fullname"),
             '_label -> null,
-            'class -> "form-control"
+            'class -> "form-control",
+            '_showConstraints -> false
         )
         @inputPassword(
             signupForm("inputPassword"),
             '_label -> null,
             'placeholder -> Messages("password"),
-            'class -> "form-control"
+            'class -> "form-control",
+            '_showConstraints -> false
         )
     </fieldset>
 

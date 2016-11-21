@@ -5,31 +5,15 @@ package controllers;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.prism.ReadbackRenderTarget;
-
-import javastrava.api.v3.auth.AuthorisationService;
-import javastrava.api.v3.auth.TokenManager;
-import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
-import javastrava.api.v3.auth.model.Token;
-import javastrava.api.v3.auth.ref.AuthorisationScope;
-import javastrava.api.v3.model.StravaActivity;
-import javastrava.api.v3.model.StravaAthlete;
-import javastrava.api.v3.service.Strava;
 import models.Team;
-import models.User;
 import models.dao.ITeamDao;
 import models.dao.TeamDao;
 import play.db.jpa.Transactional;
-import play.libs.Json;
-import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import play.mvc.Http.Cookie;
-import services.settings.SettingsReader;
-import services.strava.StravaOAuth2Api;
+import services.team.ITeamService;
+import services.team.TeamService;
 import views.html.myteam.*;
-import services.account.*;
 
 
 /**
@@ -87,11 +71,13 @@ public class MyTeamController extends BaseController {
     	
     }
     
-	/**
-     * Default action dashboard.
-     */
     @Transactional
-    public Result details(int id) {return TODO;}
+    public Result details(int id) {
+    	
+    	ITeamService service = new TeamService(em());
+    	Team team = service.findById(id);
+    	return ok(detail.render(team));
+    }
     
     @Transactional
     public Result save() {return TODO;}
