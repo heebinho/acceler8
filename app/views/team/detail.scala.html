@@ -41,9 +41,40 @@
 	            'class -> "form-control",
 	            'rows -> 3
 	        )
-	
 	        
-			
+	        @helper.inputText(
+	            teamForm("city"),
+	            'placeholder -> Messages("city"),
+	            '_label -> "City",
+	            'class -> "form-control",
+	            '_showConstraints -> false
+	        )
+	        
+	        @helper.inputText(
+	            teamForm("country"),
+	            'placeholder -> Messages("country"),
+	            '_label -> "Country",
+	            'class -> "form-control",
+	            '_showConstraints -> false
+	        )
+	        
+	        @helper.inputText(
+	            teamForm("website"),
+	            'placeholder -> Messages("http://www.yourteam.site"),
+	            '_label -> "Website",
+	            'class -> "form-control",
+	            '_showConstraints -> false
+	        )
+	        
+    	    @helper.checkbox(
+	            teamForm("isPrivate"),
+	            '_label -> "Private team",
+	            '_text -> "Is this a private team?",
+	            'class -> "checkbox",
+	            '_showConstraints -> false
+	        )
+	        
+	        
 			<div class="form-group">
 			  <label class="control-label" for="submit"></label>
 			  <div class="controls">
