@@ -11,7 +11,7 @@ import play.data.validation.Constraints.*;
 import services.crypt.HashHelper;
 
 /**
- * 
+ * Represents the user
  * 
  * @author TEAM RMG
  * 
@@ -36,7 +36,7 @@ public class User extends Model {
 	private String strava_code;
 	private String strava_token;
 	private String strava_token_public;
-	
+	private Integer strava_id;
 
 	@ManyToMany(mappedBy = "users") //users --> collection on owner side (Team)
 	private Set<Team> teams = new HashSet<Team>();
@@ -107,6 +107,14 @@ public class User extends Model {
 
 	public void setStrava_token_public(String strava_token_public) {
 		this.strava_token_public = strava_token_public;
+	}
+	
+	public Integer getStrava_id() {
+		return strava_id;
+	}
+
+	public void setStrava_id(Integer strava_id) {
+		this.strava_id = strava_id;
 	}
 
 	@Override
