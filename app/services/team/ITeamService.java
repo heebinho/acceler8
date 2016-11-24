@@ -16,6 +16,8 @@ public interface ITeamService {
 	
 	boolean addNewMember(User user, int teamId);
 	
+	boolean removeMember(User user, int teamId);
+	
 	Team findById(int id);
 	
 

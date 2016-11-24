@@ -61,15 +61,19 @@ public class DashboardController extends BaseController {
     	if(token == null){
     		token = getToken(user.getStrava_code());
     	}
-    		
+    	
+    	
+    	
+    	StravaAthlete athlete = token.getAthlete();
+    	
+    	user.setStrava_id(athlete.getId());   	
+    	authService.persistUser(user);
+    	
     	
     	Strava strava = new Strava(token);
-    	//strava.
-    	
-    	
     	List<StravaActivity> activities = strava.listAllAuthenticatedAthleteActivities();
     	
-    	return ok(index.render(token.getAthlete(), activities , "aa"));
+    	return ok(index.render(athlete, activities , "aa"));
     }
     
     private Token getToken(String code){
@@ -111,6 +115,8 @@ public class DashboardController extends BaseController {
     	
     	user.setStrava_code(code);
     	user.setStrava_token(token.getToken());
+    	
+    	
     	
     	authService.persistUser(user);
     	

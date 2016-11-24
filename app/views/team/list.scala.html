@@ -18,14 +18,14 @@
         	<div class="col-lg-12">
 	            <div class="panel panel-default">
 	                <div class="panel-heading">
-	                    <i class="fa fa-sign-in fa-fw"></i> All teams:
+	                    <i class="fa fa-expand fa-fw"></i> All teams:
 	                </div>
 	
 	                <div class="panel-body">
 	                	@for(team <- teams) {
 	                    <div class="list-group">
-	                        <a href="@routes.TeamController.join(team.getId)" class="list-group-item">
-	                            <i class="fa fa-plus-circle fa-fw"></i> @team.getName
+	                        <a href="@routes.MyTeamController.details(team.getId)" class="list-group-item">
+	                            <i class="fa fa-expand fa-fw"></i> @team.getName
 	                            <span class="pull-right text-muted small"><em>@team.getDescription</em>
 	                            </span>
 	                        </a>

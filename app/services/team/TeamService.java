@@ -46,6 +46,14 @@ public class TeamService extends Service implements ITeamService {
 		return dao.findById(id);
 	}
 
+	@Override
+	public boolean removeMember(User user, int teamId) {
+
+		ITeamDao dao = new TeamDao(getEntityManager());
+		Team team = dao.findById(teamId);
+		return team.getUsers().remove(user);
+	}
+
 
 
 }

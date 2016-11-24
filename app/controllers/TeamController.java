@@ -46,6 +46,17 @@ public class TeamController extends BaseController {
 		
     	return ok(list.render(teams));
     }
+
+	@Transactional()
+    public Result leave(int teamId) { 
+		String email = ctx().session().get("email");
+    	IAccountService authService = new AccountService(em());
+    	User user = authService.findByEmail(email);
+    	ITeamService teamService = new TeamService(em());
+    	teamService.removeMember(user, teamId);
+    	
+		return redirect(routes.TeamController.index());
+    }
 	
 	@Transactional()
     public Result join(int id) {
