@@ -10,7 +10,8 @@ import play.mvc.*;
 
 /**
  * Base controller functions.
- * 
+ * All controllers will inherit from this class.
+ * We provide data access and i18n.
  * 
  * @author TEAM RMG
  *
@@ -53,6 +54,21 @@ public abstract class BaseController extends Controller {
 		this.messages = messagesApi.preferred(request());
 		return messages.at(key);
 	}
+	
+    /**
+     * Get the message at the given key.
+     *
+     * Uses `java.text.MessageFormat` internally to format the message.
+     *
+     * @param key
+     * @param args the message arguments
+     * @return the formatted message
+     */
+    public String getMessage(String key, Object... args) {
+    	this.messages = messagesApi.preferred(request());
+    	return messages.at(key, args);
+    }
+	
 	
 	
 }
