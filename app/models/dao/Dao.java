@@ -10,13 +10,12 @@ import play.db.jpa.Transactional;
 
 
 /**
- * Dao Base
- * 
- * Generic crud methods
+ * Generic dao implementation.
+ *
  * 
  * @author TEAM RMG
  *
- * @param <E> Entity type
+ * @param <E> Entity
  * @param <K> Key
  */
 public abstract class Dao<E, K extends Serializable> implements IDao<E, K> {
@@ -46,7 +45,6 @@ public abstract class Dao<E, K extends Serializable> implements IDao<E, K> {
 
 	@Override
 	public void delete(E entity) {
-		//getEntityManager().remove(entity);
 		if(Model.class.isAssignableFrom(persistentClass)){
 			getEntityManager().remove(
 					getEntityManager().getReference(entity.getClass(),

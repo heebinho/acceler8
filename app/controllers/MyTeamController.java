@@ -5,17 +5,22 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+import javax.inject.Inject;
+
+import controllers.account.ResetController.AskForm;
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.service.Strava;
+import models.Invite;
 import models.Team;
 import models.User;
 import models.dao.ITeamDao;
 import models.dao.TeamDao;
+import play.data.Form;
+import play.data.FormFactory;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -35,7 +40,7 @@ import views.html.myteam.*;
 @Security.Authenticated(Secured.class)
 public class MyTeamController extends BaseController {
 	
-
+	@Inject FormFactory formFactory;
 
 	/**
      * Default action dashboard.
@@ -80,16 +85,11 @@ public class MyTeamController extends BaseController {
 		}
     	
     	
+    	Form<Invite> inviteForm = formFactory.form(Invite.class);
     	
-    	return ok(detail.render(member, team, athletes));
+    	return ok(detail.render(member, team, athletes, inviteForm));
     }
-    
-    @Transactional
-    public Result save() {return TODO;}
-    
-    @Transactional
-    public Result delete(int id) {return TODO;}
-    
+     
 
 
 }

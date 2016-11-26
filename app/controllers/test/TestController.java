@@ -2,12 +2,6 @@ package controllers.test;
 
 import java.util.Date;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-
-import play.db.jpa.JPAApi;
-import play.i18n.Messages;
-import play.i18n.MessagesApi;
 import play.mvc.*;
 
 /**

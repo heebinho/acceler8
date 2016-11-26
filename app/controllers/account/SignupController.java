@@ -12,16 +12,10 @@ import play.Configuration;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
-import play.db.jpa.JPA;
-import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
-import play.i18n.Messages;
-import play.mvc.Controller;
 import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
-import services.crypt.HashHelper;
-import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
 
 import javax.inject.Inject;
@@ -33,8 +27,6 @@ import views.html.account.signup.created;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
-
-import static play.data.Form.form;
 
 /**
  * 

@@ -2,34 +2,13 @@ package controllers;
 
 import play.data.Form;
 import play.data.FormFactory;
-import play.data.validation.Constraints;
-import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
-import play.i18n.Messages;
-import play.libs.Json;
 import play.mvc.*;
-import play.mvc.Http.Cookie;
 import services.account.AccountService;
 import services.account.IAccountService;
-import services.settings.SettingsReader;
-import services.strava.StravaOAuth2Api;
 import views.html.*;
-import views.html.defaultpages.todo;
-
-import static play.data.Form.form;
-
 import javax.inject.Inject;
 
-import org.apache.logging.log4j.core.appender.routing.Routes;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.oauth.OAuth20Service;
-
-import javastrava.api.v3.auth.AuthorisationService;
-import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
-import javastrava.api.v3.auth.model.Token;
-import javastrava.api.v3.auth.ref.AuthorisationScope;
 import models.Login;
 import models.Register;
 import models.User;

@@ -5,16 +5,15 @@ import services.account.AccountService;
 import services.account.IAccountService;
 import services.team.ITeamService;
 import services.team.TeamService;
+import services.user.IUserService;
+import services.user.UserService;
 import play.data.Form;
 import play.data.FormFactory;
-import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-
 import models.Team;
 import models.User;
 import models.dao.TeamDao;
@@ -79,6 +78,31 @@ public class TeamController extends BaseController {
     	return redirect(routes.MyTeamController.details(id));
     }
 	
+	@Transactional()
+    public Result invite() { return TODO;}
+	
+	/**
+	 * Remove a user from a team
+	 * 
+	 * @param id team id
+	 * @param uid Strava athlete id
+	 * @return
+	 */
+	@Transactional()
+    public Result removeUser(int id, int uid) {
+    	
+    	IUserService userService =new UserService(em());
+    	User user = userService.findByAthleteId(uid);
+    	
+    	ITeamService service = new TeamService(em());
+    	Team team = service.findById(id);
+    	team.getUsers().remove(user);
+
+    	return redirect(routes.MyTeamController.details(id));
+   }
+		
+    	
+   
 	/**
 	 * Render team detail view
 	 * 

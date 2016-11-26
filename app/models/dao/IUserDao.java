@@ -28,5 +28,13 @@ public interface IUserDao extends IDao<User, Integer> {
      * @return a user if the confirmation token is found, null otherwise.
      */
     User findByConfirmationToken(String token);
+    
+    /**
+     * Retrieves a user from an athelte id.
+     *
+     * @param strava athlete id
+     * @return a user if the athlete is found, null otherwise.
+     */
+    User findByAthleteId(Integer athleteId);
 	
 }

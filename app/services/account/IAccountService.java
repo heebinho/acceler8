@@ -1,18 +1,16 @@
 package services.account;
 
 import java.net.MalformedURLException;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
 import models.Token;
 import models.Token.TypeToken;
 import models.User;
 
 /**
- * 
+ * Account service
  * 
  * @author TEAM RMG
  *
@@ -45,6 +43,14 @@ public interface IAccountService {
      * 
      */
     User findByEmail(String email);
+    
+    /**
+     * Find User by id
+     *
+     * @return User or null
+     * 
+     */
+    User findById(int userId);
 
 
     /**
