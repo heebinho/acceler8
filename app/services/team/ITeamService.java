@@ -18,6 +18,8 @@ public interface ITeamService {
 	
 	boolean removeMember(User user, int teamId);
 	
+	boolean removeTeamMember(User teamMember, int teamId);
+	
 	Team findById(int id);
 	
 

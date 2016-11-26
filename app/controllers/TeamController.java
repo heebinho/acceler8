@@ -10,11 +10,17 @@ import play.data.FormFactory;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import javastrava.api.v3.auth.TokenManager;
+import javastrava.api.v3.auth.model.Token;
+import javastrava.api.v3.auth.ref.AuthorisationScope;
+import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.service.Strava;
 import models.Team;
 import models.User;
 import models.dao.TeamDao;
@@ -79,6 +85,33 @@ public class TeamController extends BaseController {
     	return redirect(routes.MyTeamController.details(id));
     }
 	
+	@Transactional()
+    public Result remove(int teamid) {
+	
+			String email = ctx().session().get("email");
+	    	IAccountService authService = new AccountService(em());
+	    	User user = authService.findByEmail(email);
+	    	
+	    	ITeamService service = new TeamService(em());
+	    	Team team = service.findById(teamid);
+	    	
+	    	//try to get the token from the manager
+	    	Token token = TokenManager.instance()
+	    			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
+        	
+        	ITeamService teamService = new TeamService(em());
+        	
+        	Strava strava = new Strava(token);
+        	for (User teamMember : team.getUsers()) {
+        		StravaAthlete athlete = strava.getAthlete(teamMember.getStrava_id());
+        		teamService.removeTeamMember(teamMember, teamid);
+        	}
+        	return redirect(routes.MyTeamController.details(teamid));
+   }
+    	
+		
+    	
+   
 	/**
 	 * Render team detail view
 	 * 
