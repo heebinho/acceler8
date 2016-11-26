@@ -1,5 +1,8 @@
-@(member: Boolean, team: Team, athletes: List[javastrava.api.v3.model.StravaAthlete])
+@(member: Boolean, team: Team, athletes: List[javastrava.api.v3.model.StravaAthlete], inviteForm: Form[Invite])
 
+@implicitFieldConstructor = @{
+    helper.FieldConstructor(bootstrapInputField.render)
+}
 
 @main("Acceler8") {
 
@@ -55,15 +58,35 @@
 					                <!-- badge -->
 					                <div class="rank-label-container">
 					                    <span class="label label-default rank-label">100 Points @athlete.getWeight()</span>
-					                    <a href="@routes.TeamController.remove(team.getId())" class="btn btn-danger btn-lg" role="button">Remove</a>
+					                    <a href="@routes.TeamController.removeUser(team.getId(), athlete.getId())" class="btn btn-danger btn-lg" role="button">Remove</a>
 					                </div>
 					            </div>
 					        </div> 
 						</div>
-            
-	                    
+
 	                    }
 	                    
+	                    
+	                        <div class="col col-lg-8">
+					
+							@helper.form(action = routes.TeamController.invite()){
+					
+					            <div class="form-group">
+					            @helper.inputText(
+					                inviteForm("email"),
+					                'placeholder -> Messages("email"),
+					                '_label -> "Invite a friend",
+					                'class -> "form-control",
+					                '_showConstraints -> false
+					            )
+					            </div>
+					
+					            <hr>
+					            <input type="submit" class="btn btn-primary" value="Invite">
+					
+					        }
+					
+					    </div>
 	                    
 	                    
 	                    

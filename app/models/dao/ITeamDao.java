@@ -6,7 +6,7 @@ import java.util.List;
 import models.Team;
 
 /**
- * 
+ * Team dao.
  * 
  * @author Team RMG
  */

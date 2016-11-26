@@ -7,7 +7,7 @@ import models.User;
 import models.dao.ITeamDao;
 import models.dao.TeamDao;
 import services.Service;
-import java.util.stream.*;
+
 
 /**
  * Team services.
@@ -24,7 +24,6 @@ public class TeamService extends Service implements ITeamService {
 	@Override
 	public boolean isAlreadyMember(User user, int teamId) {
 		
-		//functional style in java8 - finally :)
 		return user.getTeams().stream()
 				.anyMatch(t -> t.getId() == teamId);
 	}
@@ -54,12 +53,7 @@ public class TeamService extends Service implements ITeamService {
 		return team.getUsers().remove(user);
 	}
 	
-	public boolean removeTeamMember(User teamMember, int teamId) {
 
-		ITeamDao dao = new TeamDao(getEntityManager());
-		Team team = dao.findById(teamId);
-		return team.getUsers().remove(teamMember);
-	}
 
 
 

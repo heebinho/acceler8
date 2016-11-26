@@ -2,9 +2,6 @@ package controllers;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.prism.ReadbackRenderTarget;
-
 import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
@@ -15,8 +12,6 @@ import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.service.Strava;
 import models.User;
 import play.db.jpa.Transactional;
-import play.libs.Json;
-import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.mvc.Http.Cookie;

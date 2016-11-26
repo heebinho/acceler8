@@ -87,6 +87,19 @@ public class AccountService extends Service implements IAccountService {
     	IUserDao dao = new UserDao(getEntityManager());
     	return dao.findByEmail(email);
     }
+    
+    
+    /**
+     * Find User by id
+     *
+     * @return User or null
+     * 
+     */
+    @Override
+    public User findById(int userId) {
+    	IUserDao dao = new UserDao(getEntityManager());
+    	return dao.findById(userId);
+    }
 
     /**
      * Persist user

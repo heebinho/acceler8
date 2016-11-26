@@ -7,6 +7,12 @@ import javax.persistence.Query;
 
 import models.Team;
 
+/**
+ * Team dao.
+ * 
+ * @author TEAM RMG
+ *
+ */
 public class TeamDao extends Dao<Team, Integer> implements ITeamDao {
 
 	public TeamDao(EntityManager em) {

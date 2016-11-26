@@ -2,19 +2,14 @@ package controllers.account.settings;
 
 import controllers.BaseController;
 import controllers.Secured;
-import models.Token;
 import models.User;
 import play.Logger;
-import play.data.FormFactory;
 import play.db.jpa.JPAApi;
-import play.i18n.Messages;
-import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.account.AccountService;
 import services.account.IAccountService;
 import views.html.account.settings.password;
-import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
 
 import javax.inject.Inject;
@@ -57,8 +52,6 @@ public class PasswordController extends BaseController {
         User user = accountService.findByEmail(request().username());
         
         try {
-            Token t = new Token();
-            
             accountService.sendMailResetPassword(user, mailerClient);
             
             flash("success", getMessage("resetpassword.mailsent"));

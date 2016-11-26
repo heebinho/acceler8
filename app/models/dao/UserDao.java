@@ -3,6 +3,8 @@ package models.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import play.Logger;
+
 import models.User;
 
 /**
@@ -65,6 +67,32 @@ public class UserDao extends Dao<User, Integer> implements IUserDao {
 		
 		return user;
     }
+
+
+    /**
+     * Retrieves a user from an athelte id.
+     *
+     * @param strava athlete id
+     * @return a user if the athlete is found, null otherwise.
+     */
+	@Override
+	public User findByAthleteId(Integer athleteId) {
+		
+		if(athleteId == null)
+			throw new IllegalArgumentException("no athelte id");
+		
+		User user = null;
+		
+		Query query = getEntityManager().createQuery("select u from " + getPersistentClass().getSimpleName()
+				+ " u where u.strava_id = :id").setParameter("id", athleteId);
+		try {
+			user = (User)query.getSingleResult();
+		} catch (Exception e) {
+			Logger.error(e.getMessage());
+		}
+		
+		return user;
+	}
 
 
 }

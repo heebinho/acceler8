@@ -7,10 +7,10 @@ import javax.persistence.Query;
 
 import models.Token;
 import models.Token.TypeToken;
-import models.User;
+import play.Logger;
 
 /**
- * 
+ * Token dao.
  * 
  * @author TEAM RMG
  */
@@ -26,7 +26,7 @@ public class TokenDao extends Dao<Token, UUID> implements ITokenDao {
      *
      * @param token token Id
      * @param type  type of token
-     * @return a resetToken
+     * @return a resetToken or null if not found
      */
 	@Override
 	public Token findByTokenAndType(String uuid, TypeToken type) {
@@ -45,7 +45,7 @@ public class TokenDao extends Dao<Token, UUID> implements ITokenDao {
 		try {
 			token = (Token)query.getSingleResult();
 		} catch (Exception e) {
-			// do nothing (return null when not found)
+			Logger.info("Token not found: " + uuid);
 		}
 		
 		return token;

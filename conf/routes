@@ -39,16 +39,14 @@ GET		/teams/new					controllers.TeamController.newTeam()
 GET		/teams/:id					controllers.TeamController.details(id: Integer)
 GET		/teams/join/:id				controllers.TeamController.join(id: Integer)
 GET		/teams/leave/:id			controllers.TeamController.leave(id: Integer)
-GET		/teams/remove/:id			controllers.TeamController.remove(id: Integer)
-# würde ich weglasen und unter myteams machen
+POST	/teams/invite				controllers.TeamController.invite()
+GET		/teams/removeUser/:id/:uid	controllers.TeamController.removeUser(id: Integer, uid: Integer)
 POST	/teams						controllers.TeamController.save()
 DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)
 
 #Methodes for MyTeams
 GET		/myteams					controllers.MyTeamController.index
 GET		/myteams/:id				controllers.MyTeamController.details(id: Integer)
-POST	/myteams					controllers.MyTeamController.save()
-DELETE	/myteams/:id				controllers.MyTeamController.delete(id: Integer)
 
 #Methodes for user challenge
 #GET	/userchallenge				controllers.UserChallengeController.index

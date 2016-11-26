@@ -4,13 +4,12 @@ import models.Team;
 import models.User;
 
 /**
- * 
+ * Team service.
  * 
  * @author TEAM RMG
  *
  */
 public interface ITeamService {
-	
 	
 	boolean isAlreadyMember(User user, int teamId);
 	
@@ -18,9 +17,6 @@ public interface ITeamService {
 	
 	boolean removeMember(User user, int teamId);
 	
-	boolean removeTeamMember(User teamMember, int teamId);
-	
 	Team findById(int id);
 	
-
 }
