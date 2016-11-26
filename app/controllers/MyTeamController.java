@@ -40,7 +40,6 @@ import views.html.myteam.*;
 @Security.Authenticated(Secured.class)
 public class MyTeamController extends BaseController {
 	
-	@Inject FormFactory formFactory;
 
 	/**
      * Default action dashboard.
@@ -57,37 +56,6 @@ public class MyTeamController extends BaseController {
     	
     	return ok(index.render(teams));
     	
-    }
-    
-    @Transactional
-    public Result details(int id) {
-    	
-    	String email = ctx().session().get("email");
-    	
-    	IAccountService authService = new AccountService(em());
-    	User user = authService.findByEmail(email);
-    	
-    	ITeamService service = new TeamService(em());
-    	Team team = service.findById(id);
-    	
-    	//try to get the token from the manager
-    	Token token = TokenManager.instance()
-    			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
-    	
-    	boolean member = false;
-    	Strava strava = new Strava(token);
-    	List<StravaAthlete> athletes = new ArrayList<StravaAthlete>();
-    	for (User teamMember : team.getUsers()) {
-    		StravaAthlete athlete = strava.getAthlete(teamMember.getStrava_id());
-    		athletes.add(athlete);
-    		if(user.getId() == teamMember.getId())
-    			member = true;
-		}
-    	
-    	
-    	Form<Invite> inviteForm = formFactory.form(Invite.class);
-    	
-    	return ok(detail.render(member, team, athletes, inviteForm));
     }
      
 

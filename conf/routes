@@ -43,10 +43,10 @@ POST	/teams/invite				controllers.TeamController.invite()
 GET		/teams/removeUser/:id/:uid	controllers.TeamController.removeUser(id: Integer, uid: Integer)
 POST	/teams						controllers.TeamController.save()
 DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)
+GET		/teams/show/:id				controllers.TeamController.show(id: Integer)
 
-#Methodes for MyTeams
 GET		/myteams					controllers.MyTeamController.index
-GET		/myteams/:id				controllers.MyTeamController.details(id: Integer)
+
 
 #Methodes for user challenge
 #GET	/userchallenge				controllers.UserChallengeController.index

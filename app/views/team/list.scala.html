@@ -24,7 +24,7 @@
 	                <div class="panel-body">
 	                	@for(team <- teams) {
 	                    <div class="list-group">
-	                        <a href="@routes.MyTeamController.details(team.getId)" class="list-group-item">
+	                        <a href="@routes.TeamController.show(team.getId)" class="list-group-item">
 	                            <i class="fa fa-expand fa-fw"></i> @team.getName
 	                            <span class="pull-right text-muted small"><em>@team.getDescription</em>
 	                            </span>

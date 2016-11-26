@@ -11,12 +11,21 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import javastrava.api.v3.auth.TokenManager;
+import javastrava.api.v3.auth.model.Token;
+import javastrava.api.v3.auth.ref.AuthorisationScope;
+import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.service.Strava;
+import models.Invite;
 import models.Team;
 import models.User;
 import models.dao.TeamDao;
+import views.html.team.show;
 import views.html.team.*;
 
 
@@ -27,6 +36,7 @@ import views.html.team.*;
  * 
  * @author Team RMG
  */
+@Security.Authenticated(Secured.class)
 public class TeamController extends BaseController {
 	
 	@Inject FormFactory formFactory;	
@@ -66,7 +76,7 @@ public class TeamController extends BaseController {
     	ITeamService teamService = new TeamService(em());
     	
     	if(teamService.isAlreadyMember(user, id))
-    		return redirect(routes.MyTeamController.details(id));
+    		return redirect(routes.TeamController.show(id));
     	
     	if(teamService.addNewMember(user, id)){
     		
@@ -75,7 +85,7 @@ public class TeamController extends BaseController {
     	}
     	
 		
-    	return redirect(routes.MyTeamController.details(id));
+    	return redirect(routes.TeamController.show(id));
     }
 	
 	@Transactional()
@@ -98,7 +108,7 @@ public class TeamController extends BaseController {
     	Team team = service.findById(id);
     	team.getUsers().remove(user);
 
-    	return redirect(routes.MyTeamController.details(id));
+    	return redirect(routes.TeamController.show(id));
    }
 		
     	
@@ -172,6 +182,37 @@ public class TeamController extends BaseController {
 		return redirect(routes.TeamController.index());
 
 	}
+	
+    @Transactional
+    public Result show(int id) {
+    	
+    	String email = ctx().session().get("email");
+    	
+    	IAccountService authService = new AccountService(em());
+    	User user = authService.findByEmail(email);
+    	
+    	ITeamService service = new TeamService(em());
+    	Team team = service.findById(id);
+    	
+    	//try to get the token from the manager
+    	Token token = TokenManager.instance()
+    			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
+    	
+    	boolean member = false;
+    	Strava strava = new Strava(token);
+    	List<StravaAthlete> athletes = new ArrayList<StravaAthlete>();
+    	for (User teamMember : team.getUsers()) {
+    		StravaAthlete athlete = strava.getAthlete(teamMember.getStrava_id());
+    		athletes.add(athlete);
+    		if(user.getId() == teamMember.getId())
+    			member = true;
+		}
+    	
+    	
+    	Form<Invite> inviteForm = formFactory.form(Invite.class);
+    	
+    	return ok(show.render(member, team, athletes, inviteForm));
+    }
     
 
 }
