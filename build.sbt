@@ -41,10 +41,10 @@ libraryDependencies += "com.github.danshannon" % "javastrava-api" % "1.0.3"
 resolvers += "log4j" at "https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.2"
 
-resolvers += "slf4j" at "https://mvnrepository.com/artifact/org.slf4j/slf4j-api"
-libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.7"
+//resolvers += "slf4j" at "https://mvnrepository.com/artifact/org.slf4j/slf4j-api"
+//libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.7"
 
-resolvers += "commons-logging" at "https://mvnrepository.com/artifact/commons-logging/commons-logging"
-libraryDependencies += "commons-logging" % "commons-logging" % "1.2"
+//resolvers += "commons-logging" at "https://mvnrepository.com/artifact/commons-logging/commons-logging"
+//libraryDependencies += "commons-logging" % "commons-logging" % "1.2"
 
 fork in run := false

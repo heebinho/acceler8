@@ -5,8 +5,11 @@ import play.mvc.Result;
 import play.mvc.Security;
 
 /**
- * User: yesnault
- * Date: 22/01/12
+ * Handle authentication.
+ * Redirect to HomeController.
+ * 
+ * @author TEAM RMG
+ *
  */
 public class Secured extends Security.Authenticator {
 
@@ -19,4 +22,6 @@ public class Secured extends Security.Authenticator {
     public Result onUnauthorized(Http.Context ctx) {
         return redirect(routes.HomeController.index());
     }
+    
+    
 }

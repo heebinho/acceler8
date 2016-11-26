@@ -7,7 +7,7 @@ import play.libs.mailer.MailerClient;
 
 import javax.inject.Inject;
 
-import play.libs.Akka;
+import akka.actor.ActorSystem;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
@@ -17,10 +17,10 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * Send a mail with PlayStartApp.
- * <p/>
- * User: yesnault
- * Date: 24/01/12
+ * Mail model.
+ * 
+ * @author TEAM RMG
+ *
  */
 public class Mail {
     MailerClient mailerClient;
@@ -28,12 +28,6 @@ public class Mail {
     public Mail(MailerClient mailerClient) {
         this.mailerClient = mailerClient;
     }
-
-
-    /**
-     * 1 second delay on sending emails
-     */
-    private static final int DELAY = 1;
 
     /**
      * Envelop to prepare.
@@ -71,8 +65,13 @@ public class Mail {
      */
     public void sendMail(Mail.Envelop envelop) {
         EnvelopJob envelopJob = new EnvelopJob(envelop, mailerClient);
-        final FiniteDuration delay = Duration.create(DELAY, TimeUnit.SECONDS);
-        Akka.system().scheduler().scheduleOnce(delay, envelopJob, Akka.system().dispatcher());
+        final FiniteDuration delay = Duration.create(0, TimeUnit.SECONDS);
+        
+        ActorSystem system = ActorSystem.apply();
+        system.scheduler().scheduleOnce(
+        		delay, 
+        		envelopJob, 
+        		system.dispatcher());
     }
 
     static class EnvelopJob implements Runnable {
