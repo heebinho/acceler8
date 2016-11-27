@@ -192,8 +192,8 @@ public class AccountService extends Service implements IAccountService {
 
        Logger.debug("sendMailResetLink: url = " + url);
        Mail.Envelop envelop = new Mail.Envelop(subject, message, toMail);
-       Mail mailer = new Mail(mc);
-       mailer.sendMail(envelop);
+       Mail mail = new Mail(mc);
+       mail.sendMail(envelop);
    }
    
    /**

@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import controllers.routes;
 import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;

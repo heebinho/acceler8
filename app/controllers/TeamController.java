@@ -7,24 +7,35 @@ import services.team.ITeamService;
 import services.team.TeamService;
 import services.user.IUserService;
 import services.user.UserService;
+import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.Transactional;
+import play.libs.Json;
+import play.libs.mailer.MailerClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.mail.EmailException;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.service.Strava;
-import models.Invite;
+import models.Mail;
 import models.Team;
 import models.User;
 import models.dao.TeamDao;
+import models.vm.InviteResult;
+import models.vm.InviteViewModel;
+import models.vm.TeamViewModel;
+import models.vm.UserViewModel;
 import views.html.team.show;
 import views.html.team.*;
 
@@ -39,9 +50,12 @@ import views.html.team.*;
 @Security.Authenticated(Secured.class)
 public class TeamController extends BaseController {
 	
-	@Inject FormFactory formFactory;	
-
+	@Inject 
+	FormFactory formFactory;
 	
+	@Inject
+    MailerClient mailerClient;
+
     /**
      * List all teams
      * 
@@ -89,7 +103,32 @@ public class TeamController extends BaseController {
     }
 	
 	@Transactional()
-    public Result invite() { return TODO;}
+    public Result invite() {
+		
+		InviteResult result = new InviteResult();
+		Form<InviteViewModel> inviteForm = formFactory.form(InviteViewModel.class).bindFromRequest();
+		if(inviteForm.hasErrors()){
+			return badRequest();
+		}
+		InviteViewModel invite = inviteForm.get();
+		
+		try{
+	        String subject = getMessage("mail.invite.subject");
+	        String message = getMessage("mail.invite.message") + "\n\n";
+	        message += routes.TeamController.join(invite.getTeamId()).absoluteURL(request());
+	        
+	        Mail.Envelop envelop = new Mail.Envelop(subject, message, invite.getEmail() );
+	        Mail mail = new Mail(mailerClient);
+	        mail.sendMail(envelop);
+	        result.setSent(true);
+		}catch(Exception any){
+			Logger.error(any.getMessage());
+		}
+		
+		//serialize and serve as json
+		JsonNode resultJson = Json.toJson(result);
+		return ok(resultJson);
+	}
 	
 	/**
 	 * Remove a user from a team
@@ -122,9 +161,6 @@ public class TeamController extends BaseController {
 	public Result newTeam(){
 
 		Form<Team> form = formFactory.form(Team.class);
-		
-		
-		
 		return ok(detail.render(form));
 	}
     
@@ -191,27 +227,31 @@ public class TeamController extends BaseController {
     	IAccountService authService = new AccountService(em());
     	User user = authService.findByEmail(email);
     	
+    	TeamViewModel vm = new TeamViewModel();
     	ITeamService service = new TeamService(em());
-    	Team team = service.findById(id);
+    	vm.setTeam(service.findById(id));
     	
-    	//try to get the token from the manager
     	Token token = TokenManager.instance()
     			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
     	
-    	boolean member = false;
-    	Strava strava = new Strava(token);
-    	List<StravaAthlete> athletes = new ArrayList<StravaAthlete>();
-    	for (User teamMember : team.getUsers()) {
-    		StravaAthlete athlete = strava.getAthlete(teamMember.getStrava_id());
-    		athletes.add(athlete);
+    	Strava stravaService = new Strava(token);
+    	for (User teamMember : vm.getTeam().getUsers()) {
+    		StravaAthlete athlete = stravaService.getAthlete(teamMember.getStrava_id());
+    		
+    		UserViewModel uVm = new UserViewModel();
+    		vm.addMember(uVm);
+    		uVm.setAthlete(athlete);
+    		uVm.setUser(teamMember);
+    		
+    		if(athlete.getProfileMedium().startsWith("http"))
+    			uVm.setProfileImage(athlete.getProfileMedium());
+    		
     		if(user.getId() == teamMember.getId())
-    			member = true;
+    			vm.setMember(true);
 		}
     	
-    	
-    	Form<Invite> inviteForm = formFactory.form(Invite.class);
-    	
-    	return ok(show.render(member, team, athletes, inviteForm));
+    	Form<InviteViewModel> inviteForm = formFactory.form(InviteViewModel.class);
+    	return ok(show.render(vm, inviteForm));
     }
     
 

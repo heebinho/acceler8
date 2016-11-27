@@ -42,7 +42,8 @@ public class ResetController extends BaseController {
 	@Inject
     MailerClient mailerClient;
 	
-	@Inject FormFactory formFactory;
+	@Inject 
+	FormFactory formFactory;
 
     public static class AskForm {
         @Constraints.Required
