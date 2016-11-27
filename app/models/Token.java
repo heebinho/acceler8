@@ -1,28 +1,13 @@
 package models;
 
-import models.Mail;
-import models.dao.ITokenDao;
-import models.dao.TokenDao;
-import play.Configuration;
-import play.Logger;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
-//import com.avaje.ebean.Model;
-import play.i18n.Messages;
-import play.libs.mailer.Email;
-import play.libs.mailer.MailerClient;
-import services.account.IAccountService;
-
-import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author wsargent

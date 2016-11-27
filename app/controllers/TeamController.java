@@ -25,7 +25,6 @@ import models.Invite;
 import models.Team;
 import models.User;
 import models.dao.TeamDao;
-import views.html.team.show;
 import views.html.team.*;
 
 
