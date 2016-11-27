@@ -4,6 +4,7 @@ import controllers.BaseController;
 import controllers.Secured;
 import models.Token;
 import models.User;
+import models.vm.EMail;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -34,19 +35,6 @@ public class EmailController extends BaseController {
 	@Inject
     MailerClient mailerClient;
 
-    public static class AskForm {
-    	
-        @Constraints.Required
-        public String email;
-
-        public AskForm() {
-        }
-
-        AskForm(String email) {
-            this.email = email;
-        }
-    }
-
     /**
      * Password Page. Ask the user to change his password.
      *
@@ -57,8 +45,8 @@ public class EmailController extends BaseController {
         IAccountService accountService = new AccountService(em());
         User user = accountService.findByEmail(request().username());
         
-        Form<AskForm> askForm = formFactory.form(AskForm.class);
-        askForm = askForm.fill(new AskForm(user.getEmail()));
+        Form<EMail> askForm = formFactory.form(EMail.class);
+        askForm = askForm.fill(new EMail(user.getEmail()));
         return ok(email.render(user, askForm));
     }
 
@@ -69,7 +57,7 @@ public class EmailController extends BaseController {
      */
     public Result runEmail() {
     	
-        Form<AskForm> askForm = formFactory.form(AskForm.class).bindFromRequest();
+        Form<EMail> askForm = formFactory.form(EMail.class).bindFromRequest();
         User user = new AccountService(em()).findByEmail(request().username());
 
         if (askForm.hasErrors()) {
@@ -78,7 +66,7 @@ public class EmailController extends BaseController {
         }
 
         try {
-            String mail = askForm.get().email;
+            String mail = askForm.get().getEmail();
             
             IAccountService accountService = new AccountService(em());
             accountService.sendMailChangeMail(user, mail, mailerClient);

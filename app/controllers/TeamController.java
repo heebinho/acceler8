@@ -30,7 +30,7 @@ import models.Team;
 import models.User;
 import models.dao.TeamDao;
 import models.vm.InviteResult;
-import models.vm.InviteViewModel;
+import models.vm.Invite;
 import models.vm.TeamViewModel;
 import models.vm.UserViewModel;
 import views.html.team.show;
@@ -103,11 +103,11 @@ public class TeamController extends BaseController {
     public Result invite() {
 		
 		InviteResult result = new InviteResult();
-		Form<InviteViewModel> inviteForm = formFactory.form(InviteViewModel.class).bindFromRequest();
+		Form<Invite> inviteForm = formFactory.form(Invite.class).bindFromRequest();
 		if(inviteForm.hasErrors()){
 			return badRequest();
 		}
-		InviteViewModel invite = inviteForm.get();
+		Invite invite = inviteForm.get();
 		
 		try{
 	        String subject = getMessage("mail.invite.subject");
@@ -247,7 +247,7 @@ public class TeamController extends BaseController {
     			vm.setMember(true);
 		}
     	
-    	Form<InviteViewModel> inviteForm = formFactory.form(InviteViewModel.class);
+    	Form<Invite> inviteForm = formFactory.form(Invite.class);
     	return ok(show.render(vm, inviteForm));
     }
     

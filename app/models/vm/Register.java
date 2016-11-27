@@ -1,4 +1,4 @@
-package models;
+package models.vm;
 
 import play.data.validation.Constraints;
 
@@ -43,26 +43,5 @@ public class Register {
 	public void setInputPassword(String inputPassword) {
 		this.inputPassword = inputPassword;
 	}
-
-	/**
-     * Validate the authentication.
-     *
-     * @return null if validation ok, string with details otherwise
-     */
-    public String validate() {
-        if (isBlank(email)) {
-            return "Email is required";
-        }
-
-        if (isBlank(inputPassword)) {
-            return "Password is required";
-        }
-
-        return null;
-    }
-
-    private boolean isBlank(String input) {
-        return input == null || input.isEmpty() || input.trim().isEmpty();
-    }
 
 }

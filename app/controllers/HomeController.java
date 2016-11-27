@@ -9,10 +9,10 @@ import services.account.IAccountService;
 import views.html.*;
 import javax.inject.Inject;
 
-import models.Login;
-import models.Register;
 import models.User;
 import models.dao.UserDao;
+import models.vm.Login;
+import models.vm.Register;
 
 
 /**
@@ -63,19 +63,24 @@ public class HomeController extends BaseController {
         
     	Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
         Form<Register> registerForm = formFactory.form(Register.class);
+        
+        if(loginForm.hasErrors()){
+        	return badRequest(index.render(registerForm, loginForm));
+        }
+        
         Login login = loginForm.get();
         IAccountService accountService = new AccountService(em());
         
         try {
-        	User user = accountService.authenticate(login.email, login.password);	
+        	User user = accountService.authenticate(login.getEmail(), login.getPassword());	
             
         	if (user != null && user.isValidated()) {
-        		session("email", loginForm.get().email);
+        		session("email", loginForm.get().getEmail());
                 return redirect(routes.DashboardController.index());
             } else if (user == null) {
-            	flash("error", "invalid.user.or.password");
+            	flash("error", getMessage("invalid.user.or.password"));
             }else{
-            	flash("error", "account.not.validated.check.mail");
+            	flash("error", getMessage("account.not.validated.check.mail"));
             }
             
         } catch (Exception e) {

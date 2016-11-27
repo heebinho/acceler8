@@ -7,13 +7,14 @@ import models.dao.IUserDao;
 import models.dao.TokenDao;
 import models.dao.UserDao;
 import models.Mail;
+import models.vm.EMail;
+import models.vm.Password;
 import org.apache.commons.mail.EmailException;
 
 import controllers.BaseController;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
-import play.data.validation.Constraints;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import services.account.AccountService;
@@ -45,15 +46,6 @@ public class ResetController extends BaseController {
 	@Inject 
 	FormFactory formFactory;
 
-    public static class AskForm {
-        @Constraints.Required
-        public String email;
-    }
-
-    public static class ResetForm {
-        @Constraints.Required
-        public String inputPassword;
-    }
 
     /**
      * Display the reset password form.
@@ -61,7 +53,7 @@ public class ResetController extends BaseController {
      * @return reset password form
      */
     public Result ask() {
-        Form<AskForm> askForm = formFactory.form(AskForm.class);
+        Form<EMail> askForm = formFactory.form(EMail.class);
         return ok(ask.render(askForm));
     }
 
@@ -72,14 +64,14 @@ public class ResetController extends BaseController {
      */
     @Transactional
     public Result runAsk() {
-        Form<AskForm> askForm = formFactory.form(AskForm.class).bindFromRequest();
+        Form<EMail> askForm = formFactory.form(EMail.class).bindFromRequest();
 
         if (askForm.hasErrors()) {
             flash("error", getMessage("signup.valid.email"));
             return badRequest(ask.render(askForm));
         }
 
-        final String email = askForm.get().email;
+        final String email = askForm.get().getEmail();
         Logger.debug("runAsk: email = " + email);
         
         IUserDao dao = new UserDao(em());
@@ -111,7 +103,7 @@ public class ResetController extends BaseController {
 
         if (token == null) {
             flash("error", getMessage("error.technical"));
-            Form<AskForm> askForm = formFactory.form(AskForm.class);
+            Form<EMail> askForm = formFactory.form(EMail.class);
             return badRequest(ask.render(askForm));
         }
 
@@ -120,7 +112,7 @@ public class ResetController extends BaseController {
 
         if (resetToken == null) {
             flash("error", getMessage("error.technical"));
-            Form<AskForm> askForm = formFactory.form(AskForm.class);
+            Form<EMail> askForm = formFactory.form(EMail.class);
             return badRequest(ask.render(askForm));
         }
 
@@ -128,11 +120,11 @@ public class ResetController extends BaseController {
             dao.delete(resetToken);
         	//resetToken.delete();
             flash("error", getMessage("error.expiredresetlink"));
-            Form<AskForm> askForm = formFactory.form(AskForm.class);
+            Form<EMail> askForm = formFactory.form(EMail.class);
             return badRequest(ask.render(askForm));
         }
 
-        Form<ResetForm> resetForm = formFactory.form(ResetForm.class);
+        Form<Password> resetForm = formFactory.form(Password.class);
         return ok(reset.render(resetForm, token));
     }
 
@@ -141,7 +133,7 @@ public class ResetController extends BaseController {
      */
     @Transactional
     public Result runReset(String token) {
-        Form<ResetForm> resetForm = formFactory.form(ResetForm.class).bindFromRequest();
+        Form<Password> resetForm = formFactory.form(Password.class).bindFromRequest();
 
         if (resetForm.hasErrors()) {
             flash("error", getMessage("signup.valid.password"));
@@ -174,7 +166,7 @@ public class ResetController extends BaseController {
                 return badRequest(reset.render(resetForm, token));
             }
 
-            String password = resetForm.get().inputPassword;
+            String password = resetForm.get().getPassword();
             user.setPassword(password);
             uDao.save(user);
 

@@ -1,4 +1,4 @@
-@(resetForm: Form[controllers.account.ResetController.ResetForm], token: String)
+@(resetForm: Form[models.vm.Password], token: String)
 
 @import helper._
 
@@ -18,7 +18,7 @@
 
             <div class="form-group">
                 @inputPassword(
-                    resetForm("inputPassword"),
+                    resetForm("password"),
                     'placeholder -> Messages("password"),
                     '_label -> null,
                     'class -> "form-control"

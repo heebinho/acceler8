@@ -1,4 +1,4 @@
-@(signupForm: Form[Register])
+@(signupForm: Form[models.vm.Register])
 
 @import helper._
 @implicitFieldConstructor = @{
@@ -13,13 +13,6 @@
         @inputText(
             signupForm("email"),
             'placeholder -> Messages("email"),
-            '_label -> null,
-            'class -> "form-control",
-            '_showConstraints -> false
-        )
-        @inputText(
-            signupForm("fullname"),
-            'placeholder -> Messages("fullname"),
             '_label -> null,
             'class -> "form-control",
             '_showConstraints -> false

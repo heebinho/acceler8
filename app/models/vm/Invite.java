@@ -8,7 +8,7 @@ import play.data.validation.Constraints;
  * @author TEAM RMG
  *
  */
-public class InviteViewModel {
+public class Invite {
 
     @Constraints.Required
     private String email;

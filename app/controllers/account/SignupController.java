@@ -3,8 +3,9 @@ package controllers.account;
 import models.User;
 import models.dao.IUserDao;
 import models.dao.UserDao;
+import models.vm.Register;
 import models.Mail;
-import models.Register;
+
 import org.apache.commons.mail.EmailException;
 
 import controllers.BaseController;
