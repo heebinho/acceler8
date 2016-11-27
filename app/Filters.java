@@ -2,9 +2,7 @@ import javax.inject.*;
 import play.*;
 import play.mvc.EssentialFilter;
 import play.http.HttpFilters;
-import play.mvc.*;
 import filters.AuthenticationFilter;
-import filters.ExampleFilter;
 
 /**
  * This class configures filters that run on every request. This

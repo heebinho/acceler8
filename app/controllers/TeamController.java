@@ -14,12 +14,9 @@ import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.libs.mailer.MailerClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import org.apache.commons.mail.EmailException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
