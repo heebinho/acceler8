@@ -71,9 +71,9 @@ public class User extends Model {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String clearPassword) {
 		//encrypt password (BCrypt)
-		this.password = HashHelper.createPassword(password); 
+		this.password = HashHelper.createPassword(clearPassword); 
 	}
 	
 	public boolean isValidated() {

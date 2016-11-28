@@ -1,0 +1,95 @@
+@(settingsForm: Form[models.vm.Settings])
+
+
+@implicitFieldConstructor = @{
+    helper.FieldConstructor(bootstrapInputField.render)
+}
+
+@main("Settings") {
+
+	@navigation("")
+	<div id="page-wrapper">
+	
+	    <div class="row">
+	        <div class="col-lg-12">
+	      		<h1 class="page-header">Settings</h1>
+	        </div>
+	    </div>
+	
+		<div class="row">
+			<div class="col-lg-6 col-md-6">
+
+  				<div class="panel panel-default">
+	                <div class="panel-heading">
+	                    <i class="fa fa-bar-road fa-fw"></i> Account settings 
+	                </div>
+	                <div class="panel-body" style="margin:10,10,10,10;">
+						@helper.form(action = controllers.account.settings.routes.SettingsController.save(), 'role -> "form") {
+							<fieldset>
+							
+							@helper.inputPassword(
+					            settingsForm("password"),
+					            'placeholder -> Messages("password"),
+					            '_label -> Messages("password"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )
+					        
+					        @helper.inputPassword(
+					            settingsForm("passwordConfirmation"),
+					            'placeholder -> Messages("password"),
+					            '_label -> Messages("password"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )
+					        
+					        @helper.inputText(
+					            settingsForm("strava_token_public"),
+					            'placeholder -> Messages("public.token.p"),
+					            '_label -> Messages("public.token.d"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )
+					       
+					        
+					        
+							<div class="form-group">
+							  <label class="control-label" for="submit"></label>
+							  <div class="controls">
+							    <button id="submit" name="submit" class="btn btn-primary">Save</button>
+							    <a class="btn" href="@routes.DashboardController.index()">Cancel</a>
+							  </div>
+							</div>
+							
+							</fieldset>
+						}
+                	</div>
+            	</div>
+			
+
+			</div>
+			
+			<div class="col-lg-6 col-md-6">
+       			<div class="panel @if(settingsForm("authorized").value.toBoolean) {panel-success} else {panel-danger}">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-road fa-fw"></i>Strava authorization
+                    </div>
+                    <div class="panel-body @if(settingsForm("authorized").value.toBoolean) {panel-success} else {panel-danger}">
+                    	<a href="@settingsForm("authorizationUrl").value">
+						<img src="@routes.Assets.versioned("images/LogInWithStrava2x.png")" alt="Strava renew authorization" class="img-responsive" style="width:315px;height:63px;">
+						</a>
+						@if(settingsForm("authorized").value.toBoolean){
+							<p>You are authorized!</p>
+						}else{
+							<p>You are not authorized - Please authorize Acceler8 to access your data!</p>
+						}
+						
+                    </div>
+                </div>
+			</div>
+			
+		</div>
+		
+		
+	</div>
+}

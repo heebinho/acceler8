@@ -1,5 +1,6 @@
 package services.user;
 
+import javastrava.api.v3.auth.model.Token;
 import models.User;
 
 /**
@@ -48,5 +49,22 @@ public interface IUserService {
      * @return User if the confirmation token is found, null otherwise
      */
     User findByConfirmationToken(String token);
+    
+    
+    /**
+     * Get an access token
+     * 
+     * @return Token A Strava access token or null
+     */
+    Token getStravaAccessToken(User user);
+    
+    /**
+     * Token exchange. Persist token.
+     * 
+     * @param user
+     * @param code
+     * @return User
+     */
+    User setStravaAccessToken(User user, String code);
 	
 }

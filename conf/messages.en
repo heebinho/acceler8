@@ -25,9 +25,6 @@ error.confirm=Confirmation failed
 error.expiredresetlink=This password reset has expired.
 error.expiredmaillink=This mail change has expired.
 
-account.settings.password=Click OK to receive instructions by mail.
-account.settings.email=Enter your new email address. Click OK to receive instructions on this new mail.
-
 signin.signin=Sign In
 signin.your.email=Your email address
 signin.your.password=Your password
@@ -66,3 +63,9 @@ mail.change.ask.message=You asked for your email to be changed.  <br> Click on t
 
 mail.reset.confirm.subject=Acceler8 - New password
 mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
+
+public.token.d=Your public Strava token
+public.token.p=Public token
+settings.saved=Your settings have been saved
+
+strava.tokenexchange.success=We were able to get an access token

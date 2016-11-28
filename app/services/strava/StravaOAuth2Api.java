@@ -1,17 +1,14 @@
-/**
- * 
- */
 package services.strava;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.builder.api.*;
 import com.github.scribejava.core.oauth.OAuth20Service;
-
 import services.settings.SettingsReader;
 
 
 /**
- * Build the Strava access uri
+ * Build the Strava access URI
+ * 
  * 
  * @author TEAM RMG
  *
@@ -19,22 +16,25 @@ import services.settings.SettingsReader;
 public class StravaOAuth2Api extends DefaultApi20 {
 
 	
-	
-	public static String getLink(){
-		
+	/**
+	 * Build the authorization URI
+	 * 
+	 * @param callback the callback URI
+	 * @return URI The authorization URI
+	 */
+	public static String getLink(String callback){
     	ServiceBuilder builder = new ServiceBuilder();
     	builder.apiKey(SettingsReader.getKey(SettingsReader.CLIENT_ID));
     	builder.apiSecret(SettingsReader.getKey(SettingsReader.CLIENT_SECRET));
-    	builder.callback("http://localhost:9000/dashboard/callback"); //TODO config
+    	//builder.callback("http://localhost:9000/settings/strava/callback");
+    	builder.callback(callback.substring(0, callback.indexOf("?")));
     	builder.responseType("code");
-    	builder.scope("view_private");
+    	builder.scope("view_private,write");
     	builder.state("onLogon");
     	OAuth20Service service = builder.build(StravaOAuth2Api.instance());
     	String authorizationUrl = service.getAuthorizationUrl();
-    	
     	authorizationUrl += "&approval_prompt=";
     	authorizationUrl += SettingsReader.getKey(SettingsReader.APPROVAL_PROMPT);
-    	
     	return authorizationUrl;
 	}
 	
@@ -47,9 +47,6 @@ public class StravaOAuth2Api extends DefaultApi20 {
         return InstanceHolder.INSTANCE;
     }
 
-    
-    
-    
 	@Override
 	public String getAccessTokenEndpoint() {
 		return "https://www.strava.com/oauth/token";
@@ -59,6 +56,5 @@ public class StravaOAuth2Api extends DefaultApi20 {
 	protected String getAuthorizationBaseUrl() {
 		return "https://www.strava.com/oauth/authorize";
 	}
-
 
 }

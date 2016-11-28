@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import controllers.routes;
+import controllers.account.settings.SettingsController;
 import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
@@ -46,21 +47,11 @@ public class DashboardController extends BaseController {
     	IUserService userService = new UserService(em());
     	User user = userService.findByEmail(email);
     	
-    	if(user.getStrava_code() == null || user.getStrava_token() == null){
-    		//first attempt to get strava access token...
-    		return redirect(StravaOAuth2Api.getLink());
-    	}
-    	
-    	
-    	//try to get the token from the manager
-    	Token token = TokenManager.instance()
-    			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
-    	
+    	Token token = userService.getStravaAccessToken(user);
     	if(token == null){
-    		token = getToken(user.getStrava_code());
+    		//we can't get data from strava without an access token. Request one.
+    		return redirect(controllers.account.settings.routes.SettingsController.index());
     	}
-    	
-    	
     	
     	StravaAthlete athlete = token.getAthlete();
     	
@@ -74,48 +65,5 @@ public class DashboardController extends BaseController {
     	return ok(index.render(athlete, activities , "aa"));
     }
     
-    private Token getToken(String code){
-    	
-    	AuthorisationService service = new AuthorisationServiceImpl();
-    	Integer clientId = SettingsReader.getValue(SettingsReader.CLIENT_ID);
-    	String secret = SettingsReader.getKey(SettingsReader.CLIENT_SECRET);   	
-    	
-    	Token token = service.tokenExchange(clientId, secret, code, AuthorisationScope.VIEW_PRIVATE);
-    	
-    	//also set the token as a cookie for ajax requests
-    	Cookie oAuth2TokenCookie = new Cookie("token", token.getToken(), 3600, null, null, false, false);
-    	response().setCookie(oAuth2TokenCookie);
-    	
-    	return token;
-    }
-    
-    /**
-     * OAuth2 callback - when the user is coming back from the strava authentication/authorization dialog.
-     * 
-     * On success, a code will be included in the query string. 
-     * If access is denied, error=access_denied will be included in the query string. 
-     * In both cases, if provided, the state argument will also be included.
-     * 
-     * 
-     * @param state 
-     * @param code authorization code
-     * @return
-     */
-    @Transactional
-    public Result callback(String state, String code) {
-    	
-    	String email = ctx().session().get("email");
-    	
-    	Token token = getToken(code);
-    	
-    	IUserService userService = new UserService(em());
-    	User user = userService.findByEmail(email);
-    	
-    	user.setStrava_code(code);
-    	user.setStrava_token(token.getToken());
-    	userService.persistUser(user);
-    	
-    	return redirect(routes.DashboardController.index());
-    }
 
 }
