@@ -8,7 +8,10 @@ import models.dao.TokenDao;
 import models.dao.UserDao;
 import models.Mail;
 import models.vm.EMail;
+import models.vm.Login;
 import models.vm.Password;
+import models.vm.Signup;
+
 import org.apache.commons.mail.EmailException;
 
 import controllers.BaseController;
@@ -19,13 +22,13 @@ import play.db.jpa.Transactional;
 import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
+import views.html.index;
 import views.html.account.reset.ask;
 import play.libs.mailer.MailerClient;
 
 import javax.inject.Inject;
 
 import views.html.account.reset.reset;
-import views.html.account.reset.runAsk;
 
 import java.net.MalformedURLException;
 
@@ -81,8 +84,8 @@ public class ResetController extends BaseController {
 
         if (user == null) {
             Logger.debug("No user found with email " + email);
-            //If we do not have this email address in the list, we should not expose this to the user.
-            return ok(runAsk.render());
+            flash("error", getMessage("resetpassword.notfound"));
+            return badRequest(ask.render(formFactory.form(EMail.class)));
         }
 
         Logger.debug("Sending password reset link to user " + user);
@@ -90,7 +93,10 @@ public class ResetController extends BaseController {
         try {
             IAccountService accountService = new AccountService(em());
             accountService.sendMailResetPassword(user, mailerClient);
-            return ok(runAsk.render());
+            flash("success", getMessage("resetpassword.mailsent"));
+            return ok(index.render(
+            		formFactory.form(Signup.class), 
+            		formFactory.form(Login.class)));
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
             flash("error", getMessage("error.technical"));
@@ -136,7 +142,7 @@ public class ResetController extends BaseController {
         Form<Password> resetForm = formFactory.form(Password.class).bindFromRequest();
 
         if (resetForm.hasErrors()) {
-            flash("error", getMessage("signup.valid.password"));
+            flash("error", getMessage("resetpassword.not.valid.password"));
             return badRequest(reset.render(resetForm, token));
         }
 
@@ -173,7 +179,9 @@ public class ResetController extends BaseController {
             // Send email saying that the password has just been changed.
             sendPasswordChanged(user);
             flash("success", getMessage("resetpassword.success"));
-            return ok(reset.render(resetForm, token));
+            return ok(index.render(
+            		formFactory.form(Signup.class), 
+            		formFactory.form(Login.class)));
         } catch (Exception e) {
             flash("error", getMessage("error.technical"));
             return badRequest(reset.render(resetForm, token));

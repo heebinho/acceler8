@@ -43,8 +43,10 @@ signup.msg.created=You will receive a confirmation email soon. Check your email 
 signup.valid.email=Invalid Email
 
 resetpassword=Reset Password
+resetpassword.notfound=Email not found
+resetpassword.not.valid.password=Not a valid password
 resetpassword.mailsent=A mail has been sent, please check your mail.
-resetpassword.success=Your password has been reset.
+resetpassword.success=Your password has been set.
 resetpassword.new.password=New password :
 
 changemail.mailsent=A mail has been sent, please check your mail.
