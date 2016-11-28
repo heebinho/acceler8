@@ -2,7 +2,7 @@ package controllers.account;
 
 import models.User;
 import models.vm.Login;
-import models.vm.Register;
+import models.vm.Signup;
 import models.Mail;
 
 import org.apache.commons.mail.EmailException;
@@ -50,13 +50,13 @@ public class SignupController extends BaseController {
      */
     @Transactional
     public Result save() {
-        Form<Register> registerForm = formFactory.form(Register.class).bindFromRequest();
+        Form<Signup> registerForm = formFactory.form(Signup.class).bindFromRequest();
 
         if (registerForm.hasErrors()) {
             return badRequest(index.render(registerForm, formFactory.form(Login.class)));
         }
 
-        Register register = registerForm.get();
+        Signup register = registerForm.get();
         IUserService userService = new UserService(em());
     	
         if (userService.findByEmail(register.getEmail()) != null) {
@@ -75,7 +75,7 @@ public class SignupController extends BaseController {
             sendConfirmationMail(user);
             flash("success", getMessage("signup.successfull") + " " + getMessage("signup.msg.created"));
             
-            return ok(index.render(formFactory.form(Register.class), formFactory.form(Login.class)));
+            return ok(index.render(formFactory.form(Signup.class), formFactory.form(Login.class)));
         } catch (EmailException e) {
             Logger.debug("Signup.save Cannot send email", e);
             flash("error", getMessage("error.sending.email"));
@@ -123,14 +123,14 @@ public class SignupController extends BaseController {
             flash("error", getMessage("error.unknown.token"));
             
             return badRequest(index.render(
-            		formFactory.form(Register.class), 
+            		formFactory.form(Signup.class), 
             		formFactory.form(Login.class)));
         }
 
         if (user.isValidated()) {
             flash("error", getMessage("error.account.already.validated"));
             return badRequest(index.render(
-            		formFactory.form(Register.class), 
+            		formFactory.form(Signup.class), 
             		formFactory.form(Login.class)));
         }
 
@@ -140,13 +140,13 @@ public class SignupController extends BaseController {
                 sendMailConfirmation(user);
                 flash("success", getMessage("account.successfully.validated"));
                 return ok(index.render(
-                		formFactory.form(Register.class), 
+                		formFactory.form(Signup.class), 
                 		formFactory.form(Login.class)));
             } else {
                 Logger.debug("Signup.confirm cannot confirm user");
                 flash("error", getMessage("error.confirm"));
                 return badRequest(index.render(
-                		formFactory.form(Register.class), 
+                		formFactory.form(Signup.class), 
                 		formFactory.form(Login.class)));
             }
         } catch (EmailException e) {
@@ -157,7 +157,7 @@ public class SignupController extends BaseController {
             flash("error", getMessage("error.sending.confirm.email"));
         }
         return badRequest(index.render(
-        		formFactory.form(Register.class), 
+        		formFactory.form(Signup.class), 
         		formFactory.form(Login.class)));
     }
 

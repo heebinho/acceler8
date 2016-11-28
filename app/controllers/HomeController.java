@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import models.User;
 import models.dao.UserDao;
 import models.vm.Login;
-import models.vm.Register;
+import models.vm.Signup;
 
 
 /**
@@ -47,7 +47,7 @@ public class HomeController extends BaseController {
         }
 
         return ok(index.render(
-        		formFactory.form(Register.class), 
+        		formFactory.form(Signup.class), 
         		formFactory.form(Login.class)));
     }
     
@@ -62,7 +62,7 @@ public class HomeController extends BaseController {
     public Result authenticate() {
         
     	Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
-        Form<Register> registerForm = formFactory.form(Register.class);
+        Form<Signup> registerForm = formFactory.form(Signup.class);
         
         if(loginForm.hasErrors()){
         	return badRequest(index.render(registerForm, loginForm));

@@ -1,4 +1,4 @@
-@(signupForm: Form[models.vm.Register], loginForm: Form[models.vm.Login])
+@(signupForm: Form[models.vm.Signup], loginForm: Form[models.vm.Login])
 
 @scripts = { }
 
@@ -26,7 +26,7 @@ body {
     </div>
 
     <div class="well">
-      @views.html.account.signup.createFormOnly(signupForm)
+      @signup(signupForm)
     </div>
   </div>
 }

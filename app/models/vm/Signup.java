@@ -8,7 +8,7 @@ import play.data.validation.Constraints;
  * @author TEAM RMG
  *
  */
-public class Register {
+public class Signup {
 	
     @Constraints.Required
     private String email;
