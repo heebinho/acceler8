@@ -14,7 +14,7 @@ public class Register {
     private String email;
     
 	@Constraints.Required
-    private String inputPassword;
+    private String password;
 
     /**
 	 * @return the email
@@ -33,15 +33,15 @@ public class Register {
     /**
 	 * @return the inputPassword
 	 */
-	public String getInputPassword() {
-		return inputPassword;
+	public String getPassword() {
+		return password;
 	}
 
 	/**
 	 * @param inputPassword the inputPassword to set
 	 */
-	public void setInputPassword(String inputPassword) {
-		this.inputPassword = inputPassword;
+	public void setPassword(String inputPassword) {
+		this.password = inputPassword;
 	}
 
 }

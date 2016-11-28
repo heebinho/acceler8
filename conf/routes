@@ -17,10 +17,7 @@ POST    /settings/password          controllers.account.settings.PasswordControl
 GET     /settings/email             controllers.account.settings.EmailController.index()
 POST    /settings/email             controllers.account.settings.EmailController.runEmail()
 
-# Registers the user, sending an email to confirm the account.
-GET     /signup                     controllers.account.SignupController.create()
 POST    /signup                     controllers.account.SignupController.save()
-# Accessed when the user confirms the registration.
 GET     /confirm/:confirmToken      controllers.account.SignupController.confirm(confirmToken:String)
 
 # Displays a page to send a reset email given the user's email.
@@ -44,8 +41,7 @@ GET		/teams/removeUser/:id/:uid	controllers.TeamController.removeUser(id: Intege
 POST	/teams						controllers.TeamController.save()
 DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)
 GET		/teams/show/:id				controllers.TeamController.show(id: Integer)
-
-GET		/myteams					controllers.MyTeamController.index
+GET		/teams/my					controllers.TeamController.my()
 
 
 #Methodes for user challenge

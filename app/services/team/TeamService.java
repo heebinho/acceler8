@@ -1,5 +1,7 @@
 package services.team;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import models.Team;
@@ -28,10 +30,8 @@ public class TeamService extends Service implements ITeamService {
 				.anyMatch(t -> t.getId() == teamId);
 	}
 	
-	
 	@Override
 	public boolean addNewMember(User user, int teamId) {
-		
 		ITeamDao dao = new TeamDao(getEntityManager());
 		Team team = dao.findById(teamId);
 		team.getUsers().add(user);
@@ -47,10 +47,15 @@ public class TeamService extends Service implements ITeamService {
 
 	@Override
 	public boolean removeMember(User user, int teamId) {
-
 		ITeamDao dao = new TeamDao(getEntityManager());
 		Team team = dao.findById(teamId);
 		return team.getUsers().remove(user);
+	}
+
+	@Override
+	public List<Team> getTeamsByUser(Integer userId) {
+		ITeamDao dao = new TeamDao(getEntityManager());
+		return dao.getTeamsByUser(userId);
 	}
 	
 

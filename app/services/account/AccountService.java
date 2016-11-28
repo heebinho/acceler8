@@ -22,6 +22,7 @@ import play.Logger;
 import play.i18n.Messages;
 import services.Service;
 import services.crypt.HashHelper;
+import services.user.IUserService;
 
 /**
  * Implements Authentication
@@ -59,13 +60,12 @@ public class AccountService extends Service implements IAccountService {
      * @throws AppException App Exception
      */
 	@Override
-    public boolean confirm(User user) throws Exception {
+    public boolean confirm(User user) throws IllegalArgumentException {
         
 		if (user == null) {
-            return false;
+            throw new IllegalArgumentException();
         }
 
-        user.setToken(null);
         user.setValidated(true);
 
         //persist
@@ -74,45 +74,6 @@ public class AccountService extends Service implements IAccountService {
 
         return true;
     }
-       
-    /**
-     * Find User by email
-     *
-     * @return User or null
-     * 
-     */
-    @Override
-    public User findByEmail(String email){
-    	
-    	IUserDao dao = new UserDao(getEntityManager());
-    	return dao.findByEmail(email);
-    }
-    
-    
-    /**
-     * Find User by id
-     *
-     * @return User or null
-     * 
-     */
-    @Override
-    public User findById(int userId) {
-    	IUserDao dao = new UserDao(getEntityManager());
-    	return dao.findById(userId);
-    }
-
-    /**
-     * Persist user
-     * 
-     * @param user to persist
-     * @return User or null
-     */
-	@Override
-	public User persistUser(User user) {
-		
-		IUserDao dao = new UserDao(getEntityManager());
-		return dao.save(user);
-	}
 
 	/**
 	 * 

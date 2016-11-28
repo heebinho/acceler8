@@ -18,6 +18,8 @@ import play.mvc.Security;
 import play.mvc.Http.Cookie;
 import services.settings.SettingsReader;
 import services.strava.StravaOAuth2Api;
+import services.user.IUserService;
+import services.user.UserService;
 import views.html.dashboard.*;
 import services.account.*;
 
@@ -41,8 +43,8 @@ public class DashboardController extends BaseController {
     	
     	String email = ctx().session().get("email");
     	
-    	IAccountService authService = new AccountService(em());
-    	User user = authService.findByEmail(email);
+    	IUserService userService = new UserService(em());
+    	User user = userService.findByEmail(email);
     	
     	if(user.getStrava_code() == null || user.getStrava_token() == null){
     		//first attempt to get strava access token...
@@ -63,7 +65,7 @@ public class DashboardController extends BaseController {
     	StravaAthlete athlete = token.getAthlete();
     	
     	user.setStrava_id(athlete.getId());   	
-    	authService.persistUser(user);
+    	userService.persistUser(user);
     	
     	
     	Strava strava = new Strava(token);
@@ -103,18 +105,15 @@ public class DashboardController extends BaseController {
     public Result callback(String state, String code) {
     	
     	String email = ctx().session().get("email");
-    	System.err.println(email);
+    	
     	Token token = getToken(code);
     	
-    	IAccountService authService = new AccountService(em());
-    	User user = authService.findByEmail(email);
+    	IUserService userService = new UserService(em());
+    	User user = userService.findByEmail(email);
     	
     	user.setStrava_code(code);
     	user.setStrava_token(token.getToken());
-    	
-    	
-    	
-    	authService.persistUser(user);
+    	userService.persistUser(user);
     	
     	return redirect(routes.DashboardController.index());
     }

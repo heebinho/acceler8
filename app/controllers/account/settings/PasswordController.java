@@ -9,6 +9,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.account.AccountService;
 import services.account.IAccountService;
+import services.user.IUserService;
+import services.user.UserService;
 import views.html.account.settings.password;
 import play.libs.mailer.MailerClient;
 
@@ -36,8 +38,8 @@ public class PasswordController extends BaseController {
      * @return index settings
      */
     public Result index() {
-        IAccountService accountService = new AccountService(em());
-        User user = accountService.findByEmail(request().username());
+    	IUserService userService = new UserService(em());
+        User user = userService.findByEmail(request().username());
     	return ok(password.render(user));
     }
 
@@ -48,10 +50,11 @@ public class PasswordController extends BaseController {
      */
     public Result runPassword() {
 
-        IAccountService accountService = new AccountService(jpa.em());
-        User user = accountService.findByEmail(request().username());
+    	IUserService userService = new UserService(em());
+        User user = userService.findByEmail(request().username());
         
         try {
+        	IAccountService accountService = new AccountService(em());	
             accountService.sendMailResetPassword(user, mailerClient);
             
             flash("success", getMessage("resetpassword.mailsent"));

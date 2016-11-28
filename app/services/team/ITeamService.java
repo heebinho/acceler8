@@ -1,5 +1,7 @@
 package services.team;
 
+import java.util.List;
+
 import models.Team;
 import models.User;
 
@@ -18,5 +20,7 @@ public interface ITeamService {
 	boolean removeMember(User user, int teamId);
 	
 	Team findById(int id);
+	
+	List<Team> getTeamsByUser(Integer userId);
 	
 }

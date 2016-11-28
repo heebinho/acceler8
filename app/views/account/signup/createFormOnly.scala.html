@@ -14,13 +14,15 @@
             signupForm("email"),
             'placeholder -> Messages("email"),
             '_label -> null,
+            '_help -> Messages("signin.your.email"),
             'class -> "form-control",
             '_showConstraints -> false
         )
         @inputPassword(
-            signupForm("inputPassword"),
+            signupForm("password"),
             '_label -> null,
             'placeholder -> Messages("password"),
+            '_help -> Messages("signin.your.password"),
             'class -> "form-control",
             '_showConstraints -> false
         )
@@ -30,4 +32,3 @@
         <input type="submit" class="btn btn-primary" value="@Messages("signup.signup")">
     </div>
 }
-

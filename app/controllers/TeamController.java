@@ -70,8 +70,9 @@ public class TeamController extends BaseController {
 	@Transactional()
     public Result leave(int teamId) { 
 		String email = ctx().session().get("email");
-    	IAccountService authService = new AccountService(em());
-    	User user = authService.findByEmail(email);
+    	IUserService userService = new UserService(em());
+    	User user = userService.findByEmail(email);
+    	
     	ITeamService teamService = new TeamService(em());
     	teamService.removeMember(user, teamId);
     	
@@ -82,20 +83,14 @@ public class TeamController extends BaseController {
     public Result join(int id) {
 		
     	String email = ctx().session().get("email");
-    	IAccountService authService = new AccountService(em());
-    	User user = authService.findByEmail(email);
+    	IUserService userService = new UserService(em());
+    	User user = userService.findByEmail(email);
+    	
     	ITeamService teamService = new TeamService(em());
-    	
-    	if(teamService.isAlreadyMember(user, id))
+    	if(teamService.isAlreadyMember(user, id)){
     		return redirect(routes.TeamController.show(id));
-    	
-    	if(teamService.addNewMember(user, id)){
-    		
-    	}else{
-    		//
     	}
-    	
-		
+    	teamService.addNewMember(user, id);
     	return redirect(routes.TeamController.show(id));
     }
 	
@@ -217,12 +212,25 @@ public class TeamController extends BaseController {
 	}
 	
     @Transactional
+    public Result my() {
+    	
+    	String email = ctx().session().get("email");
+    	IUserService userService = new UserService(em());
+    	User user = userService.findByEmail(email);
+    	
+    	ITeamService teamService = new TeamService(em());
+    	List<Team> teams = teamService.getTeamsByUser(user.getId());
+    	
+    	return ok(my.render(teams));
+    }
+	
+    @Transactional
     public Result show(int id) {
     	
     	String email = ctx().session().get("email");
     	
-    	IAccountService authService = new AccountService(em());
-    	User user = authService.findByEmail(email);
+    	IUserService userService = new UserService(em());
+    	User user = userService.findByEmail(email);
     	
     	TeamViewModel vm = new TeamViewModel();
     	ITeamService service = new TeamService(em());

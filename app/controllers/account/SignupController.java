@@ -1,8 +1,7 @@
 package controllers.account;
 
 import models.User;
-import models.dao.IUserDao;
-import models.dao.UserDao;
+import models.vm.Login;
 import models.vm.Register;
 import models.Mail;
 
@@ -17,16 +16,15 @@ import play.db.jpa.Transactional;
 import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
+import services.user.IUserService;
+import services.user.UserService;
 import play.libs.mailer.MailerClient;
 
 import javax.inject.Inject;
 
-import views.html.account.signup.confirm;
-import views.html.account.signup.create;
-import views.html.account.signup.created;
+import views.html.index;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.UUID;
 
 /**
@@ -46,27 +44,6 @@ public class SignupController extends BaseController {
 	FormFactory formFactory;	
 
     /**
-     * Display the create form.
-     *
-     * @return create form
-     */
-    public Result create() {
-    	
-        return ok(create.render(
-        		formFactory.form(Register.class)));
-    }
-
-    /**
-     * Display the create form only (for the index page).
-     *
-     * @return create form
-     */
-    public Result createFormOnly() {
-        return ok(create.render(
-        		formFactory.form(Register.class)));
-    }
-
-    /**
      * Save the new user.
      *
      * @return Successfull page or created form if bad
@@ -76,31 +53,29 @@ public class SignupController extends BaseController {
         Form<Register> registerForm = formFactory.form(Register.class).bindFromRequest();
 
         if (registerForm.hasErrors()) {
-            return badRequest(create.render(registerForm));
+            return badRequest(index.render(registerForm, formFactory.form(Login.class)));
         }
 
         Register register = registerForm.get();
-        Result resultError = checkBeforeSave(registerForm, register.getEmail());
-
-        if (resultError != null) {
-            return resultError;
+        IUserService userService = new UserService(em());
+    	
+        if (userService.findByEmail(register.getEmail()) != null) {
+            flash("error", getMessage("error.email.already.exist"));
+            return badRequest(index.render(registerForm, formFactory.form(Login.class)));
         }
 
+       
         try {
-        	String password = register.getInputPassword();
-        	
-            //create user and persist
         	User user = new User();
             user.setEmail(register.getEmail());
-            user.setPassword(password);
+            user.setPassword(register.getPassword());
             user.setToken(UUID.randomUUID().toString());
-
-            IUserDao dao = new UserDao(em());
-            dao.save(user);
+            userService.persistUser(user);
             
-            sendMailAskForConfirmation(user);
-
-            return ok(created.render());
+            sendConfirmationMail(user);
+            flash("success", getMessage("signup.successfull") + " " + getMessage("signup.msg.created"));
+            
+            return ok(index.render(formFactory.form(Register.class), formFactory.form(Login.class)));
         } catch (EmailException e) {
             Logger.debug("Signup.save Cannot send email", e);
             flash("error", getMessage("error.sending.email"));
@@ -108,26 +83,8 @@ public class SignupController extends BaseController {
             Logger.error("Signup.save error", e);
             flash("error", getMessage("error.technical"));
         }
-        return badRequest(create.render(registerForm));
-    }
-
-    /**
-     * Check if the email already exists.
-     *
-     * @param registerForm User Form submitted
-     * @param email        email address
-     * @return Index if there was a problem, null otherwise
-     */
-    private Result checkBeforeSave(Form<Register> registerForm, String email) {
-        // Check unique email
-    	IUserDao dao = new UserDao(em());
-    	
-        if (dao.findByEmail(email) != null) {
-            flash("error", getMessage("error.email.already.exist"));
-            return badRequest(create.render(registerForm));
-        }
-
-        return null;
+        
+        return badRequest(index.render(registerForm, formFactory.form(Login.class)));
     }
 
 
@@ -137,14 +94,13 @@ public class SignupController extends BaseController {
      * @param user user created
      * @throws EmailException Exception when sending mail
      */
-    private void sendMailAskForConfirmation(User user) throws EmailException, MalformedURLException {
+    private void sendConfirmationMail(User user) throws EmailException, MalformedURLException {
         String subject = getMessage("mail.confirm.subject");
 
-        String urlString = "http://" + Configuration.root().getString("server.hostname");
+        String urlString = "http://" + Configuration.root().getString("server.hostname"); //request().host();
         urlString += "/confirm/" + user.getToken();
-        URL url = new URL(urlString); // validate the URL, will throw an exception if bad.
-        String message = getMessage("mail.confirm.message");
-        message += url.toString();
+        
+        String message = getMessage("mail.confirm.message", urlString);
 
         Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
         Mail mailer = new Mail(mailerClient);
@@ -159,17 +115,23 @@ public class SignupController extends BaseController {
      */
     @Transactional
     public Result confirm(String token) {
-    	IUserDao dao = new UserDao(em());
-    	User user = dao.findByConfirmationToken(token);
+    	
+    	IUserService userService = new UserService(em());
+    	User user = userService.findByConfirmationToken(token);
         
         if (user == null) {
-            flash("error", getMessage("error.unknown.email"));
-            return badRequest(confirm.render());
+            flash("error", getMessage("error.unknown.token"));
+            
+            return badRequest(index.render(
+            		formFactory.form(Register.class), 
+            		formFactory.form(Login.class)));
         }
 
         if (user.isValidated()) {
             flash("error", getMessage("error.account.already.validated"));
-            return badRequest(confirm.render());
+            return badRequest(index.render(
+            		formFactory.form(Register.class), 
+            		formFactory.form(Login.class)));
         }
 
         try {
@@ -177,11 +139,15 @@ public class SignupController extends BaseController {
             if (accountService.confirm(user)) {
                 sendMailConfirmation(user);
                 flash("success", getMessage("account.successfully.validated"));
-                return ok(confirm.render());
+                return ok(index.render(
+                		formFactory.form(Register.class), 
+                		formFactory.form(Login.class)));
             } else {
                 Logger.debug("Signup.confirm cannot confirm user");
                 flash("error", getMessage("error.confirm"));
-                return badRequest(confirm.render());
+                return badRequest(index.render(
+                		formFactory.form(Register.class), 
+                		formFactory.form(Login.class)));
             }
         } catch (EmailException e) {
             Logger.debug("Cannot send email", e);
@@ -190,7 +156,9 @@ public class SignupController extends BaseController {
             Logger.debug("technical exception", e);
             flash("error", getMessage("error.sending.confirm.email"));
         }
-        return badRequest(confirm.render());
+        return badRequest(index.render(
+        		formFactory.form(Register.class), 
+        		formFactory.form(Login.class)));
     }
 
     /**

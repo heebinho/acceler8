@@ -26,7 +26,6 @@ public interface IAccountService {
 	 */
 	User authenticate(String email, String password);
 	
-	
     /**
      * Confirms an account.
      *
@@ -34,33 +33,6 @@ public interface IAccountService {
      * @throws AppException App Exception
      */
     boolean confirm(User user) throws Exception;
-    
-    
-    /**
-     * Find User by email
-     *
-     * @return User or null
-     * 
-     */
-    User findByEmail(String email);
-    
-    /**
-     * Find User by id
-     *
-     * @return User or null
-     * 
-     */
-    User findById(int userId);
-
-
-    /**
-     * Persist user
-     * 
-     * @param user to persist
-     * @return User or null
-     */
-	User persistUser(User user);
-
 
 	/**
 	 * 
@@ -70,9 +42,12 @@ public interface IAccountService {
 	 */
 	Token findByTokenAndType(String token, TypeToken type);
 
-
+	/**
+	 * Delete token
+	 * 
+	 * @param resetToken
+	 */
 	void deleteToken(Token resetToken);
-	
 	
     /**
      * Return a new Token.
@@ -83,7 +58,6 @@ public interface IAccountService {
      * @return a reset token
      */
     Token getNewToken(User user, TypeToken type, String email);
-    
     
     /**
      * Send the Email to confirm ask new password.

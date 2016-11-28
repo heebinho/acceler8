@@ -13,6 +13,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.account.AccountService;
 import services.account.IAccountService;
+import services.user.IUserService;
+import services.user.UserService;
 import views.html.account.settings.email;
 import views.html.account.settings.emailValidate;
 import play.libs.mailer.MailerClient;
@@ -41,9 +43,8 @@ public class EmailController extends BaseController {
      * @return index settings
      */
     public Result index() {
-    	
-        IAccountService accountService = new AccountService(em());
-        User user = accountService.findByEmail(request().username());
+        IUserService userService = new UserService(em());
+        User user = userService.findByEmail(request().username());
         
         Form<EMail> askForm = formFactory.form(EMail.class);
         askForm = askForm.fill(new EMail(user.getEmail()));
@@ -58,7 +59,9 @@ public class EmailController extends BaseController {
     public Result runEmail() {
     	
         Form<EMail> askForm = formFactory.form(EMail.class).bindFromRequest();
-        User user = new AccountService(em()).findByEmail(request().username());
+        
+        IUserService userService = new UserService(em());
+        User user = userService.findByEmail(request().username());
 
         if (askForm.hasErrors()) {
             flash("error", getMessage("signup.valid.email"));
@@ -87,8 +90,9 @@ public class EmailController extends BaseController {
      */
     public Result validateEmail(String token) {
     	
-    	IAccountService accountService = new AccountService(em()); 
-    	User user = accountService.findByEmail(request().username());
+    	IUserService userService = new UserService(em());
+    	IAccountService accountService = new AccountService(em());
+    	User user = userService.findByEmail(request().username());
 
         if (token == null) {
             flash("error", getMessage("error.technical"));
@@ -109,7 +113,7 @@ public class EmailController extends BaseController {
         }
 
         user.setEmail(resetToken.email);
-        accountService.persistUser(user);
+        userService.persistUser(user);
         
 
         session("email", resetToken.email);
