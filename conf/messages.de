@@ -68,3 +68,14 @@ public.token.d=Dein öffentlicher Strava token
 public.token.p=Public token
 settings.saved=Einstellungen gespeichert
 strava.tokenexchange.success=Token erfolgreich erneuert.
+
+profile.load.fail=Profil kann nicht abgerufen werden - Bitte Verbindung authorisieren
+profile.saved=Profile gespeichert
+profile.fullname.p=John
+profile.fullname.l=Vorname
+profile.city.p=Zürich
+profile.city.l=Stadt
+profile.country.p=Schweiz
+profile.country.l=Land
+profile.weight.p=100
+profile.weight.l=Gewicht

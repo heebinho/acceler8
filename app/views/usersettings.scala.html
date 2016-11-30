@@ -21,10 +21,10 @@
 
   				<div class="panel panel-default">
 	                <div class="panel-heading">
-	                    <i class="fa fa-bar-road fa-fw"></i> Account settings 
+	                    <i class="fa fa-road fa-fw"></i> Account settings 
 	                </div>
 	                <div class="panel-body" style="margin:10,10,10,10;">
-						@helper.form(action = controllers.account.settings.routes.SettingsController.save(), 'role -> "form") {
+						@helper.form(action = controllers.account.routes.SettingsController.save(), 'role -> "form") {
 							<fieldset>
 							
 							@helper.inputPassword(

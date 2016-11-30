@@ -9,9 +9,13 @@ import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
+import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.model.reference.StravaGender;
+import javastrava.api.v3.service.Strava;
 import models.User;
 import models.dao.IUserDao;
 import models.dao.UserDao;
+import models.vm.Profile;
 import play.Logger;
 import services.Service;
 import services.settings.SettingsReader;
@@ -143,6 +147,60 @@ public class UserService extends Service implements IUserService {
     		Logger.error(any.getMessage());
     		return null;
     	}
+	}
+
+    /**
+     * Get Strava profile
+     * 
+     * @param user
+     * @return Profile view model
+     */
+	@Override
+	public Profile getStravaProfile(User user) {
+		try{
+			Token token = getStravaAccessToken(user);
+			Strava stravaService = new Strava(token);
+			StravaAthlete athlete = stravaService.getAuthenticatedAthlete();
+			
+			Profile profile = new Profile();
+			profile.setFullname(athlete.getFirstname() + " " + athlete.getLastname());
+			profile.setCity(athlete.getCity());
+			profile.setCountry(athlete.getCountry());
+			profile.setWeight(athlete.getWeight());
+			
+			StravaGender sex = athlete.getSex();
+			profile.setSex(sex.getValue());
+			
+			return profile;
+		}catch(Exception any){
+			Logger.error(any.getMessage());
+			return null;	
+		}
+	}
+
+	/**
+	 * Write profile settings back to strava
+	 * 
+	 * @param profile The new profile
+	 */
+	@Override
+	public void setStravaProfile(User user, Profile profile) throws Exception {
+		Token token = getStravaAccessToken(user);
+		Strava stravaService = new Strava(token);
+		StravaAthlete athlete = stravaService.getAuthenticatedAthlete();
+		
+		athlete.setCity(profile.getCity());
+		athlete.setCountry(profile.getCountry());
+		StravaGender gender = StravaGender.MALE;
+		if(profile.getSex().equals("F")) gender = StravaGender.FEMALE;
+		athlete.setSex(gender);
+		athlete.setWeight(profile.getWeight());
+		stravaService.updateAuthenticatedAthlete(
+				athlete.getCity(),
+				athlete.getState(),
+				athlete.getCountry(),
+				athlete.getSex(),
+				athlete.getWeight());
 	}
 
 }

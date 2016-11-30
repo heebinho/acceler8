@@ -1,0 +1,90 @@
+@(profileForm: Form[models.vm.Profile])
+
+
+@implicitFieldConstructor = @{
+    helper.FieldConstructor(bootstrapInputField.render)
+}
+
+@main("Profile") {
+
+	@navigation("")
+	<div id="page-wrapper">
+	
+	    <div class="row">
+	        <div class="col-lg-12">
+	      		<h1 class="page-header">Profile</h1>
+	        </div>
+	    </div>
+	
+		<div class="row">
+			<div class="col-lg-6 col-md-6">
+
+  				<div class="panel panel-default">
+	                <div class="panel-heading">
+	                    <i class="fa fa-user fa-fw"></i>Strava profile settings 
+	                </div>
+	                <div class="panel-body" style="margin:10,10,10,10;">
+						@helper.form(action = controllers.account.routes.ProfileController.save(), 'role -> "form") {
+							<fieldset>
+							
+					        
+					        @helper.inputText(
+					            profileForm("fullname"),
+					            'placeholder -> Messages("profile.fullname.p"),
+					            '_label -> Messages("profile.fullname.l"),
+					            'class -> "form-control",
+					            '_showConstraints -> false,
+					            'disabled -> "disabled"
+					        )
+					        
+					        @helper.inputText(
+					            profileForm("city"),
+					            'placeholder -> Messages("profile.city.p"),
+					            '_label -> Messages("profile.city.l"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )	
+					        				        
+					        @helper.inputText(
+					            profileForm("country"),
+					            'placeholder -> Messages("profile.country.p"),
+					            '_label -> Messages("profile.country.l"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )
+					        
+					        @helper.inputText(
+					            profileForm("weight"),
+					            'placeholder -> Messages("profile.weight.p"),
+					            '_label -> Messages("profile.weight.l"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )
+					        
+					        @helper.inputRadioGroup(
+					          profileForm("sex"),
+					          options = Seq("M"->"Male","F"->"Female"),
+					          '_label -> "")
+					        
+							<div class="form-group">
+							  <label class="control-label" for="submit"></label>
+							  <div class="controls">
+							    <button id="submit" name="submit" class="btn btn-primary">Save</button>
+							    <a class="btn" href="@routes.DashboardController.index()">Cancel</a>
+							  </div>
+							</div>
+							
+							</fieldset>
+						}
+                	</div>
+            	</div>
+			
+
+			</div>
+			
+			
+		</div>
+		
+		
+	</div>
+}

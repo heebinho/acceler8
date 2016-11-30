@@ -69,3 +69,14 @@ public.token.p=Public token
 settings.saved=Your settings have been saved
 
 strava.tokenexchange.success=We were able to get an access token
+
+profile.load.fail=Cannot load Strava profile - please reconnect your Strava account
+profile.saved=Saved Strava profile
+profile.fullname.p=John Smith
+profile.fullname.l=First name
+profile.city.p=Zürich
+profile.city.l=City
+profile.country.p=Switzerland
+profile.country.l=Country
+profile.weight.p=100
+profile.weight.l=Weight

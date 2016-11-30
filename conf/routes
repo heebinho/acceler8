@@ -5,22 +5,25 @@
 
 GET     /                           controllers.HomeController.index
 
-GET		/dashboard					controllers.DashboardController.index
+POST    /signup                     controllers.account.SignupController.save()
+GET     /confirm/:confirmToken      controllers.account.SignupController.confirm(confirmToken:String)
 
 POST    /login                      controllers.HomeController.authenticate()
 GET     /logout                     controllers.HomeController.logout()
-
-GET     /settings                   controllers.account.settings.SettingsController.index()
-GET     /settings/onauthorized		controllers.account.settings.SettingsController.onauthorized(state: String, code: String ?= "", error: String ?= "")
-POST    /settings/save		        controllers.account.settings.SettingsController.save()
-
-POST    /signup                     controllers.account.SignupController.save()
-GET     /confirm/:confirmToken      controllers.account.SignupController.confirm(confirmToken:String)
 
 GET     /reset/ask                  controllers.account.ResetController.ask()
 POST    /reset/ask                  controllers.account.ResetController.runAsk()
 GET     /reset/:token               controllers.account.ResetController.reset(token:String)
 POST    /reset/:token               controllers.account.ResetController.runReset(token:String)
+
+GET     /settings                   controllers.account.SettingsController.index()
+GET     /settings/onauthorized		controllers.account.SettingsController.onauthorized(state: String, code: String ?= "", error: String ?= "")
+POST    /settings			        controllers.account.SettingsController.save()
+
+GET     /profile                    controllers.account.ProfileController.index()
+POST    /profile			        controllers.account.ProfileController.save()
+
+GET		/dashboard					controllers.DashboardController.index
 
 GET		/teams						controllers.TeamController.index
 GET		/teams/new					controllers.TeamController.newTeam()

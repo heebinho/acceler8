@@ -2,6 +2,7 @@ package services.user;
 
 import javastrava.api.v3.auth.model.Token;
 import models.User;
+import models.vm.Profile;
 
 /**
  * User service.
@@ -66,5 +67,21 @@ public interface IUserService {
      * @return User
      */
     User setStravaAccessToken(User user, String code);
+
+    /**
+     * Get Strava profile
+     * 
+     * @param user
+     * @return Profile view model
+     */
+	Profile getStravaProfile(User user);
+
+	
+	/**
+	 * Write profile settings back to strava
+	 * 
+	 * @param profile The new profile
+	 */
+	void setStravaProfile(User user, Profile profile) throws Exception;
 	
 }

@@ -3,7 +3,7 @@ package controllers;
 import java.util.List;
 
 import controllers.routes;
-import controllers.account.settings.SettingsController;
+import controllers.account.SettingsController;
 import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
@@ -50,7 +50,7 @@ public class DashboardController extends BaseController {
     	Token token = userService.getStravaAccessToken(user);
     	if(token == null){
     		//we can't get data from strava without an access token. Request one.
-    		return redirect(controllers.account.settings.routes.SettingsController.index());
+    		return redirect(controllers.account.routes.SettingsController.index());
     	}
     	
     	StravaAthlete athlete = token.getAthlete();

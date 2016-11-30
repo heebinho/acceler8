@@ -1,12 +1,8 @@
-package controllers.account.settings;
+package controllers.account;
 
 import controllers.BaseController;
 import controllers.Secured;
-import controllers.routes;
-import javastrava.api.v3.auth.AuthorisationService;
-import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
-import javastrava.api.v3.auth.ref.AuthorisationScope;
 import models.User;
 import models.vm.Settings;
 import play.Logger;
@@ -15,17 +11,15 @@ import play.data.FormFactory;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import play.mvc.Security;
-import services.settings.SettingsReader;
 import services.strava.StravaOAuth2Api;
 import services.user.IUserService;
 import services.user.UserService;
-import views.html.thesettings;
-import play.libs.mailer.MailerClient;
+import views.html.usersettings;
 import javax.inject.Inject;
 import com.google.common.base.Strings;
 
 /**
- * 
+ * Settings controller
  * 
  * @author TEAM RMG
  *
@@ -35,9 +29,6 @@ public class SettingsController extends BaseController {
 	
 	@Inject 
 	FormFactory formFactory;
-	
-	@Inject
-    MailerClient mailerClient;
 
     /**
      * Password Page. Ask the user to change his password.
@@ -59,16 +50,13 @@ public class SettingsController extends BaseController {
         
         
         String authorizationUrl = StravaOAuth2Api.getLink(
-        		controllers.account.settings.routes.SettingsController.onauthorized("","","")
+        		controllers.account.routes.SettingsController.onauthorized("","","")
         		.absoluteURL(request()));
         settings.setAuthorizationUrl(authorizationUrl);
         
         Form<Settings> settingsForm = formFactory.form(Settings.class).fill(settings);
-        return ok(thesettings.render(settingsForm));
+        return ok(usersettings.render(settingsForm));
     }
-	
-
-	
 	
     /**
      * OAuth2 callback - when the user is coming back from the strava authentication/authorization dialog.
