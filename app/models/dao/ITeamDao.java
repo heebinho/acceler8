@@ -30,5 +30,8 @@ public interface ITeamDao extends IDao<Team, Integer> {
 	 * @return List of teams
 	 */
 	List<Team> getTeamsByUser(Integer userId);
+
+
+	List<Team> getPublicTeams();
 	
 }

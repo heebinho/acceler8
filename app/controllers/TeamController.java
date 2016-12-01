@@ -58,10 +58,9 @@ public class TeamController extends BaseController {
      */
 	@Transactional()
     public Result index() {
-		
-		TeamDao dao = new TeamDao(jpa.em());
-		List<Team> teams = dao.findAll();
-		
+    	ITeamService teamService = new TeamService(em());
+    	List<Team> teams = teamService.findPublicTeams();
+    	
     	return ok(list.render(teams));
     }
 
@@ -234,6 +233,8 @@ public class TeamController extends BaseController {
     	ITeamService service = new TeamService(em());
     	vm.setTeam(service.findById(id));
     	
+    	// service.CalculateRating();
+    	
     	Token token = TokenManager.instance()
     			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
     	
@@ -257,5 +258,9 @@ public class TeamController extends BaseController {
     	return ok(show.render(vm, inviteForm));
     }
     
-
+    @Transactional
+    public Result calculate(int id) {
+    
+    	return (TODO);
+    }
 }

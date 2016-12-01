@@ -18,6 +18,12 @@ public class UserViewModel {
 	
 	private String profileImage = "/assets/images/user.png";
 	
+	private int totalPoints = 500;
+	
+	private int weeklyPoints = 100;
+	
+	private int monthlyPoints = 200;
+	
 	public User getUser() {
 		return user;
 	}
@@ -35,6 +41,24 @@ public class UserViewModel {
 	}
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
+	}
+	public int getTotalPoints() {
+		return totalPoints;
+	}
+	public void setTotalPoints(int totalPoints) {
+		this.totalPoints = totalPoints;
+	}
+	public int getWeeklyPoints() {
+		return weeklyPoints;
+	}
+	public void setWeeklyPoints(int weeklyPoints) {
+		this.weeklyPoints = weeklyPoints;
+	}
+	public int getMonthlyPoints() {
+		return monthlyPoints;
+	}
+	public void setMonthlyPoints(int monthlyPoints) {
+		this.monthlyPoints = monthlyPoints;
 	}
 
 }

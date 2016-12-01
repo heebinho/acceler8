@@ -44,6 +44,21 @@ public class TeamDao extends Dao<Team, Integer> implements ITeamDao {
 		
 		return teams;
 	}
+	
+	@Override
+	public List<Team> getPublicTeams() {
+		
+		Query query = getEntityManager()
+				.createQuery("select t from Team t"
+				+ " where t.isPrivate = :v")
+				.setParameter("v", false);
+
+		
+		@SuppressWarnings("unchecked")
+		List<Team> teams = query.getResultList();
+		
+		return teams;
+	}
 
 
 }
