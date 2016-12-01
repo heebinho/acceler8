@@ -7,6 +7,8 @@ package models.vm;
  *
  */
 public class Settings {
+	
+	private String email;
     
     private String password;
 	
@@ -17,6 +19,14 @@ public class Settings {
     private String authorizationUrl;
     
     private boolean authorized = false;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getPassword() {
 		return password;

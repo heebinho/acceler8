@@ -8,6 +8,7 @@ import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
+import javastrava.api.v3.auth.model.TokenResponse;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.reference.StravaGender;
@@ -201,6 +202,24 @@ public class UserService extends Service implements IUserService {
 				athlete.getCountry(),
 				athlete.getSex(),
 				athlete.getWeight());
+	}
+
+	
+	/**
+	 * Deauthorize at strava
+	 */
+	@Override
+	public void deauthorize(User user) {
+		Token token = getStravaAccessToken(user);
+		if(token != null){
+			Strava stravaService = new Strava(token);	
+			TokenResponse response = stravaService.deauthorise(token);
+			Logger.info(response.toString());
+			stravaService.clearCache();
+			
+		}
+		
+		
 	}
 
 }

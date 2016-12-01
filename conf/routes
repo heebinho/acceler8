@@ -19,6 +19,7 @@ POST    /reset/:token               controllers.account.ResetController.runReset
 GET     /settings                   controllers.account.SettingsController.index()
 GET     /settings/onauthorized		controllers.account.SettingsController.onauthorized(state: String, code: String ?= "", error: String ?= "")
 POST    /settings			        controllers.account.SettingsController.save()
+GET     /settings/deauthorize       controllers.account.SettingsController.deauthorize()
 
 GET     /profile                    controllers.account.ProfileController.index()
 POST    /profile			        controllers.account.ProfileController.save()
@@ -35,7 +36,7 @@ GET		/teams/removeUser/:id/:uid	controllers.TeamController.removeUser(id: Intege
 POST	/teams						controllers.TeamController.save()
 DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)
 GET		/teams/show/:id				controllers.TeamController.show(id: Integer)
-GET		/teams/my					controllers.TeamController.my()
+GET		/myteams					controllers.TeamController.my()
 
 
 #Methodes for user challenge

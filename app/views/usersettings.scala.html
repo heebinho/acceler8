@@ -27,6 +27,14 @@
 						@helper.form(action = controllers.account.routes.SettingsController.save(), 'role -> "form") {
 							<fieldset>
 							
+							@helper.inputText(
+					            settingsForm("email"),
+					            '_label -> Messages("Mail"),
+					            'class -> "form-control",
+					            '_showConstraints -> false,
+					            'disabled -> "disabled"
+					        )
+							
 							@helper.inputPassword(
 					            settingsForm("password"),
 					            'placeholder -> Messages("password"),
@@ -78,11 +86,16 @@
                     	<a href="@settingsForm("authorizationUrl").value">
 						<img src="@routes.Assets.versioned("images/LogInWithStrava2x.png")" alt="Strava renew authorization" class="img-responsive" style="width:315px;height:63px;">
 						</a>
+
+						<div class="alert alert-success alert-dismissible" role="alert" style="margin-top:10px">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						@if(settingsForm("authorized").value.toBoolean){
 							<p>You are authorized!</p>
+							<a href="@controllers.account.routes.SettingsController.deauthorize">deauthorize</a>
 						}else{
 							<p>You are not authorized - Please authorize Acceler8 to access your data!</p>
 						}
+						</div>
 						
                     </div>
                 </div>

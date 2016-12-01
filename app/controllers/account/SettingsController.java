@@ -42,12 +42,10 @@ public class SettingsController extends BaseController {
         
         Settings settings = new Settings();
         settings.setStrava_token_public(user.getStrava_token_public());
+        settings.setEmail(user.getEmail());
         
         Token token = userService.getStravaAccessToken(user);
-        
         settings.setAuthorized(token!=null);		
-        
-        
         
         String authorizationUrl = StravaOAuth2Api.getLink(
         		controllers.account.routes.SettingsController.onauthorized("","","")
@@ -92,6 +90,20 @@ public class SettingsController extends BaseController {
     public Result onaccessdenied(String error) {
 		Logger.info("access denied " + error);
 		flash("error", "Access denied");
+		return index();
+	}
+	
+	@Transactional
+    public Result deauthorize() {
+		String email = ctx().session().get("email");
+    	IUserService userService = new UserService(em());
+    	try{
+    		userService.deauthorize(userService.findByEmail(email));
+    		flash("success", "deauthorized");
+    	}catch(Exception any){
+    		Logger.error("not able to deauthorize user: " + email);
+    		flash("error", "error");
+    	}
 		return index();
 	}
 	
