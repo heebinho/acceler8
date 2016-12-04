@@ -2,13 +2,7 @@ package controllers;
 
 import java.util.List;
 
-import controllers.routes;
-import controllers.account.SettingsController;
-import javastrava.api.v3.auth.AuthorisationService;
-import javastrava.api.v3.auth.TokenManager;
-import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
-import javastrava.api.v3.auth.ref.AuthorisationScope;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.service.Strava;
@@ -16,13 +10,9 @@ import models.User;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import play.mvc.Security;
-import play.mvc.Http.Cookie;
-import services.settings.SettingsReader;
-import services.strava.StravaOAuth2Api;
 import services.user.IUserService;
 import services.user.UserService;
 import views.html.dashboard.*;
-import services.account.*;
 
 
 /**
