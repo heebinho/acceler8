@@ -31,7 +31,6 @@ import models.vm.InviteResult;
 import models.vm.Invite;
 import models.vm.TeamViewModel;
 import models.vm.UserViewModel;
-import views.html.team.show;
 import views.html.team.*;
 
 
