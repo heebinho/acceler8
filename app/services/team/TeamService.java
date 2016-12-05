@@ -57,6 +57,12 @@ public class TeamService extends Service implements ITeamService {
 		ITeamDao dao = new TeamDao(getEntityManager());
 		return dao.getTeamsByUser(userId);
 	}
+
+	@Override
+	public List<Team> findPublicTeams() {
+		ITeamDao dao = new TeamDao(getEntityManager());
+		return dao.getPublicTeams();
+	}
 	
 
 

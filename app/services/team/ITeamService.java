@@ -22,5 +22,7 @@ public interface ITeamService {
 	Team findById(int id);
 	
 	List<Team> getTeamsByUser(Integer userId);
+
+	List<Team> findPublicTeams();
 	
 }
