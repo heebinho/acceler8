@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Area chart. Json representation for morris.
+ * Bar chart. Json representation for morris.
  * Initialized with default values and a ctor for convenience.
  * 
  * @author TEAM RMG
@@ -20,9 +20,9 @@ public class BarChart {
 	
 	private String element = "activities-bar-chart";
 	
-	private List<Achievement> activities = new ArrayList<Achievement>();
+	private List<Bar> bars = new ArrayList<Bar>();
 	
-	private String xkey = "period";
+	private String xkey;
 	
 	private List<String> ykeys = new ArrayList<String>();
 	
@@ -44,12 +44,12 @@ public class BarChart {
 		this.element = element;
 	}
 
-	public List<Achievement> getData() {
-		return activities;
+	public List<Bar> getBars() {
+		return bars;
 	}
 
-	public void setData(List<Achievement> data) {
-		this.activities = data;
+	public void setBars(List<Bar> data) {
+		this.bars = data;
 	}
 
 	public String getXkey() {

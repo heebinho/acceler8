@@ -1,6 +1,5 @@
 @(athlete: javastrava.api.v3.model.StravaAthlete,
-activities: List[javastrava.api.v3.model.StravaActivity],
-barData: com.fasterxml.jackson.databind.JsonNode)
+activities: List[javastrava.api.v3.model.StravaActivity])
 
 
 @scripts = {
@@ -12,7 +11,7 @@ barData: com.fasterxml.jackson.databind.JsonNode)
 			
 			Morris.Bar({
 				  element: barData.element,
-				  data: barData.data,
+				  data: barData.bars,
 				  xkey: barData.xkey,
 				  ykeys: barData.ykeys,
 				  labels: barData.labels,
