@@ -1,5 +1,4 @@
-@(athlete: javastrava.api.v3.model.StravaAthlete,
-activities: List[javastrava.api.v3.model.StravaActivity])
+@(vm: models.vm.UserViewModel)
 
 
 @scripts = {
@@ -31,7 +30,7 @@ activities: List[javastrava.api.v3.model.StravaActivity])
 
     <div id="wrapper">
 
-		@navigation("")
+		@navigation()
 
         <div id="page-wrapper">
             <div class="row">
@@ -44,10 +43,10 @@ activities: List[javastrava.api.v3.model.StravaActivity])
            		<div class="col-lg-4">
 					<div class="profile-header-container">   
 			    		<div class="profile-header-img">
-			                <img class="img-circle" src="@athlete.getProfileMedium()" />
+			                <img class="img-circle" src="@vm.getProfileImage" />
 			                <!-- badge -->
 			                <div class="rank-label-container">
-			                    <span class="label label-default rank-label">100 Points</span>
+			                    <span class="label label-default rank-label">@vm.getTotalPoints Points</span>
 			                </div>
 			            </div>
 			        </div> 
@@ -85,18 +84,16 @@ activities: List[javastrava.api.v3.model.StravaActivity])
                                             <th>City</th>
                                             <th>Country</th>
                                             <th>Followers</th>
-                                            <th>Created</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>1</td>
-                                            <td>@athlete.getFirstname()</td>
-                                            <td>@athlete.getLastname()</td>
-                                            <td>@athlete.getCity()</td>
-                                            <td>@athlete.getCountry()</td>
-                                            <td>@athlete.getFollowerCount()</td>
-                                            <td>@athlete.getCreatedAt()</td>
+                                            <td>@vm.getAthlete.getFirstname()</td>
+                                            <td>@vm.getAthlete.getLastname()</td>
+                                            <td>@vm.getAthlete.getCity()</td>
+                                            <td>@vm.getAthlete.getCountry()</td>
+                                            <td>@vm.getAthlete.getFollowerCount()</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -119,16 +116,18 @@ activities: List[javastrava.api.v3.model.StravaActivity])
 	                                    <thead>
 	                                        <tr>
 	                                            <th>Name</th>
-	                                            <th>Distance</th>
+	                                            <th>Distance in km</th>
 	                                            <th>Time</th>
+	                                            <th>Moving</th>
 	                                        </tr>
 	                                    </thead>
 	                                    <tbody>
-			                                @for(activity <- activities) {
+			                                @for(activity <- vm.getActivities) {
 		                                    <tr>
 												  <td>@activity.getName()</td>
-												  <td>@activity.getDistance()</td>
-												  <td>@activity.getElapsedTime()</td>
+												  <td>@("%.2f".format(activity.getDistance/1000))</td>
+												  <td>@("%02d:%02d".format(activity.getElapsedTime/3600, (activity.getElapsedTime/60) % 60  ))</td>
+												  <td>@("%02d:%02d".format(activity.getMovingTime/3600, (activity.getMovingTime/60) % 60  ))</td>
 											</tr>
 											}
 	                                    </tbody>

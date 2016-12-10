@@ -1,5 +1,9 @@
 package models.vm;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import models.User;
 
@@ -18,11 +22,13 @@ public class UserViewModel {
 	
 	private String profileImage = "/assets/images/user.png";
 	
-	private int totalPoints = 500;
+	private int totalPoints = 0;
 	
-	private int weeklyPoints = 100;
+	private int weeklyPoints = 0;
 	
-	private int monthlyPoints = 200;
+	private int monthlyPoints = 0;
+	
+	private List<StravaActivity> activities = new ArrayList<StravaActivity>();
 	
 	public User getUser() {
 		return user;
@@ -59,6 +65,12 @@ public class UserViewModel {
 	}
 	public void setMonthlyPoints(int monthlyPoints) {
 		this.monthlyPoints = monthlyPoints;
+	}
+	public List<StravaActivity> getActivities() {
+		return activities;
+	}
+	public void setActivities(List<StravaActivity> activities) {
+		this.activities = activities;
 	}
 
 }

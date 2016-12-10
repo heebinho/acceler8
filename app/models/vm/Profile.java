@@ -1,6 +1,5 @@
 package models.vm;
 
-import javastrava.api.v3.model.reference.StravaGender;
 
 /**
  * Profile view model.

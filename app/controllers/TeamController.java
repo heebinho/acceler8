@@ -1,6 +1,8 @@
 package controllers;
 
 import play.mvc.*;
+import services.rating.IRatingService;
+import services.rating.RatingService;
 import services.team.ITeamService;
 import services.team.TeamService;
 import services.user.IUserService;
@@ -13,6 +15,8 @@ import play.libs.Json;
 import play.libs.mailer.MailerClient;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
@@ -21,7 +25,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
+import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.rest.API;
 import javastrava.api.v3.service.Strava;
 import models.Mail;
 import models.Team;
@@ -222,7 +228,6 @@ public class TeamController extends BaseController {
 	
     @Transactional
     public Result show(int id) {
-    	
     	String email = ctx().session().get("email");
     	
     	IUserService userService = new UserService(em());
@@ -232,12 +237,15 @@ public class TeamController extends BaseController {
     	ITeamService service = new TeamService(em());
     	vm.setTeam(service.findById(id));
     	
-    	// service.CalculateRating();
-    	
     	Token token = TokenManager.instance()
     			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
     	
     	Strava stravaService = new Strava(token);
+    	StravaAthlete authenticatedAthlete = stravaService.getAuthenticatedAthlete();
+    	//to get the ratings of group member they need to be friends.
+    	List<StravaActivity> friendActivities = stravaService.listAllFriendsActivities();
+    	
+    	IRatingService rate = new RatingService();
     	for (User teamMember : vm.getTeam().getUsers()) {
     		StravaAthlete athlete = stravaService.getAthlete(teamMember.getStrava_id());
     		
@@ -245,6 +253,15 @@ public class TeamController extends BaseController {
     		vm.addMember(uVm);
     		uVm.setAthlete(athlete);
     		uVm.setUser(teamMember);
+    		
+    		if(teamMember.getStrava_id().equals(authenticatedAthlete.getId())){
+    			uVm.setActivities(stravaService.listAllAuthenticatedAthleteActivities());
+    		}else{
+        		Stream<StravaActivity> activities = friendActivities.stream()
+        				.filter(act->act.getAthlete().getId().equals(athlete.getId()) );
+        		uVm.setActivities(activities.collect(Collectors.toList()));    			
+    		}
+    		rate.rateUser(uVm);
     		
     		if(athlete.getProfileMedium().startsWith("http"))
     			uVm.setProfileImage(athlete.getProfileMedium());

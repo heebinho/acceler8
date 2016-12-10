@@ -2,6 +2,11 @@ package models.vm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javastrava.api.v3.model.StravaActivity;
 import models.Team;
 
 /**
@@ -36,7 +41,10 @@ public class TeamViewModel {
 	}
 	
 	public List<UserViewModel> getMembers() {
-		return members;
+		//order by total points
+    	Stream<UserViewModel> orderedMembers = members.stream()
+    			.sorted((m1,m2) -> Integer.compare(m2.getTotalPoints(), m1.getTotalPoints()) );
+		return orderedMembers.collect(Collectors.toList());
 	}
 
 	public void setMembers(List<UserViewModel> members) {

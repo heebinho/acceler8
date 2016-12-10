@@ -30,7 +30,7 @@
 @main("Acceler8", null, scripts) {
 
     
-    @navigation("")
+    @navigation()
 				
 	
 	<div id="page-wrapper">			
@@ -72,7 +72,7 @@
 	              <img alt="Profile picture" class="img-responsive img-circle" style="margin: 0 auto; width: 200px; height: 200px;" src="@member.getProfileImage">
 	            </div>
                 <div class="rank-label-container pull-right">
-                    <span class="label label-default rank-label" style="margin-right:15px;"> Points</span>
+                    <span class="label label-default rank-label" style="margin-right:15px;">@member.getTotalPoints Points</span>
                 </div>
 	            <div class="caption">
 	              <h3>@member.getAthlete.getFirstname @member.getAthlete.getLastname</h3>

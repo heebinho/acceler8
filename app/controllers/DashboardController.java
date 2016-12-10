@@ -12,6 +12,7 @@ import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.service.Strava;
 import models.User;
 import models.vm.BarChart;
+import models.vm.UserViewModel;
 import play.Logger;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -19,6 +20,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.charting.ChartService;
 import services.charting.IChartService;
+import services.rating.IRatingService;
+import services.rating.RatingService;
 import services.user.IUserService;
 import services.user.UserService;
 import views.html.dashboard.*;
@@ -62,7 +65,18 @@ public class DashboardController extends BaseController {
         	Stream<StravaActivity> orderedActivities = activities.stream()
         			.sorted((a1,a2) -> a2.getStartDateLocal().compareTo(a1.getStartDateLocal()));
 
-        	return ok(index.render(athlete, orderedActivities.collect(Collectors.toList())));			
+        	UserViewModel vm = new UserViewModel();
+        	vm.setAthlete(athlete);
+    		if(athlete.getProfileMedium().startsWith("http"))
+    			vm.setProfileImage(athlete.getProfileMedium());
+        	vm.setActivities(orderedActivities.collect(Collectors.toList()));
+        	vm.setUser(user);
+        	
+        	IRatingService rating = new RatingService();
+        	rating.rateUser(vm);
+        	
+        	
+        	return ok(index.render(vm));			
 		} catch (Exception any) {
 			Logger.error(any.getMessage());
 			return redirect(routes.HomeController.index());

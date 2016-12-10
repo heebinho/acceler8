@@ -32,7 +32,6 @@ public class Bar {
 	}
 
 	public void setKm(double km) {
-		//this.km = Math.round(km);
 		this.km = Math.round(km * 100.0) / 100.0;
 	}
 	

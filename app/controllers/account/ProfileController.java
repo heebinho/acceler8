@@ -2,22 +2,18 @@ package controllers.account;
 
 import controllers.BaseController;
 import controllers.Secured;
-import javastrava.api.v3.auth.model.Token;
 import models.User;
 import models.vm.Profile;
-import models.vm.Settings;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import play.mvc.Security;
-import services.strava.StravaOAuth2Api;
 import services.user.IUserService;
 import services.user.UserService;
 import views.html.userprofile;
 import javax.inject.Inject;
-import com.google.common.base.Strings;
 
 /**
  * Profile controller

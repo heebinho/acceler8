@@ -167,7 +167,9 @@ public class UserService extends Service implements IUserService {
 			profile.setFullname(athlete.getFirstname() + " " + athlete.getLastname());
 			profile.setCity(athlete.getCity());
 			profile.setCountry(athlete.getCountry());
-			profile.setWeight(athlete.getWeight());
+			
+			if(athlete.getWeight() != null)
+				profile.setWeight(athlete.getWeight());
 			
 			StravaGender sex = athlete.getSex();
 			profile.setSex(sex.getValue());
