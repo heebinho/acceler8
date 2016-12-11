@@ -29,10 +29,12 @@ import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.service.Strava;
 import models.Mail;
+import models.Task;
 import models.Team;
 import models.User;
 import models.dao.TeamDao;
 import models.vm.InviteResult;
+import models.vm.TaskViewModel;
 import models.vm.Invite;
 import models.vm.TeamViewModel;
 import models.vm.UserViewModel;
@@ -248,7 +250,6 @@ public class TeamController extends BaseController {
     
     @Transactional
     public Result coached() {
-    	
     	String email = ctx().session().get("email");
     	IUserService userService = new UserService(em());
     	User user = userService.findByEmail(email);
@@ -256,7 +257,7 @@ public class TeamController extends BaseController {
     	ITeamService teamService = new TeamService(em());
     	List<Team> teams = teamService.getCoachedTeamsByUser(user);
     	
-    	return ok(my.render(teams));
+    	return ok(coached.render(teams));
     }
 	
     /**
@@ -320,5 +321,69 @@ public class TeamController extends BaseController {
 			return redirect(routes.HomeController.index());
 		}
     }
+    
+    /**
+     * Team tasks action
+     * 
+     * @param id team to show
+     * @return http 200 ok & rendered view or redirect
+     */
+    @Transactional
+    public Result tasks(int id) {
+    	try {
+    		TaskViewModel vm = new TaskViewModel();
+    		
+    		String email = ctx().session().get("email");
+	    	IUserService userService = new UserService(em());
+	    	User user = userService.findByEmail(email);
+	    	vm.setUser(user);
+	    	
+	    	ITeamService service = new TeamService(em());
+	    	Team team = service.findById(id); 
+	    	vm.setTeam(team);
+	    	
+
+	    	
+	    	Form<Task> taskForm = formFactory.form(Task.class);
+	    	return ok(tasks.render(vm, taskForm));
+    	
+    	} catch (Exception any) {
+			Logger.error(any.getMessage());
+			flash("error", "cannot load team tasks: " + id );
+			return redirect(routes.HomeController.index());
+		}
+    }
+    
+	/**
+	 * Save a task - POST
+	 * 
+	 * @return Result redirect and flash message
+	 */
+	@Transactional()
+	public Result savetask(int id){
+		Form<Task> taskForm = formFactory.form(Task.class).bindFromRequest();
+		if(taskForm.hasErrors()){
+			flash("error", "Please correct the form below.");
+			return badRequest(tasks.render(null,taskForm));
+		}
+		try {
+	    	String email = ctx().session().get("email");
+	    	IUserService userService = new UserService(em());
+	    	User user = userService.findByEmail(email);
+			
+	    	Task task  = taskForm.get();
+			
+			ITeamService teamService = new TeamService(em());
+			teamService.addNewTask(task, id);
+			
+			flash("success", String.format("Saved task"));
+			return redirect(routes.TeamController.tasks(id));
+			
+		} catch (Exception any) {
+			Logger.error(any.getMessage());
+			flash("error", "not able to save task");
+			return redirect(routes.TeamController.tasks(id));
+		}
+	}
     
 }

@@ -18,26 +18,26 @@
         	<div class="col-lg-8 col-md-8">
 	            <div class="panel panel-default">
 	                <div class="panel-heading">
-	                    <i class="fa fa-group fa-fw"></i> All teams:
+	                    <i class="fa fa-list fa-fw"></i> All teams:
 	                </div>
 	
 	                <div class="panel-body">
 	                	@for(team <- teams) {
 	                    <div class="list-group">
 		                    @if(team.getIsPrivate){
-		                    	<li class="list-group-item list-group-item-default">
+		                    	<li class="list-group-item list-group-item-default list-group-item-danger">
 		                            <i class="fa fa-lock fa-fw"></i> @team.getName
 		                            <span class="pull-right text-muted small"><em>@team.getDescription</em>
 		                            </span>
 		                        </li>
 		                    }else{
-		                        <a href="@routes.TeamController.show(team.getId)" class="list-group-item list-group-item-info">
+		                        <a href="@routes.TeamController.show(team.getId)" class="list-group-item">
 		                            <i class="fa fa-expand fa-fw"></i> @team.getName
 		                            <span class="pull-right text-muted small"><em>@team.getDescription</em>
 		                            </span>
 		                        </a>
-		                    </div>
 		                    }
+	                    </div>
 	                    }
 	                </div>
 	            </div>    

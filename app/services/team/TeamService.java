@@ -1,12 +1,16 @@
 package services.team;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import models.Task;
 import models.Team;
 import models.User;
+import models.dao.ITaskDao;
 import models.dao.ITeamDao;
+import models.dao.TaskDao;
 import models.dao.TeamDao;
 import services.Service;
 
@@ -149,5 +153,35 @@ public class TeamService extends Service implements ITeamService {
 	}
 
 
+	/**
+	 * Add a task to a team
+	 * 
+	 * @param task
+	 * @param teamId
+	 * @return Team
+	 */
+	@Override
+	public Task addNewTask(Task task, int teamId) {
+		ITeamDao dao = new TeamDao(getEntityManager());
+		Team team = dao.findById(teamId);
+		
+		task.setTeam(team);
+		ITaskDao taskDao = new TaskDao(getEntityManager());
+		return taskDao.save(task);
+	}
+
+	/**
+	 * Remove task
+	 * 
+	 * @param task
+	 * @param teamId
+	 * @return true if removed
+	 */
+	@Override
+	public boolean removeTask(Task task, int teamId) {
+		ITeamDao dao = new TeamDao(getEntityManager());
+		Team team = dao.findById(teamId);
+		return team.getTasks().remove(task);
+	}
 	
 }

@@ -10,15 +10,16 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author wsargent
- * @since 5/15/12
+ * Token model.
+ * 
+ * @author TEAM RMG
+ *
  */
 @Entity
 public class Token {
 
     // Reset tokens will expire after a day.
     private static final int EXPIRATION_DAYS = 1;
-
 
     public enum TypeToken {
         password("reset"), email("email");

@@ -24,6 +24,7 @@
 		
 		return false;
 	});
+	
 </script>
 }
 
@@ -58,14 +59,13 @@
 		</div>
    		
    		<ul class="nav nav-tabs">
-		  <li role="presentation" class="active"><a href="#">Home</a></li>
-		  <li role="presentation"><a href="#">Profile</a></li>
-		  <li role="presentation"><a href="#">Messages</a></li>
+		  <li role="presentation" class="active"><a href="">Team</a></li>
+		  <li role="presentation"><a href="@routes.TeamController.tasks(vm.getTeam.getId)">Tasks</a></li>
 		</ul>
         
         
 		
-		<div class="row">
+		<div class="row" id="team">
 	      <ul class="thumbnails list-unstyled" style="margin-top:10px;">
 	      	@for(member <- vm.getMembersOrderedByTotalPoints) {
 	        <li class="col-md-4">
@@ -110,23 +110,19 @@
       
         <div class="row" style="margin-top:150px;">
 	        <div class="col col-lg-4">
-	
-			
-			<form id="inviteForm">
-	            <div class="form-group">
-	            @helper.inputText(
-	                inviteForm("email"),
-	                'placeholder -> Messages("email"),
-	                '_label -> "Invite a friend",
-	                'class -> "form-control",
-	                '_showConstraints -> false
-	            )
-	            <input type="hidden" name="@inviteForm("teamId").name()" value="@vm.getTeam.getId" >
-	            </div>
-	            <input type="submit" class="btn btn-primary" value="Invite">
-			</form>
-	        
-	
+				<form id="inviteForm">
+		            <div class="form-group">
+		            @helper.inputText(
+		                inviteForm("email"),
+		                'placeholder -> Messages("email"),
+		                '_label -> "Invite a friend",
+		                'class -> "form-control",
+		                '_showConstraints -> false
+		            )
+		            <input type="hidden" name="@inviteForm("teamId").name()" value="@vm.getTeam.getId" >
+		            </div>
+		            <input type="submit" class="btn btn-primary" value="Invite">
+				</form>
 	    	</div>
 	    </div>                
 	                    

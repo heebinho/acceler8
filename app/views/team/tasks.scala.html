@@ -1,0 +1,134 @@
+@(vm: models.vm.TaskViewModel, taskForm: Form[models.Task])
+
+@implicitFieldConstructor = @{
+    helper.FieldConstructor(bootstrapInputField.render)
+}
+
+@scripts = {
+<script>
+	$("#inviteForm").on('submit', function() {
+		
+		$.post( '@routes.TeamController.invite()', $(this).serialize())
+		  .done(function( data ) {
+			
+			var mymodal = $('#myModal');
+			var body = mymodal.find('.modal-body');
+			
+			if(data.sent){
+				body.text("The invitation has been sent!");
+			}else{
+				body.text("The invitation has not been sent!");
+			}
+			mymodal.modal('show');
+		  });
+		
+		return false;
+	});
+	
+</script>
+}
+
+@main("Acceler8", null, scripts) {
+
+    
+    @navigation()
+				
+	
+	<div id="page-wrapper">			
+	
+        <div class="row">
+            <div class="col-lg-12">
+		        <h1 class="page-header">@vm.getTeam.getName</h1>
+            </div>
+        </div>
+        
+   		<div class="row">
+			<div class="pull-right">
+	            <div class="col-lg-12">
+	            
+	            @if(vm.isMember) {
+				  	<a href="@routes.TeamController.leave(vm.getTeam.getId)" class="btn btn-warning btn-md" role="button">Leave</a>					
+				}else{
+					<a href="@routes.TeamController.join(vm.getTeam.getId)" class="btn btn-success btn-md" role="button">Join</a>
+				}
+				@if(vm.getTeam.getCoach.getId == vm.getUser.getId) {
+					<a onclick="del('@routes.TeamController.delete(vm.getTeam.getId)', '@routes.TeamController.my')" class="btn btn-danger btn-md" role="button">!Delete Team</a>
+				}
+	            </div>
+            </div>
+		</div>
+   		
+   		<ul class="nav nav-tabs">
+		  <li role="presentation"><a href="@routes.TeamController.show(vm.getTeam.getId)">Team</a></li>
+		  <li role="presentation" class="active"><a href="">Tasks</a></li>
+		</ul>
+        
+        
+        
+        <div class="row" style="margin-top:20px;">
+			<div class="col-lg-6 col-md-6">
+
+  				<div class="panel panel-default">
+	                <div class="panel-heading">
+	                    <i class="fa fa-tasks fa-fw"></i> Add a new task 
+	                </div>
+	                <div class="panel-body">
+						@helper.form(action = routes.TeamController.savetask(vm.getTeam.getId), 'role -> "form") {
+							<fieldset>
+							
+							@helper.inputText(
+					            taskForm("name"),
+					            '_label -> Messages("Name"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )
+							
+							@helper.inputText(
+					            taskForm("meters"),
+					            '_label -> Messages("Meters"),
+					            'class -> "form-control",
+					            '_showConstraints -> false
+					        )
+							
+					       
+					        
+					        
+							<div class="form-group">
+							  <label class="control-label" for="submit"></label>
+							  <div class="controls">
+							    <button id="submit" name="submit" class="btn btn-primary">Save</button>
+							    <a class="btn" href="@routes.TeamController.show(vm.getTeam.getId)">Cancel</a>
+							  </div>
+							</div>
+							
+							</fieldset>
+						}
+                	</div>
+            	</div>
+			</div>
+		</div>
+
+      @*
+        <div class="row" style="margin-top:150px;">
+	        <div class="col col-lg-4">
+				<form id="inviteForm">
+		            <div class="form-group">
+		            @helper.inputText(
+		                inviteForm("email"),
+		                'placeholder -> Messages("email"),
+		                '_label -> "Invite a friend",
+		                'class -> "form-control",
+		                '_showConstraints -> false
+		            )
+		            <input type="hidden" name="@inviteForm("teamId").name()" value="@vm.getTeam.getId" >
+		            </div>
+		            <input type="submit" class="btn btn-primary" value="Invite">
+				</form>
+	    	</div>
+	    </div>                
+	    *@                
+
+	</div>
+
+
+}

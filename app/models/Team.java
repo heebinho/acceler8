@@ -50,6 +50,9 @@ public class Team extends Model {
 	private String website;
 	
 	private boolean isPrivate = false;
+	
+	@OneToMany()
+    private Set<Task> tasks = new HashSet<Task>();
 
     public Set<User> getUsers() {
         return users;
@@ -105,6 +108,14 @@ public class Team extends Model {
 
 	public void setCoach(User coach) {
 		this.coach = coach;
+	}
+
+	public Set<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(Set<Task> tasks) {
+		this.tasks = tasks;
 	}
 
 	@Override

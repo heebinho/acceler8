@@ -2,6 +2,7 @@ package services.team;
 
 import java.util.List;
 
+import models.Task;
 import models.Team;
 import models.User;
 
@@ -92,5 +93,23 @@ public interface ITeamService {
 	 * @param team to delete
 	 */
 	void deleteTeam(Team team);
+	
+	/**
+	 * Add a task to a team
+	 * 
+	 * @param task
+	 * @param teamId
+	 * @return Team
+	 */
+	Task addNewTask(Task task, int teamId);
+	
+	/**
+	 * Remove task
+	 * 
+	 * @param task
+	 * @param teamId
+	 * @return true if removed
+	 */
+	boolean removeTask(Task task, int teamId);
 	
 }

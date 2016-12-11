@@ -10,16 +10,16 @@
 	<div id="page-wrapper">			
         <div class="row">
             <div class="col-lg-12">
-		        <h1 class="page-header">My Teams</h1>
+		        <h1 class="page-header">Coached Teams</h1>
             </div>
         </div>
         
         
         <div class="row">
         	<div class="col-lg-8 col-md-8">
-	            <div class="panel panel-success">
+	            <div class="panel panel-primary">
 	                <div class="panel-heading">
-	                    <i class="fa fa-heart fa-fw"></i> You're a member of the following teams:
+	                    <i class="fa fa-gavel fa-fw"></i> You're the founder and also the coach of these teams:
 	                </div>
 	
 	                <div class="panel-body">
@@ -33,7 +33,7 @@
 	                    </div>
 	                    }
 	                    
-	                    <a href="@routes.TeamController.index()" class="btn btn-default btn-block alert-success">Join a team ...</a>
+	                    <a href="@routes.TeamController.newTeam()" class="btn btn-default btn-block btn-primary">Create Team ...</a>
 	                </div>
 	            </div>    
         	</div>
