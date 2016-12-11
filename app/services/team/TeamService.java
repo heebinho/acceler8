@@ -1,7 +1,6 @@
 package services.team;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -161,10 +160,8 @@ public class TeamService extends Service implements ITeamService {
 	 * @return Team
 	 */
 	@Override
-	public Task addNewTask(Task task, int teamId) {
-		ITeamDao dao = new TeamDao(getEntityManager());
-		Team team = dao.findById(teamId);
-		
+	public Task addNewTask(Task task, Team team) {
+
 		task.setTeam(team);
 		ITaskDao taskDao = new TaskDao(getEntityManager());
 		return taskDao.save(task);
@@ -173,15 +170,24 @@ public class TeamService extends Service implements ITeamService {
 	/**
 	 * Remove task
 	 * 
-	 * @param task
-	 * @param teamId
-	 * @return true if removed
+	 * @param id Task id
 	 */
 	@Override
-	public boolean removeTask(Task task, int teamId) {
-		ITeamDao dao = new TeamDao(getEntityManager());
-		Team team = dao.findById(teamId);
-		return team.getTasks().remove(task);
+	public void removeTask(int id) {
+		ITaskDao dao = new TaskDao(getEntityManager());
+		Task task = dao.findById(id);
+		dao.delete(task);
+	}
+
+	/**
+	 * Find all tasks
+	 * 
+	 * @param team
+	 */
+	@Override
+	public List<Task> findAllTasks(Team team) {
+		ITaskDao dao = new TaskDao(getEntityManager());
+		return dao.findAllTasksByTeam(team);
 	}
 	
 }

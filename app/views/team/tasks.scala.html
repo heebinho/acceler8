@@ -30,10 +30,8 @@
 
 @main("Acceler8", null, scripts) {
 
-    
     @navigation()
 				
-	
 	<div id="page-wrapper">			
 	
         <div class="row">
@@ -106,29 +104,52 @@
                 	</div>
             	</div>
 			</div>
+		</div>           
+
+
+		<div class="row">
+	        <div class="col-md-12">
+	        <div class="table-responsive">
+	        <table id="mytable" class="table table-bordred table-striped">        
+			<thead>
+				<th>Task name</th>
+				<th>Meters</th>
+				<th>Delete</th>
+			</thead>
+	    	<tbody>
+			
+			@for(task <- vm.getTasks) {
+			<tr>
+			    <td>@task.getName</td>
+			    <td>@task.getMeters</td>
+			    <td>
+			    	<p data-placement="top" data-toggle="tooltip" title="Delete">
+			    		<a class="btn btn-danger btn-sm" role="button" onclick="del('@routes.TeamController.deletetask(task.getId)','@routes.TeamController.tasks(vm.getTeam.getId)');"><span class="fa fa-trash fa-fw"></span></a>
+			    	</p>
+			    </td>
+			</tr>
+			}
+			
+		    </tbody>
+	        
+			</table>
+	
+			@*
+			 * Paging not yet implemented
+			<div class="clearfix"></div>
+			<ul class="pagination pull-right">
+			  <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+			  <li class="active"><a href="#">1</a></li>
+			  <li><a href="#">2</a></li>
+			  <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+			</ul>
+	         *@       
+	        </div>
+	        </div>
 		</div>
 
-      @*
-        <div class="row" style="margin-top:150px;">
-	        <div class="col col-lg-4">
-				<form id="inviteForm">
-		            <div class="form-group">
-		            @helper.inputText(
-		                inviteForm("email"),
-		                'placeholder -> Messages("email"),
-		                '_label -> "Invite a friend",
-		                'class -> "form-control",
-		                '_showConstraints -> false
-		            )
-		            <input type="hidden" name="@inviteForm("teamId").name()" value="@vm.getTeam.getId" >
-		            </div>
-		            <input type="submit" class="btn btn-primary" value="Invite">
-				</form>
-	    	</div>
-	    </div>                
-	    *@                
+
+
 
 	</div>
-
-
 }

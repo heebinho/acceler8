@@ -1,5 +1,9 @@
 package models.vm;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import models.Task;
 import models.Team;
 import models.User;
 
@@ -18,8 +22,10 @@ public class TaskViewModel {
 	
 	private User user;
 	
+	private List<Task> tasks;
+	
 	public TaskViewModel(){
-
+		setTasks(new ArrayList<Task>());
 	}
 	
 	public boolean isMember() {
@@ -52,6 +58,14 @@ public class TaskViewModel {
 	 */
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
 	}
 
 }

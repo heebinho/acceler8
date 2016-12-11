@@ -18,7 +18,7 @@ public class Task extends Model {
 	private String name;
 	
 	@Required
-	private int meters = 0;
+	private int meters;
     
 	@ManyToOne
 	@JoinColumn(name="team")

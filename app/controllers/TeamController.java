@@ -32,6 +32,7 @@ import models.Mail;
 import models.Task;
 import models.Team;
 import models.User;
+import models.dao.ITeamDao;
 import models.dao.TeamDao;
 import models.vm.InviteResult;
 import models.vm.TaskViewModel;
@@ -341,8 +342,7 @@ public class TeamController extends BaseController {
 	    	ITeamService service = new TeamService(em());
 	    	Team team = service.findById(id); 
 	    	vm.setTeam(team);
-	    	
-
+	    	vm.setTasks(service.findAllTasks(team));
 	    	
 	    	Form<Task> taskForm = formFactory.form(Task.class);
 	    	return ok(tasks.render(vm, taskForm));
@@ -363,18 +363,24 @@ public class TeamController extends BaseController {
 	public Result savetask(int id){
 		Form<Task> taskForm = formFactory.form(Task.class).bindFromRequest();
 		if(taskForm.hasErrors()){
-			flash("error", "Please correct the form below.");
-			return badRequest(tasks.render(null,taskForm));
+			flash("error", "Not a valid task...");
+			return tasks(id);
 		}
 		try {
 	    	String email = ctx().session().get("email");
 	    	IUserService userService = new UserService(em());
 	    	User user = userService.findByEmail(email);
+	    	
+			ITeamService teamService = new TeamService(em());
+			Team team = teamService.findById(id);
+	    	
+	    	if(user.getId() != team.getCoach().getId()){
+	    		flash("error", "Only the coach is allowed to add tasks.");
+	    		return redirect(routes.TeamController.tasks(id));
+	    	}
 			
 	    	Task task  = taskForm.get();
-			
-			ITeamService teamService = new TeamService(em());
-			teamService.addNewTask(task, id);
+			teamService.addNewTask(task, team);
 			
 			flash("success", String.format("Saved task"));
 			return redirect(routes.TeamController.tasks(id));
@@ -383,6 +389,24 @@ public class TeamController extends BaseController {
 			Logger.error(any.getMessage());
 			flash("error", "not able to save task");
 			return redirect(routes.TeamController.tasks(id));
+		}
+	}
+	
+	/**
+	 * Delete task action
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@Transactional()
+	public Result deletetask(int id) {
+		try {
+			ITeamService teamService = new TeamService(em());
+			teamService.removeTask(id);
+			return ok();			
+		} catch (Exception any) {
+			Logger.error(any.getMessage());
+			return redirect(routes.TeamController.index());
 		}
 	}
     

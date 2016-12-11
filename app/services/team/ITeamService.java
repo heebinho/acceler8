@@ -98,18 +98,23 @@ public interface ITeamService {
 	 * Add a task to a team
 	 * 
 	 * @param task
-	 * @param teamId
+	 * @param team
 	 * @return Team
 	 */
-	Task addNewTask(Task task, int teamId);
+	Task addNewTask(Task task, Team team);
 	
 	/**
 	 * Remove task
 	 * 
-	 * @param task
-	 * @param teamId
-	 * @return true if removed
+	 * @param id Task id
 	 */
-	boolean removeTask(Task task, int teamId);
+	void removeTask(int id);
+
+	/**
+	 * Find all tasks
+	 * 
+	 * @param team
+	 */
+	List<Task> findAllTasks(Team team);
 	
 }

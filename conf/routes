@@ -38,6 +38,7 @@ GET		/teams/my/					controllers.TeamController.my
 GET		/teams/coached/				controllers.TeamController.coached
 GET		/teams/tasks/:id			controllers.TeamController.tasks(id: Integer)
 POST	/teams/tasks/:id			controllers.TeamController.savetask(id: Integer)
+DELETE	/teams/tasks/:id			controllers.TeamController.deletetask(id: Integer)
 
 #Testing
 GET		/ping						controllers.test.TestController.ping
