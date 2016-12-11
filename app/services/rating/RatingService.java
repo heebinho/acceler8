@@ -12,6 +12,13 @@ import javastrava.api.v3.model.reference.StravaActivityType;
 import models.vm.UserViewModel;
 import play.Logger;
 
+
+/**
+ * Rating service implementation.
+ * 
+ * @author TEAM RMG
+ *
+ */
 public class RatingService implements IRatingService {
 
     /**

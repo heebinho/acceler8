@@ -37,6 +37,19 @@ public class Team extends Model {
     )
     private Set<User> users = new HashSet<User>();
 	
+	@ManyToOne
+	@JoinColumn(name="coach")
+	private User coach;
+	
+	private String description;
+	
+	private String city;
+	
+	private String country;
+	
+	private String website;
+	
+	private boolean isPrivate = false;
 
     public Set<User> getUsers() {
         return users;
@@ -45,9 +58,6 @@ public class Team extends Model {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
-
-	private String description;
-	
 	
 	public String getDescription() {
 		return description;
@@ -57,8 +67,6 @@ public class Team extends Model {
 		this.description = description;
 	}
 	
-	private String city;
-	
 	public String getCity() {
 		return city;
 	}
@@ -66,9 +74,7 @@ public class Team extends Model {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
-	private String country;
-	
+		
 	public String getCountry() {
 		return country;
 	}
@@ -76,8 +82,6 @@ public class Team extends Model {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
-	private String website;
 	
 	public String getWebsite() {
 		return website;
@@ -87,9 +91,7 @@ public class Team extends Model {
 		this.website = website;
 	}
 	
-	private boolean isPrivate = false;
-	
-	public boolean isPrivate() {
+	public boolean getIsPrivate() {
 		return isPrivate;
 	}
 
@@ -97,9 +99,17 @@ public class Team extends Model {
 		this.isPrivate = isPrivate;
 	}
 	
+	public User getCoach() {
+		return coach;
+	}
+
+	public void setCoach(User coach) {
+		this.coach = coach;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("%s - %s", getId(), getName());
+		return String.format("%s - %s" , getName(), getDescription());
 	}
 
 }

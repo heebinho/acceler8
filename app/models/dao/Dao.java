@@ -33,16 +33,32 @@ public abstract class Dao<E, K extends Serializable> implements IDao<E, K> {
 		return entityManager;
 	}
 
+	/**
+	 * Get the underlying persistence class
+	 * 
+	 * @return Class<E>
+	 */
 	public Class<E> getPersistentClass() {
 		return persistentClass;
 	}
 
+	/**
+	 * Save a generic entity
+	 * 
+	 * @param entity to persist
+	 * @return saved entity
+	 */
 	@Override
 	public E save(E entity) {
 		E mergedEntity = getEntityManager().merge(entity);
 		return mergedEntity;
 	}
 
+	/**
+	 * Delete a given entity
+	 * 
+	 * @param entity to delete
+	 */
 	@Override
 	public void delete(E entity) {
 		if(Model.class.isAssignableFrom(persistentClass)){
@@ -55,6 +71,12 @@ public abstract class Dao<E, K extends Serializable> implements IDao<E, K> {
 		}
 	}
 
+	/**
+	 * Find an entity by its identifier
+	 * 
+	 * @param id identifier
+	 * @return entity or null
+	 */
 	@Override
 	@Transactional(readOnly=true)
 	public E findById(K id) {
@@ -62,6 +84,10 @@ public abstract class Dao<E, K extends Serializable> implements IDao<E, K> {
 		return entity;
 	}
 
+	/**
+	 * Find all entities of a given type
+	 * @return list of entity
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<E> findAll() {
@@ -70,6 +96,9 @@ public abstract class Dao<E, K extends Serializable> implements IDao<E, K> {
 				.getResultList();
 	}
 
+	/**
+	 * Synchronize the persistence context to the underlying database.
+	 */
 	@Override
 	public void flush() {
 		getEntityManager().flush();

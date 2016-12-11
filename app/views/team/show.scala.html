@@ -44,12 +44,14 @@
    		<div class="row">
 			<div class="pull-right">
 	            <div class="col-lg-12">
+	            
 	            @if(vm.isMember) {
-				  
-				  <a href="@routes.TeamController.leave(vm.getTeam.getId)" class="btn btn-danger btn-md" role="button">Leave</a>
-				} else {
-				  
-				  <a href="@routes.TeamController.join(vm.getTeam.getId)" class="btn btn-success btn-md" role="button">Join</a>
+				  	<a href="@routes.TeamController.leave(vm.getTeam.getId)" class="btn btn-warning btn-md" role="button">Leave</a>					
+				}else{
+					<a href="@routes.TeamController.join(vm.getTeam.getId)" class="btn btn-success btn-md" role="button">Join</a>
+				}
+				@if(vm.getTeam.getCoach.getId == vm.getUser.getId) {
+					<a onclick="del('@routes.TeamController.delete(vm.getTeam.getId)', '@routes.TeamController.my')" class="btn btn-danger btn-md" role="button">!Delete Team</a>
 				}
 	            </div>
             </div>
@@ -65,7 +67,7 @@
 		
 		<div class="row">
 	      <ul class="thumbnails list-unstyled" style="margin-top:10px;">
-	      	@for(member <- vm.getMembers) {
+	      	@for(member <- vm.getMembersOrderedByTotalPoints) {
 	        <li class="col-md-4">
 	          <div class="thumbnail" style="padding: 0">
 	            <div style="padding:4px">
@@ -89,11 +91,15 @@
 	                <div class="col-md-4"><b>@member.getMonthlyPoints Points</b><br/><small>Month</small></div>
 	                <div class="col-md-4"><b>@member.getWeeklyPoints Points</b><br/><small>Week</small></div>
 	              </div>
+	              @if(vm.getTeam.getCoach.getId == vm.getUser.getId) {
 	              <div class="row">
-	                <div class="" style="margin-top:10px; padding:4px;">
-		              <a href="@routes.TeamController.removeUser(vm.getTeam.getId(), member.getAthlete.getId())" class="btn btn-danger btn-sm" role="button">Remove</a>
+	              	<div class="panel-body">
+	                	<div class="controls">
+		              		<a href="@routes.TeamController.removeUser(vm.getTeam.getId(), member.getAthlete.getId())" class="btn btn-danger btn-sm" role="button">Remove</a>
+	              		</div>
 	              	</div>
 	              </div>
+	              }
 	            </div>
 	          </div>
 	        </li>
@@ -102,7 +108,7 @@
 	    </div>
 
       
-        <div class="row">
+        <div class="row" style="margin-top:150px;">
 	        <div class="col col-lg-4">
 	
 			

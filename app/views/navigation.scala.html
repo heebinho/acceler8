@@ -62,18 +62,16 @@
                     <a href="@routes.DashboardController.index()"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-sitemap fa-fw"></i> Teams<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="@routes.TeamController.my()">My Teams</a>
-                        </li>
-                        <li>
-                            <a href="@routes.TeamController.index()">Teams</a>
-                        </li>
-                        <li>
-                            <a href="@routes.TeamController.newTeam()">Create New Team</a>
-                        </li>
-                    </ul>
+                    <a href="@routes.TeamController.my()"><i class="fa fa-heart fa-fw"></i> My Teams</a>
+                </li>
+                <li>
+                    <a href="@routes.TeamController.coached()"><i class="fa fa-gavel fa-fw"></i> Coached Teams</a>
+                </li>
+                <li>
+                    <a href="@routes.TeamController.index()"><i class="fa fa-list fa-fw"></i> All Teams</a>
+                </li>
+                <li>
+                    <a href="@routes.TeamController.newTeam()"><i class="fa fa-plus fa-fw"></i> Create Team</a>
                 </li>
             </ul>
         </div>

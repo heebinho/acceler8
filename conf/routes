@@ -38,16 +38,8 @@ POST	/teams						controllers.TeamController.save()
 DELETE	/teams/:id					controllers.TeamController.delete(id: Integer)
 GET		/teams/show/:id				controllers.TeamController.show(id: Integer)
 GET		/myteams					controllers.TeamController.my()
+GET		/coachedteams				controllers.TeamController.coached()
 
-
-#Methodes for user challenge
-#GET	/userchallenge				controllers.UserChallengeController.index
-#POST	/userchallenge				controllers.UserChallengeController.choose()
-#GET	/userchallenge/:id			controllers.UserChallangeController.details(id: Integer)
-
-#Methodes for team challenge
-#GET	/teamchallenge				controllers.TeamChallengeController.index
-#GET	/teamchallenge/:id			controllers.TeamChallangeController.details(id: Integer)
 
 #Testing
 GET		/ping						controllers.test.TestController.ping
@@ -59,24 +51,3 @@ GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#TODO Delete routes
-GET	/products					controllers.ProductController.index
-GET	/products/new				controllers.ProductController.newProduct()
-GET	/products/:ean				controllers.ProductController.details(ean: String)
-POST	/products					controllers.ProductController.save()
-DELETE	/products/:ean				controllers.ProductController.delete(ean: String)
-

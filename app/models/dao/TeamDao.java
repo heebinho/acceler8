@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import models.Team;
+import models.User;
 
 /**
  * Team dao.
@@ -19,6 +20,12 @@ public class TeamDao extends Dao<Team, Integer> implements ITeamDao {
 		super(Team.class, em);
 	}
 
+	/**
+	 * Check if name is available
+	 * 
+	 * @param name Team name
+	 * @return true if name is available
+	 */
 	@Override
 	public boolean checkAvailable(String name) {
 		
@@ -30,6 +37,12 @@ public class TeamDao extends Dao<Team, Integer> implements ITeamDao {
 		return count < 1;
 	}
 
+	/**
+	 * All the teams of the user
+	 * 
+	 * @param userId The id of the user
+	 * @return List of teams
+	 */
 	@Override
 	public List<Team> getTeamsByUser(Integer userId) {
 		
@@ -45,6 +58,32 @@ public class TeamDao extends Dao<Team, Integer> implements ITeamDao {
 		return teams;
 	}
 	
+	/**
+	 * All coached teams of a given user
+	 * 
+	 * @param user
+	 * @return List of teams
+	 */
+	@Override
+	public List<Team> getCoachedTeamsByUser(User user) {
+		
+		Query query = getEntityManager()
+				.createQuery("select t from Team t"
+				+ " where t.coach = :id")
+				.setParameter("id", user);
+
+		
+		@SuppressWarnings("unchecked")
+		List<Team> teams = query.getResultList();
+		
+		return teams;
+	}
+	
+	/**
+	 * Get all public teams
+	 * 
+	 * @return List of teams
+	 */
 	@Override
 	public List<Team> getPublicTeams() {
 		

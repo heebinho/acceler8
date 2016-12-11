@@ -27,7 +27,6 @@ import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
-import javastrava.api.v3.rest.API;
 import javastrava.api.v3.service.Strava;
 import models.Mail;
 import models.Team;
@@ -64,7 +63,7 @@ public class TeamController extends BaseController {
 	@Transactional()
     public Result index() {
     	ITeamService teamService = new TeamService(em());
-    	List<Team> teams = teamService.findPublicTeams();
+    	List<Team> teams = teamService.findAllTeams();
     	
     	return ok(list.render(teams));
     }
@@ -144,8 +143,6 @@ public class TeamController extends BaseController {
     	return redirect(routes.TeamController.show(id));
    }
 		
-    	
-   
 	/**
 	 * Render team detail view
 	 * 
@@ -182,6 +179,11 @@ public class TeamController extends BaseController {
 	}
 
 
+	/**
+	 * Save a team - POST
+	 * 
+	 * @return Result redirect and flash message
+	 */
 	@Transactional()
 	public Result save(){
 		Form<Team> teamForm = formFactory.form(Team.class).bindFromRequest();
@@ -189,33 +191,51 @@ public class TeamController extends BaseController {
 			flash("error", "Please correct the form below.");
 			return badRequest(detail.render(teamForm));
 		}
-		Team team  = teamForm.get();
-		
-		TeamDao dao = new TeamDao(jpa.em());
-		dao.save(team);
-		//EntityManager em = jpa.em();
-		//em.merge(team);
-		
-		flash("success", String.format("Saved team %s", team));
-		return redirect(routes.TeamController.index());
+		try {
+	    	String email = ctx().session().get("email");
+	    	IUserService userService = new UserService(em());
+	    	User user = userService.findByEmail(email);
+			
+	    	Team team  = teamForm.get();
+			team.setCoach(user);
+			team.getUsers().add(user);
+			
+			ITeamService teamService = new TeamService(em());
+			Team savedTeam = teamService.persistTeam(team);
+			
+			flash("success", String.format("Saved team %s", team));
+			return redirect(routes.TeamController.show(savedTeam.getId()));
+			
+		} catch (Exception any) {
+			Logger.error(any.getMessage());
+			flash("error", "not able to save team");
+			return redirect(routes.HomeController.index());
+		}
 	}
 	
+	/**
+	 * Delete team action
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@Transactional()
 	public Result delete(int id) {
-		TeamDao dao = new TeamDao(jpa.em());
-		Team team = dao.findById(id);
-		
-		if(team == null) {
-			return notFound(String.format("Product %s does not exists.", id));
-		}
-		dao.delete(team);
-		return redirect(routes.TeamController.index());
+		try {
+			ITeamService teamService = new TeamService(em());
+			Team team = teamService.findById(id);
+			team.getUsers().clear();
+			teamService.deleteTeam(team);
 
+			return ok();			
+		} catch (Exception any) {
+			Logger.error(any.getMessage());
+			return redirect(routes.TeamController.index());
+		}
 	}
 	
     @Transactional
     public Result my() {
-    	
     	String email = ctx().session().get("email");
     	IUserService userService = new UserService(em());
     	User user = userService.findByEmail(email);
@@ -225,58 +245,80 @@ public class TeamController extends BaseController {
     	
     	return ok(my.render(teams));
     }
-	
+    
     @Transactional
-    public Result show(int id) {
-    	String email = ctx().session().get("email");
+    public Result coached() {
     	
+    	String email = ctx().session().get("email");
     	IUserService userService = new UserService(em());
     	User user = userService.findByEmail(email);
     	
-    	TeamViewModel vm = new TeamViewModel();
-    	ITeamService service = new TeamService(em());
-    	vm.setTeam(service.findById(id));
+    	ITeamService teamService = new TeamService(em());
+    	List<Team> teams = teamService.getCoachedTeamsByUser(user);
     	
-    	Token token = TokenManager.instance()
-    			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
-    	
-    	Strava stravaService = new Strava(token);
-    	StravaAthlete authenticatedAthlete = stravaService.getAuthenticatedAthlete();
-    	//to get the ratings of group member they need to be friends.
-    	List<StravaActivity> friendActivities = stravaService.listAllFriendsActivities();
-    	
-    	IRatingService rate = new RatingService();
-    	for (User teamMember : vm.getTeam().getUsers()) {
-    		StravaAthlete athlete = stravaService.getAthlete(teamMember.getStrava_id());
-    		
-    		UserViewModel uVm = new UserViewModel();
-    		vm.addMember(uVm);
-    		uVm.setAthlete(athlete);
-    		uVm.setUser(teamMember);
-    		
-    		if(teamMember.getStrava_id().equals(authenticatedAthlete.getId())){
-    			uVm.setActivities(stravaService.listAllAuthenticatedAthleteActivities());
-    		}else{
-        		Stream<StravaActivity> activities = friendActivities.stream()
-        				.filter(act->act.getAthlete().getId().equals(athlete.getId()) );
-        		uVm.setActivities(activities.collect(Collectors.toList()));    			
-    		}
-    		rate.rateUser(uVm);
-    		
-    		if(athlete.getProfileMedium().startsWith("http"))
-    			uVm.setProfileImage(athlete.getProfileMedium());
-    		
-    		if(user.getId() == teamMember.getId())
-    			vm.setMember(true);
-		}
-    	
-    	Form<Invite> inviteForm = formFactory.form(Invite.class);
-    	return ok(show.render(vm, inviteForm));
+    	return ok(my.render(teams));
     }
-    
+	
+    /**
+     * Show team action
+     * 
+     * @param id team to show
+     * @return http 200 ok & rendered view or redirect
+     */
     @Transactional
-    public Result calculate(int id) {
-    
-    	return (TODO);
+    public Result show(int id) {
+    	try {
+    		TeamViewModel vm = new TeamViewModel();
+    		
+    		String email = ctx().session().get("email");
+	    	IUserService userService = new UserService(em());
+	    	User user = userService.findByEmail(email);
+	    	vm.setUser(user);
+	    	
+	    	ITeamService service = new TeamService(em());
+	    	Team team = service.findById(id); 
+	    	vm.setTeam(team);
+	    	
+	    	Token token = TokenManager.instance()
+	    			.retrieveTokenWithScope(user.getEmail(), AuthorisationScope.VIEW_PRIVATE);
+	    	
+	    	Strava stravaService = new Strava(token);
+	    	StravaAthlete authenticatedAthlete = stravaService.getAuthenticatedAthlete();
+	    	//to get the ratings of group peers they need to be friends.
+	    	List<StravaActivity> friendActivities = stravaService.listAllFriendsActivities();
+	    	
+	    	IRatingService rate = new RatingService();
+	    	for (User teamMember : vm.getTeam().getUsers()) {
+	    		UserViewModel uVm = new UserViewModel();
+	    		StravaAthlete athlete = stravaService.getAthlete(teamMember.getStrava_id());
+	    		vm.addMember(uVm);
+	    		uVm.setAthlete(athlete);
+	    		uVm.setUser(teamMember);
+	    		
+	    		if(teamMember.getStrava_id().equals(authenticatedAthlete.getId())){
+	    			uVm.setActivities(stravaService.listAllAuthenticatedAthleteActivities());
+	    		}else {
+	        		Stream<StravaActivity> activities = friendActivities.stream()
+	        				.filter(act->act.getAthlete().getId().equals(athlete.getId()) );
+	        		uVm.setActivities(activities.collect(Collectors.toList()));    			
+	    		}
+	    		rate.rateUser(uVm);
+	    		
+	    		if(athlete.getProfileMedium().startsWith("http"))
+	    			uVm.setProfileImage(athlete.getProfileMedium());
+	    		
+	    		if(user.getId() == teamMember.getId())
+	    			vm.setMember(true);
+			}
+	    	
+	    	Form<Invite> inviteForm = formFactory.form(Invite.class);
+	    	return ok(show.render(vm, inviteForm));
+    	
+    	} catch (Exception any) {
+			Logger.error(any.getMessage());
+			flash("error", "cannot load team: " + id );
+			return redirect(routes.HomeController.index());
+		}
     }
+    
 }

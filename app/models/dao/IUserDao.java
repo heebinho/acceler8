@@ -4,14 +4,12 @@ package models.dao;
 import models.User;
 
 /**
- * 
+ * User dao
  * 
  * @author Team RMG
  */
 public interface IUserDao extends IDao<User, Integer> {
 
-	
-	
 	/**
 	 * Retrieves a user from the mail address
 	 * 
@@ -19,8 +17,7 @@ public interface IUserDao extends IDao<User, Integer> {
 	 * @return User if found, null otherwise.
 	 */
 	User findByEmail(String email);
-	
-	
+		
     /**
      * Retrieves a user from a confirmation token.
      *

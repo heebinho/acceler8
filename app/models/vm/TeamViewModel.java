@@ -2,12 +2,11 @@ package models.vm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javastrava.api.v3.model.StravaActivity;
 import models.Team;
+import models.User;
 
 /**
  * A specialized view model for the team.show view.
@@ -23,6 +22,8 @@ public class TeamViewModel {
 	private List<UserViewModel> members;
 	
 	private Team team;
+	
+	private User user;
 	
 	public TeamViewModel(){
 		members = new ArrayList<>();
@@ -40,8 +41,11 @@ public class TeamViewModel {
 		return members.add(uVm);
 	}
 	
-	public List<UserViewModel> getMembers() {
-		//order by total points
+	public List<UserViewModel> getMembers(){
+		return members;
+	}
+	
+	public List<UserViewModel> getMembersOrderedByTotalPoints() {
     	Stream<UserViewModel> orderedMembers = members.stream()
     			.sorted((m1,m2) -> Integer.compare(m2.getTotalPoints(), m1.getTotalPoints()) );
 		return orderedMembers.collect(Collectors.toList());
@@ -57,6 +61,22 @@ public class TeamViewModel {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+
+	/**
+	 * Get authenticated user
+	 * @return user The authenticated user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+	/**
+	 * Set authenticated user
+	 * @param user The authenticated user
+	 */
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

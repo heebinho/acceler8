@@ -33,23 +33,18 @@ public class User extends Model {
 	private boolean validated;
 	
 	private String strava_code;
+	
 	private String strava_token;
+	
 	private String strava_token_public;
+	
 	private Integer strava_id;
 
 	@ManyToMany(mappedBy = "users") //users --> collection on owner side (Team)
 	private Set<Team> teams = new HashSet<Team>();
 	
-    
-    public Set<Team> getTeams() {
-        return teams;
-    }
-
-	public void setTeams(Set<Team> teams) {
-		this.teams = teams;
-	}
-	
-
+	@OneToMany
+    private Set<Team> coaching = new HashSet<Team>();
 
 	public String getEmail() {
 		return email;
@@ -114,6 +109,22 @@ public class User extends Model {
 
 	public void setStrava_id(Integer strava_id) {
 		this.strava_id = strava_id;
+	}
+	
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+	public void setTeams(Set<Team> teams) {
+		this.teams = teams;
+	}
+
+	public Set<Team> getCoaching() {
+		return coaching;
+	}
+
+	public void setCoaching(Set<Team> coaching) {
+		this.coaching = coaching;
 	}
 
 	@Override
