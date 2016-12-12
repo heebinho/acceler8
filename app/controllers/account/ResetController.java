@@ -20,7 +20,6 @@ import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.Transactional;
-import play.i18n.Messages;
 import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
@@ -32,13 +31,11 @@ import javax.inject.Inject;
 
 import views.html.account.reset.reset;
 
-import java.net.MalformedURLException;
-
 
 
 /**
- * Handle password resetting.
- * 
+ * Reset controller.
+ * Handles password resetting.
  * 
  * @author TEAM RMG
  *
@@ -99,7 +96,7 @@ public class ResetController extends BaseController {
             Token token = accountService.getNewToken(user, TOKEN_TYPE, email);
             
     		String externalServer = Configuration.root().getString("server.hostname");
-    		String urlString = "http://" + externalServer + "/confirm/" + token.token;
+    		String urlString = "http://" + externalServer + "/reset/" + token.token;
     		String subject = getMessage("mail.reset.ask.subject");
     		String message = getMessage("mail.reset.ask.message", urlString);
     		String toMail = user.getEmail();

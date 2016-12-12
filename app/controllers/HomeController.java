@@ -1,47 +1,52 @@
 package controllers;
 
+import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.Transactional;
 import play.mvc.*;
 import services.account.AccountService;
 import services.account.IAccountService;
+import services.user.IUserService;
+import services.user.UserService;
 import views.html.*;
 import javax.inject.Inject;
 
 import models.User;
-import models.dao.UserDao;
 import models.vm.Login;
 import models.vm.Signup;
 
 
 /**
+ * Home controller.
  * 
  * 
  * @author TEAM RMG
+ * 
  */
 public class HomeController extends BaseController {
 	
 	@Inject FormFactory formFactory;	
 	
 	/**
+	 * Index action.
+	 * Redirect to dashboard if authenticated, 
+	 * otherwise render signup and login forms. 
 	 * 
-	 * @return http response
+	 * @return Result http status.
 	 */
 	@Transactional
 	public Result index() {
     	
-        // Check that the email matches a confirmed user before we redirect
         String email = ctx().session().get("email");
         if (email != null) {
-            
-        	UserDao dao = new UserDao(jpa.em());
-        	User user = dao.findByEmail(email);
+        	IUserService service = new UserService(em());
+        	User user = service.findByEmail(email);
             
             if (user != null && user.isValidated()) {
             	return redirect(routes.DashboardController.index());
             } else {
-                //Logger.debug("Clearing invalid session credentials");
+                Logger.debug("Clearing invalid session credentials");
                 session().clear();
             }
         }
@@ -51,12 +56,12 @@ public class HomeController extends BaseController {
         		formFactory.form(Login.class)));
     }
     
-    
-
+	
     /**
+     * Authenticate action.
      * Handle login form submission.
      *
-     * @return Dashboard if auth OK or login form if auth KO
+     * @return Result Dashboard if auth OK or login form if auth fails
      */
 	@Transactional
     public Result authenticate() {
@@ -68,10 +73,9 @@ public class HomeController extends BaseController {
         	return badRequest(index.render(registerForm, loginForm));
         }
         
-        Login login = loginForm.get();
-        IAccountService accountService = new AccountService(em());
-        
         try {
+        	Login login = loginForm.get();
+            IAccountService accountService = new AccountService(em());
         	User user = accountService.authenticate(login.getEmail(), login.getPassword());	
             
         	if (user != null && user.isValidated()) {
@@ -90,8 +94,9 @@ public class HomeController extends BaseController {
         return badRequest(index.render(registerForm, loginForm));
     }
 
-    
+	
     /**
+     * Logout action.
      * Logout and clean the session.
      *
      * @return Index page
@@ -102,7 +107,5 @@ public class HomeController extends BaseController {
         return redirect(routes.HomeController.index());
     }
     
-    
-
 
 }

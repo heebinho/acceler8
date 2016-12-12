@@ -5,8 +5,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 
 /**
+ * Security authenticator.
  * Handle authentication.
- * Redirect to HomeController.
  * 
  * @author TEAM RMG
  *
@@ -22,6 +22,5 @@ public class Secured extends Security.Authenticator {
     public Result onUnauthorized(Http.Context ctx) {
         return redirect(routes.HomeController.index());
     }
-    
     
 }
