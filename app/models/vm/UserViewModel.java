@@ -30,6 +30,8 @@ public class UserViewModel {
 	
 	private List<StravaActivity> activities = new ArrayList<StravaActivity>();
 	
+	private int completed = 0;
+	
 	public User getUser() {
 		return user;
 	}
@@ -71,6 +73,12 @@ public class UserViewModel {
 	}
 	public void setActivities(List<StravaActivity> activities) {
 		this.activities = activities;
+	}
+	public int getCompleted() {
+		return completed;
+	}
+	public void setCompleted(int completed) {
+		this.completed = completed;
 	}
 
 }

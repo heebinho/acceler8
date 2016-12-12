@@ -288,7 +288,7 @@ public class TeamController extends BaseController {
 	    	StravaAthlete authenticatedAthlete = stravaService.getAuthenticatedAthlete();
 	    	//to get the ratings of group peers they need to be friends.
 	    	List<StravaActivity> friendActivities = stravaService.listAllFriendsActivities();
-	    	
+	    	List<Task> tasks = service.findAllTasks(team);
 	    	IRatingService rate = new RatingService();
 	    	for (User teamMember : vm.getTeam().getUsers()) {
 	    		UserViewModel uVm = new UserViewModel();
@@ -305,6 +305,7 @@ public class TeamController extends BaseController {
 	        		uVm.setActivities(activities.collect(Collectors.toList()));    			
 	    		}
 	    		rate.rateUser(uVm);
+	    		rate.calculateCompletionPercentage(tasks, uVm);
 	    		
 	    		if(athlete.getProfileMedium().startsWith("http"))
 	    			uVm.setProfileImage(athlete.getProfileMedium());
