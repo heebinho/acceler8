@@ -151,10 +151,10 @@ public class SignupController extends BaseController {
             }
         } catch (EmailException e) {
             Logger.debug("Cannot send email", e);
-            flash("error", getMessage("error.sending.confirm.email"));
+            flash("error", getMessage("error.sending.email"));
         } catch (Exception e) {
             Logger.debug("technical exception", e);
-            flash("error", getMessage("error.sending.confirm.email"));
+            flash("error", getMessage("error.sending.email"));
         }
         return badRequest(index.render(
         		formFactory.form(Signup.class), 

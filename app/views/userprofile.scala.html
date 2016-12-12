@@ -12,17 +12,17 @@
 	
 	    <div class="row">
 	        <div class="col-lg-12">
-	      		<h1 class="page-header">Profile</h1>
+	      		<h1 class="page-header">@Messages("profile.title")</h1>
 	        </div>
 	    </div>
 	
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
   				<div class="panel panel-default">
-	                <div class="panel-heading">
-	                    <i class="fa fa-user fa-fw"></i>Strava profile settings 
+	                <div class="panel-heading panel-heading-strava">
+	                    <i class="fa fa-user fa-fw"></i>@Messages("profile.panel")
 	                </div>
-	                <div class="panel-body">
+	                <div class="panel-body" >
 						@helper.form(action = controllers.account.routes.ProfileController.save(), 'role -> "form") {
 							<fieldset>
 							
@@ -60,24 +60,48 @@
 					            '_showConstraints -> false
 					        )
 					        
+					        @*
 					        @helper.inputRadioGroup(
 					          profileForm("sex"),
-					          options = Seq("M"->"Male","F"->"Female"),
-					          '_label -> "")
+					          options = Seq("M"->Messages("male"),"F"->Messages("female")),
+					          '_label -> "Gender")
+					        *@
+					        
+					        
+					        <div class="form-group ">
+							    <label class="control-label" for="sex">@Messages("sex")</label>
+							    <div class="controls">
+									  <span class="buttonset" id="sex">
+									      <input type="radio" id="sex_M" name="sex" value="M" @if(profileForm("sex").value=="M"){checked="checked"}>
+									      <label for="sex_M">@Messages("male")</label>
+									      <input type="radio" id="sex_F" name="sex" value="F" @if(profileForm("sex").value=="F"){checked="checked"}>
+									      <label for="sex_F">@Messages("female")</label>
+									  </span>
+								</div>
+							</div>  
+					          
+					          
 					        
 							<div class="form-group">
 							  <label class="control-label" for="submit"></label>
 							  <div class="controls">
-							    <button id="submit" name="submit" class="btn btn-primary">Save</button>
-							    <a class="btn" href="@routes.DashboardController.index()">Cancel</a>
+							    <button id="submit" name="submit" class="btn btn-primary">@Messages("save")</button>
+							    <a class="btn" href="@routes.DashboardController.index()">@Messages("cancel")</a>
 							  </div>
 							</div>
 							
 							</fieldset>
 						}
+						<div class="alert alert-warning alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>!</strong> @Messages("profile.info")
+						</div>
                 	</div>
             	</div>
 			</div>
+			
+
+			
 		</div>	
 	</div>
 }
