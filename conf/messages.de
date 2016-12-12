@@ -58,9 +58,6 @@ mail.reset.ask.subject=Acceler8 - New password
 # Cannot use You've unescaped here, as the single quote stops the {0}
 mail.reset.ask.message=You asked for your password to be reset.  <br> Click on this link : {0} to change your password.
 
-mail.change.ask.subject=Acceler8 - Validate email
-mail.change.ask.message=You asked for your email to be changed.  <br> Click on this link : {0} to validate your email.
-
 mail.reset.confirm.subject=Acceler8 - New password
 mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
 

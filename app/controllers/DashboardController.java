@@ -73,7 +73,7 @@ public class DashboardController extends BaseController {
         	vm.setUser(user);
         	
         	IRatingService rating = new RatingService();
-        	rating.rateUser(vm);
+        	rating.rateUserScore(vm);
         	
         	
         	return ok(index.render(vm));			

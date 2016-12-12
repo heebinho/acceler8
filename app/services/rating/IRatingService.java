@@ -19,14 +19,14 @@ public interface IRatingService {
      *
      * @param vm User to rate
      */
-	void rateUser(UserViewModel vm);
+	void rateUserScore(UserViewModel vm);
 
 	/**
 	 * Calculate percentage of completed tasks
 	 * 
-	 * @param tasks list of tasks
+	 * @param tasks list of task
 	 * @param vm User view model
 	 */
-	void calculateCompletionPercentage(List<Task> tasks, UserViewModel vm);
+	void rateUserTasksScore(List<Task> tasks, UserViewModel vm);
 	
 }

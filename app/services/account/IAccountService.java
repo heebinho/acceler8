@@ -1,16 +1,11 @@
 package services.account;
 
-import java.net.MalformedURLException;
-
-import javax.annotation.Nullable;
-
-import play.libs.mailer.MailerClient;
 import models.Token;
-import models.Token.TypeToken;
 import models.User;
 
 /**
- * Account service
+ * Account services interface.
+ * Authentication.
  * 
  * @author TEAM RMG
  *
@@ -18,72 +13,48 @@ import models.User;
 public interface IAccountService {
 	
 	/**
-	 * Authenticate
+	 * Authenticate the user
 	 * 
 	 * @param email
-	 * @param password
-	 * @return User when found, else null
+	 * @param password clear password candidate string
+	 * @return User when authenticated, otherwise null
 	 */
 	User authenticate(String email, String password);
 	
     /**
      * Confirms an account.
      *
-     * @return true if confirmed, false otherwise.
-     * @throws AppException App Exception
+     * @return User confirmed user
+     * @throws IllegalArgumentException 
      */
-    boolean confirm(User user) throws Exception;
+    User confirm(User user) throws Exception;
 
-	/**
-	 * 
-	 * @param token
-	 * @param email
-	 * @return
-	 */
-	Token findByTokenAndType(String token, TypeToken type);
+    /**
+     * Retrieve a token by id and type.
+     *
+     * @param uuid token
+     * @param type of token
+     * @return Token reset token
+     * @throws IllegalArgumentException
+     */
+	Token findByTokenAndType(String uuid, String type);
 
 	/**
 	 * Delete token
 	 * 
-	 * @param resetToken
+	 * @param token
 	 */
-	void deleteToken(Token resetToken);
+	void deleteToken(Token token);
 	
     /**
      * Return a new Token.
      *
-     * @param user  user
-     * @param type  type of token
-     * @param email email for a token change email
-     * @return a reset token
+     * @param user
+     * @param type of token
+     * @param email
+     * @return Token new token
      */
-    Token getNewToken(User user, TypeToken type, String email);
-    
-    /**
-     * Send the Email to confirm ask new password.
-     *
-     * @param user  the current user
-     * @param type  token type
-     * @param email email for a change email token
-     * @throws java.net.MalformedURLException if token is wrong.
-     */
-    void sendMail(User user, TypeToken type, String email, MailerClient mc) throws MalformedURLException;
+    Token getNewToken(User user, String type, String email);
 
-    /**
-     * Send the Email to confirm ask new password.
-     *
-     * @param user the current user
-     * @throws java.net.MalformedURLException if token is wrong.
-     */
-    void sendMailResetPassword(User user, MailerClient mc) throws MalformedURLException;
-
-    /**
-     * Send the Email to confirm ask new password.
-     *
-     * @param user  the current user
-     * @param email email for a change email token
-     * @throws java.net.MalformedURLException if token is wrong.
-     */
-    void sendMailChangeMail(User user, @Nullable String email,MailerClient mc) throws MalformedURLException;
 
 }
