@@ -94,7 +94,7 @@ public class ResetController extends BaseController {
             Token token = accountService.getNewToken(user, TOKEN_TYPE, email);
             
     		String externalServer = Configuration.root().getString("server.hostname");
-    		String urlString = "http://" + externalServer + "/reset/" + token.token;
+    		String urlString = "http://" + externalServer + "/reset/" + token.getToken();
     		String subject = getMessage("mail.reset.ask.subject");
     		String message = getMessage("mail.reset.ask.message", urlString);
     		String toMail = user.getEmail();
@@ -186,7 +186,7 @@ public class ResetController extends BaseController {
 
             // check email
             IUserDao uDao = new UserDao(em());
-            User user = uDao.findById(resetToken.userId);
+            User user = uDao.findById(resetToken.getUserId());
             
             if (user == null) {
                 // display no detail (email unknown for example) to

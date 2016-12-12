@@ -97,10 +97,10 @@ public class AccountService extends Service implements IAccountService {
 	@Override
 	public Token getNewToken(User user, String type, String email) {
 		Token token = new Token();
-		token.token = UUID.randomUUID().toString();
-		token.userId = user.getId();
-		token.type = type;
-		token.email = email;
+		token.setToken(UUID.randomUUID().toString());
+		token.setUserId(user.getId());
+		token.setType(type);;
+		token.setEmail(email);
 
 		ITokenDao dao = new TokenDao(getEntityManager());
 		return dao.save(token);
