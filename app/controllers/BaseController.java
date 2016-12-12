@@ -9,8 +9,8 @@ import play.i18n.MessagesApi;
 import play.mvc.*;
 
 /**
- * Base controller functions.
- * All controllers will inherit from this class.
+ * Base controller (abstract).
+ * All controllers will inherit from this controller.
  * We provide data access and i18n.
  * 
  * @author TEAM RMG
@@ -23,6 +23,7 @@ public abstract class BaseController extends Controller {
 	
 	@Inject
     private MessagesApi messagesApi;
+	
     private Messages messages;
     
 
@@ -48,7 +49,7 @@ public abstract class BaseController extends Controller {
 	 * Get a localized text.
 	 * 
 	 * @param key 
-	 * @return the text
+	 * @return String localized text
 	 */
 	public String getMessage(String key){
 		this.messages = messagesApi.preferred(request());
@@ -62,7 +63,7 @@ public abstract class BaseController extends Controller {
      *
      * @param key
      * @param args the message arguments
-     * @return the formatted message
+     * @return String formatted message
      */
     public String getMessage(String key, Object... args) {
     	this.messages = messagesApi.preferred(request());

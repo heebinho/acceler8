@@ -28,7 +28,8 @@ import views.html.dashboard.*;
 
 
 /**
- * Dashboard.
+ * Dashboard controller.
+ * 
  * 
  * @author TEAM RMG
  *
@@ -38,9 +39,10 @@ public class DashboardController extends BaseController {
 	
 
 	/**
-     * Default action dashboard.
+	 * Index action.
+     * Default dashboard action. Build user view model.
      * 
-     * @return 
+     * @return Result render dashboard 
      */
     @Transactional
     public Result index() {
@@ -55,26 +57,24 @@ public class DashboardController extends BaseController {
         		//we can't get data from strava without an access token. Request one.
         		return redirect(controllers.account.routes.SettingsController.index());
         	}
-        	
+        	UserViewModel vm = new UserViewModel();
+        	vm.setUser(user);
         	StravaAthlete athlete = token.getAthlete();
-        	Strava strava = new Strava(token);
+        	vm.setAthlete(athlete);
+        	
         	LocalDateTime now = LocalDate.now().atStartOfDay();
-        	//List<StravaActivity> activities = strava.listAllAuthenticatedAthleteActivities();
+        	Strava strava = new Strava(token);
         	List<StravaActivity> activities = strava.listAllAuthenticatedAthleteActivities(null, now.minusYears(1));
         	//order activities by start date
         	Stream<StravaActivity> orderedActivities = activities.stream()
         			.sorted((a1,a2) -> a2.getStartDateLocal().compareTo(a1.getStartDateLocal()));
-
-        	UserViewModel vm = new UserViewModel();
-        	vm.setAthlete(athlete);
-    		if(athlete.getProfileMedium().startsWith("http"))
-    			vm.setProfileImage(athlete.getProfileMedium());
         	vm.setActivities(orderedActivities.collect(Collectors.toList()));
-        	vm.setUser(user);
+    		
+        	if(athlete.getProfileMedium().startsWith("http"))
+    			vm.setProfileImage(athlete.getProfileMedium());
         	
         	IRatingService rating = new RatingService();
         	rating.rateUserScore(vm);
-        	
         	
         	return ok(index.render(vm));			
 		} catch (Exception any) {
@@ -84,9 +84,10 @@ public class DashboardController extends BaseController {
     }
     
     /**
-     * Chart view model.
+     * Chart action.
+     * Build chart view model.
      * 
-     * @return http 200. View model as Json
+     * @return Result view model as Json.
      */
     @Transactional
     public Result chart() {

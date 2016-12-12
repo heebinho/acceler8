@@ -31,6 +31,7 @@ public class SettingsController extends BaseController {
 	FormFactory formFactory;
 
     /**
+     * Index action.
      * Password Page. Ask the user to change his password.
      *
      * @return index settings
@@ -66,7 +67,7 @@ public class SettingsController extends BaseController {
      * 
      * @param state 
      * @param code authorization code
-     * @return
+     * @return Result
      */
 	@Transactional
     public Result onauthorized(String state, String code, String error) {

@@ -28,9 +28,10 @@ public class ProfileController extends BaseController {
 	FormFactory formFactory;
 
     /**
-     * Password Page. Ask the user to change his password.
+     * Index action.
+     * Render settings view.
      *
-     * @return index settings
+     * @return Result settings view
      */
 	@Transactional
     public Result index() {
@@ -49,9 +50,10 @@ public class ProfileController extends BaseController {
 	
 	
 	/**
-	 * Save settings
+	 * Save action.
+	 * Save settings and write data back to strava.
 	 * 
-	 * @return http response
+	 * @return Result settings index view
 	 */
 	@Transactional
     public Result save() {

@@ -20,8 +20,6 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import javastrava.api.v3.auth.TokenManager;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.auth.ref.AuthorisationScope;
@@ -32,7 +30,6 @@ import models.Mail;
 import models.Task;
 import models.Team;
 import models.User;
-import models.dao.ITeamDao;
 import models.dao.TeamDao;
 import models.vm.InviteResult;
 import models.vm.TaskViewModel;
@@ -45,7 +42,8 @@ import views.html.team.*;
 
 
 /**
- * Controls team requests
+ * Team controller.
+ * Handles team requests
  * 
  * @author Team RMG
  */
@@ -59,9 +57,10 @@ public class TeamController extends BaseController {
     MailerClient mailerClient;
 
     /**
-     * List all teams
+     * Index action.
+     * List all teams.
      * 
-     * @return http response
+     * @return Result render list view
      */
 	@Transactional()
     public Result index() {
@@ -71,6 +70,12 @@ public class TeamController extends BaseController {
     	return ok(list.render(teams));
     }
 
+	/**
+	 * Leave action.
+	 * 
+	 * @param teamId team to leave
+	 * @return Result redirect to team list (index)
+	 */
 	@Transactional()
     public Result leave(int teamId) { 
 		String email = ctx().session().get("email");
@@ -83,21 +88,33 @@ public class TeamController extends BaseController {
 		return redirect(routes.TeamController.index());
     }
 	
+	/**
+	 * Join action.
+	 * 
+	 * @param teamId id of the team
+	 * @return Result redirect show team
+	 */
 	@Transactional()
-    public Result join(int id) {
+    public Result join(int teamId) {
 		
     	String email = ctx().session().get("email");
     	IUserService userService = new UserService(em());
     	User user = userService.findByEmail(email);
     	
     	ITeamService teamService = new TeamService(em());
-    	if(teamService.isAlreadyMember(user, id)){
-    		return redirect(routes.TeamController.show(id));
+    	if(teamService.isAlreadyMember(user, teamId)){
+    		return redirect(routes.TeamController.show(teamId));
     	}
-    	teamService.addNewMember(user, id);
-    	return redirect(routes.TeamController.show(id));
+    	teamService.addNewMember(user, teamId);
+    	return redirect(routes.TeamController.show(teamId));
     }
 	
+	/**
+	 * Invite action.
+	 * Sends an invitation to the given mail address.
+	 * 
+	 * @return Result json
+	 */
 	@Transactional()
     public Result invite() {
 		
@@ -106,9 +123,9 @@ public class TeamController extends BaseController {
 		if(inviteForm.hasErrors()){
 			return badRequest();
 		}
-		Invite invite = inviteForm.get();
 		
 		try{
+			Invite invite = inviteForm.get();
 	        String subject = getMessage("mail.invite.subject");
 	        String message = getMessage("mail.invite.message") + "\n\n";
 	        message += routes.TeamController.join(invite.getTeamId()).absoluteURL(request());
@@ -122,21 +139,21 @@ public class TeamController extends BaseController {
 		}
 		
 		//serialize and serve as json
-		JsonNode resultJson = Json.toJson(result);
-		return ok(resultJson);
+		return ok(Json.toJson(result));
 	}
 	
 	/**
+	 * Removeuser action.
 	 * Remove a user from a team
 	 * 
 	 * @param id team id
 	 * @param uid Strava athlete id
-	 * @return
+	 * @return Result redirect team show
 	 */
 	@Transactional()
     public Result removeUser(int id, int uid) {
     	
-    	IUserService userService =new UserService(em());
+    	IUserService userService = new UserService(em());
     	User user = userService.findByAthleteId(uid);
     	
     	ITeamService service = new TeamService(em());
@@ -147,11 +164,11 @@ public class TeamController extends BaseController {
    }
 		
 	/**
-	 * Render team detail view
+	 * NewTeam action.
+	 * Render team detail view.
 	 * 
-	 * @return http response
+	 * @return Result detail view
 	 */
-	@Transactional()
 	public Result newTeam(){
 
 		Form<Team> form = formFactory.form(Team.class);
@@ -159,11 +176,12 @@ public class TeamController extends BaseController {
 	}
     
 	/**
+	 * Details action.
 	 * Render team detail view
 	 * pass team to model
 	 * 
 	 * @param id Team id
-	 * @return http response
+	 * @return Result detail view
 	 */
 	@Transactional(readOnly=true)
 	public Result details(int id){
@@ -183,7 +201,8 @@ public class TeamController extends BaseController {
 
 
 	/**
-	 * Save a team - POST
+	 * Save action. (POST)
+	 * Save a team-
 	 * 
 	 * @return Result redirect and flash message
 	 */
@@ -217,10 +236,11 @@ public class TeamController extends BaseController {
 	}
 	
 	/**
-	 * Delete team action
+	 * Delete action.
+	 * Deletea a team.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id Team id
+	 * @return Result http 200 or redirect
 	 */
 	@Transactional()
 	public Result delete(int id) {
@@ -237,6 +257,12 @@ public class TeamController extends BaseController {
 		}
 	}
 	
+	/**
+	 * My action.
+	 * Shows my teams.
+	 * 
+	 * @return Result my teams view
+	 */
     @Transactional
     public Result my() {
     	String email = ctx().session().get("email");
@@ -249,6 +275,12 @@ public class TeamController extends BaseController {
     	return ok(my.render(teams));
     }
     
+	/**
+	 * Coached action.
+	 * Shows coached teams.
+	 * 
+	 * @return Result coached teams view
+	 */
     @Transactional
     public Result coached() {
     	String email = ctx().session().get("email");
@@ -262,10 +294,11 @@ public class TeamController extends BaseController {
     }
 	
     /**
-     * Show team action
+     * Show action.
+     * Build and server team view model.
      * 
      * @param id team to show
-     * @return http 200 ok & rendered view or redirect
+     * @return Result http 200 ok & rendered view or redirect
      */
     @Transactional
     public Result show(int id) {
@@ -325,10 +358,11 @@ public class TeamController extends BaseController {
     }
     
     /**
-     * Team tasks action
+     * Tasks action.
+     * Read and serve tasks of team.
      * 
-     * @param id team to show
-     * @return http 200 ok & rendered view or redirect
+     * @param id team
+     * @return Result http 200 ok & rendered view or redirect
      */
     @Transactional
     public Result tasks(int id) {
@@ -356,7 +390,8 @@ public class TeamController extends BaseController {
     }
     
 	/**
-	 * Save a task - POST
+	 * Save task - POST
+	 * Save a team task.
 	 * 
 	 * @return Result redirect and flash message
 	 */
@@ -394,10 +429,11 @@ public class TeamController extends BaseController {
 	}
 	
 	/**
-	 * Delete task action
+	 * Deletetask action.
+	 * Delete a task from a team.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id task to delete
+	 * @return Result ok or redirect
 	 */
 	@Transactional()
 	public Result deletetask(int id) {

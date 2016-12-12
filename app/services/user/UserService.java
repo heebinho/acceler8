@@ -208,20 +208,24 @@ public class UserService extends Service implements IUserService {
 
 	
 	/**
-	 * Deauthorize at strava
+	 * Deauthorize user
+	 * 
+	 * @param user to deauthorize
+	 * @return User deauthorized
 	 */
 	@Override
-	public void deauthorize(User user) {
+	public User deauthorize(User user) {
 		Token token = getStravaAccessToken(user);
 		if(token != null){
 			Strava stravaService = new Strava(token);	
 			TokenResponse response = stravaService.deauthorise(token);
 			Logger.info(response.toString());
 			stravaService.clearCache();
-			
 		}
-		
-		
+		user.setStrava_id(null);
+		user.setStrava_code(null);
+		user.setStrava_token(null);
+		return this.persistUser(user);
 	}
 
 }

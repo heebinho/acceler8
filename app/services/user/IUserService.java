@@ -84,9 +84,13 @@ public interface IUserService {
 	 */
 	void setStravaProfile(User user, Profile profile) throws Exception;
 
+
 	/**
-	 * Deauthorize at strava
+	 * Deauthorize user
+	 * 
+	 * @param user to deauthorize
+	 * @return User deauthorized
 	 */
-	void deauthorize(User user);
+	User deauthorize(User user);
 	
 }
