@@ -1,8 +1,11 @@
 package models;
 
 
+import java.util.Date;
+
 import javax.persistence.*;
 
+import play.data.format.Formats;
 import play.data.validation.Constraints.Required;
 
 /**
@@ -23,6 +26,8 @@ public class Task extends Model {
 	@ManyToOne
 	@JoinColumn(name="team")
 	private Team team;
+	
+    private Date ts;
 
 	public String getName() {
 		return name;
@@ -46,6 +51,14 @@ public class Task extends Model {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+
+	public Date getTs() {
+		return ts;
+	}
+
+	public void setTs(Date ts) {
+		this.ts = ts;
 	}
 	
 }

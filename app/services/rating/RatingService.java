@@ -1,16 +1,23 @@
 package services.rating;
 
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.reference.StravaActivityType;
+import models.Task;
+import models.Team;
 import models.vm.UserViewModel;
 import play.Logger;
+import services.team.ITeamService;
+import services.team.TeamService;
 
 
 /**
@@ -68,12 +75,47 @@ public class RatingService implements IRatingService {
 				rideMeters += activity.getDistance();
 			}
 			
-			float speed = activity.getAverageSpeed();
-			Logger.info((speed)+"");
+			//float speed = activity.getAverageSpeed();
+			//for a future version we can include the average speed
+			//to calculate a more accurate rating
 		}
 		points += Math.round((17 * runMeters/1000));
 		points += Math.round((4  * rideMeters/1000));
 		return points;
+	}
+
+	/**
+	 * Calculate percentage of completed tasks
+	 * 
+	 * @param tasks list of tasks
+	 * @param vm User view model
+	 */
+	@Override
+	public void calculateCompletionPercentage(List<Task> tasks, UserViewModel vm) {
+		int completed = 0;
+		
+		int totalTodoMeters = 0;
+		totalTodoMeters = tasks.stream().mapToInt(t->t.getMeters()).sum();
+		
+		//get timestamp of first task
+		//we'll ignore older activities
+		Date start = tasks.stream().map(u -> u.getTs()).min(Date::compareTo).get();
+		Logger.info("calculate %: " + start.toString());
+		Instant tsInstant = start.toInstant();
+		
+		//find relevant activities
+		Stream<StravaActivity> activities = vm.getActivities().stream()
+				.filter(act->
+						act.getStartDate().toInstant().isAfter(tsInstant) );
+		
+		//kilometers done
+		double metersDone = activities.mapToDouble(ma->ma.getDistance()).sum();
+		
+		completed = (int)(100d/totalTodoMeters * metersDone);
+		if(completed > 100)
+			completed = 100;
+		
+		vm.setCompleted(completed);
 	}
 
 }
