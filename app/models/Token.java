@@ -3,8 +3,6 @@ package models;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,18 +19,6 @@ public class Token {
     // Reset tokens will expire after a day.
     private static final int EXPIRATION_DAYS = 1;
 
-    public enum TypeToken {
-        password("reset"), email("email");
-        private String urlPath;
-
-        TypeToken(String urlPath) {
-            this.urlPath = urlPath;
-        }
-        
-        public String getUrlPath(){ return urlPath;}
-
-    }
-
 
     @Id
     public String token;
@@ -42,8 +28,7 @@ public class Token {
     public Integer userId;
 
     @Constraints.Required
-    @Enumerated(EnumType.STRING)
-    public TypeToken type;
+    public String type;
 
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date ts;

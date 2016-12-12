@@ -304,8 +304,8 @@ public class TeamController extends BaseController {
 	        				.filter(act->act.getAthlete().getId().equals(athlete.getId()) );
 	        		uVm.setActivities(activities.collect(Collectors.toList()));    			
 	    		}
-	    		rate.rateUser(uVm);
-	    		rate.calculateCompletionPercentage(tasks, uVm);
+	    		rate.rateUserScore(uVm);
+	    		rate.rateUserTasksScore(tasks, uVm);
 	    		
 	    		if(athlete.getProfileMedium().startsWith("http"))
 	    			uVm.setProfileImage(athlete.getProfileMedium());

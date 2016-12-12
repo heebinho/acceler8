@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,11 +12,7 @@ import java.util.stream.Stream;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.reference.StravaActivityType;
 import models.Task;
-import models.Team;
 import models.vm.UserViewModel;
-import play.Logger;
-import services.team.ITeamService;
-import services.team.TeamService;
 
 
 /**
@@ -34,10 +29,10 @@ public class RatingService implements IRatingService {
      * @param vm User to rate
      */
 	@Override
-	public void rateUser(UserViewModel vm) {
+	public void rateUserScore(UserViewModel vm) {
 		
 		//All activities
-		vm.setTotalPoints(getScore(vm.getActivities()));
+		vm.setTotalPoints(calculateScore(vm.getActivities()));
 		
 		LocalDateTime now = LocalDate.now().atStartOfDay();
 		//Monthly activities
@@ -45,7 +40,7 @@ public class RatingService implements IRatingService {
 				.filter(act->
 						act.getStartDateLocal().getYear() == now.getYear() &&
 						act.getStartDateLocal().getMonth() == now.getMonth());
-		vm.setMonthlyPoints(getScore(monthlyActivities.collect(Collectors.toList())));
+		vm.setMonthlyPoints(calculateScore(monthlyActivities.collect(Collectors.toList())));
 		//Weekly activities
 		LocalDateTime weekStart = now.with(DayOfWeek.MONDAY);
 		Stream<StravaActivity> weeklyActivities = vm.getActivities().stream()
@@ -53,7 +48,7 @@ public class RatingService implements IRatingService {
 						act.getStartDateLocal().getYear() == now.getYear() &&
 						act.getStartDateLocal().getMonth() == now.getMonth() && 
 						act.getStartDateLocal().getDayOfYear() >= weekStart.getDayOfYear());
-		vm.setWeeklyPoints(getScore(weeklyActivities.collect(Collectors.toList())));
+		vm.setWeeklyPoints(calculateScore(weeklyActivities.collect(Collectors.toList())));
 		
 	}
 	
@@ -61,9 +56,9 @@ public class RatingService implements IRatingService {
 	 * Ratio ride:run 17:4 --> Ironman ratio
 	 * 
 	 * @param activities
-	 * @return
+	 * @return score
 	 */
-	private int getScore(List<StravaActivity> activities){
+	public int calculateScore(List<StravaActivity> activities){
 		
 		int points = 0;
 		int runMeters = 0;
@@ -87,35 +82,46 @@ public class RatingService implements IRatingService {
 	/**
 	 * Calculate percentage of completed tasks
 	 * 
+	 * 
 	 * @param tasks list of tasks
 	 * @param vm User view model
 	 */
 	@Override
-	public void calculateCompletionPercentage(List<Task> tasks, UserViewModel vm) {
-		int completed = 0;
+	public void rateUserTasksScore(List<Task> tasks, UserViewModel vm) {
 		
-		int totalTodoMeters = 0;
-		totalTodoMeters = tasks.stream().mapToInt(t->t.getMeters()).sum();
+		int totalTodoMeters = tasks.stream().mapToInt(t->t.getMeters()).sum();
 		
 		//get timestamp of first task
-		//we'll ignore older activities
 		Date start = tasks.stream().map(u -> u.getTs()).min(Date::compareTo).get();
-		Logger.info("calculate %: " + start.toString());
 		Instant tsInstant = start.toInstant();
 		
-		//find relevant activities
+		//find relevant activities - we'll ignore older activities
 		Stream<StravaActivity> activities = vm.getActivities().stream()
-				.filter(act->
-						act.getStartDate().toInstant().isAfter(tsInstant) );
+				.filter(act-> act.getStartDate().toInstant().isAfter(tsInstant) );
 		
-		//kilometers done
 		double metersDone = activities.mapToDouble(ma->ma.getDistance()).sum();
 		
-		completed = (int)(100d/totalTodoMeters * metersDone);
-		if(completed > 100)
-			completed = 100;
-		
+		int completed = calculateCompleteness(totalTodoMeters, metersDone);
 		vm.setCompleted(completed);
 	}
+	
+	/**
+	 * Calculate the completeness in percentage
+	 * min 0; max 100
+	 * 
+	 * @param totalTodoMeters meters to absolve
+	 * @param metersDone meters absolved
+	 * @return int completeness
+	 */
+	public int calculateCompleteness(int totalTodoMeters, double metersDone){
+		//if there's nothing to do, we'll return completed -> 100%
+		//as a side effect we don't need to handle divison by zero
+		if(totalTodoMeters == 0)
+			return 100;
+		
+		int completed = (int)(100d / totalTodoMeters * metersDone);
+		if(completed > 100) completed = 100;
+		return completed;
+	} 
 
 }

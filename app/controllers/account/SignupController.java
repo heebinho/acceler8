@@ -28,8 +28,7 @@ import java.net.MalformedURLException;
 import java.util.UUID;
 
 /**
- * 
- * Signup
+ * Signup controller.
  * 
  * @author TEAM RMG
  *
@@ -136,7 +135,7 @@ public class SignupController extends BaseController {
 
         try {
         	IAccountService accountService = new AccountService(em());
-            if (accountService.confirm(user)) {
+            if (accountService.confirm(user).isValidated()) {
                 sendMailConfirmation(user);
                 flash("success", getMessage("account.successfully.validated"));
                 return ok(index.render(

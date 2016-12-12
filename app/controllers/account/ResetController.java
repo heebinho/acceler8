@@ -15,10 +15,12 @@ import models.vm.Signup;
 import org.apache.commons.mail.EmailException;
 
 import controllers.BaseController;
+import play.Configuration;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.db.jpa.Transactional;
+import play.i18n.Messages;
 import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
@@ -48,6 +50,8 @@ public class ResetController extends BaseController {
 	
 	@Inject 
 	FormFactory formFactory;
+	
+	public final static String TOKEN_TYPE = "password";
 
 
     /**
@@ -92,13 +96,26 @@ public class ResetController extends BaseController {
 
         try {
             IAccountService accountService = new AccountService(em());
-            accountService.sendMailResetPassword(user, mailerClient);
+            Token token = accountService.getNewToken(user, TOKEN_TYPE, email);
+            
+    		String externalServer = Configuration.root().getString("server.hostname");
+    		String urlString = "http://" + externalServer + "/confirm/" + token.token;
+    		String subject = getMessage("mail.reset.ask.subject");
+    		String message = getMessage("mail.reset.ask.message", urlString);
+    		String toMail = user.getEmail();
+
+
+    		Mail.Envelop envelop = new Mail.Envelop(subject, message, toMail);
+    		Mail mail = new Mail(mailerClient);
+    		mail.sendMail(envelop);
+            
+            
             flash("success", getMessage("resetpassword.mailsent"));
             return ok(index.render(
             		formFactory.form(Signup.class), 
             		formFactory.form(Login.class)));
-        } catch (MalformedURLException e) {
-            Logger.error("Cannot validate URL", e);
+        } catch (Exception any) {
+            Logger.error(any.getMessage());
             flash("error", getMessage("error.technical"));
         }
         return badRequest(ask.render(askForm));
@@ -114,7 +131,7 @@ public class ResetController extends BaseController {
         }
 
         ITokenDao dao = new TokenDao(em());
-        Token resetToken = dao.findByTokenAndType(token, Token.TypeToken.password);
+        Token resetToken = dao.findByTokenAndType(token, TOKEN_TYPE);
 
         if (resetToken == null) {
             flash("error", getMessage("error.technical"));
@@ -148,7 +165,7 @@ public class ResetController extends BaseController {
 
         try {
             ITokenDao dao = new TokenDao(em());
-            Token resetToken = dao.findByTokenAndType(token, Token.TypeToken.password);
+            Token resetToken = dao.findByTokenAndType(token, TOKEN_TYPE);
             
             if (resetToken == null) {
                 flash("error", getMessage("error.technical"));
