@@ -15,7 +15,7 @@ public class TestController extends Controller {
 
 
 	/**
-	 * 
+	 * Ping action.
 	 * @return html 200 ok - current date
 	 */
 	public Result ping() {
@@ -23,7 +23,7 @@ public class TestController extends Controller {
 	}
 	
 	/**
-	 * 
+	 * Echo action.
 	 * @return html 200 ok - echo response
 	 */
 	public Result echo(String in) {

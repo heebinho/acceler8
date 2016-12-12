@@ -87,6 +87,13 @@ public class SettingsController extends BaseController {
     	return index();
 	}
 
+	/**
+	 * Onaccessdenied action.
+	 * Invoked when the user does not authorize us.
+	 * 
+	 * @param error message
+	 * @return Result settings view flushing info.
+	 */
 	@Transactional
     public Result onaccessdenied(String error) {
 		Logger.info("access denied " + error);
@@ -94,6 +101,11 @@ public class SettingsController extends BaseController {
 		return index();
 	}
 	
+	/**
+	 * Deauthorize action.
+	 * 
+	 * @return Result render settings view.
+	 */
 	@Transactional
     public Result deauthorize() {
 		String email = ctx().session().get("email");

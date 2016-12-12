@@ -107,10 +107,11 @@ public class SignupController extends BaseController {
     }
 
     /**
-     * Valid an account with the url in the confirm mail.
+     * Confirm action.
+     * Validate an account with the url in the confirm mail.
      *
      * @param token a token attached to the user we're confirming.
-     * @return Confirmationpage
+     * @return Result
      */
     @Transactional
     public Result confirm(String token) {
