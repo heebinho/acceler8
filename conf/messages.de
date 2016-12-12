@@ -1,73 +1,74 @@
 title=Acceler8
 
-confirm=Confirmation
+#common
 email=Email
-fullname=Full Name
-goback=Go Back
+fullname=Name
+goback=Zurück
 logout=Logout
-password=Password
-error.technical=Technical Error, please Retry
-validate=Validate
+password=Passwort
+error.technical=Technischer Fehler
+validate=Bestätige
 reset=Reset
+save=Speichern
+cancel=Abbrechen
+male=Männlich
+female=Weiblich
+sex=Geschlecht
 
-account.not.validated.check.mail=Account not validated. Check your emails.
-account.successfully.validated=Account successfully validated
-account.settings.email.successful=Email successfully validated ({0})
-invalid.user.or.password=Invalid user or password
-youve.been.logged.out=You've been logged out
-error.sending.email=Error sending email
-error.sending.confirm.email=Error while sending confirmation mail
-error.email.already.exist=Email already exist
-error.account.already.validated=Account already validated
+account.not.validated.check.mail=Account nicht bestätigt. Bitte Mails überprüfen.
+account.successfully.validated=Account erfolgreich bestätigt.
+invalid.user.or.password=Ungültige Anmeldedaten
+youve.been.logged.out=Du wurdest ausgeloggt
+error.sending.email=Mail konnte nicht versendet werden
+error.email.already.exist=Email existiert bereits
+error.account.already.validated=Account wurde bereits bestätigt
 error.unknown.token=Token nicht erkannt.
-error.unknown.email=Unknown email
-error.confirm=Confirmation failed
-error.expiredresetlink=This password reset has expired.
-error.expiredmaillink=This mail change has expired.
+error.unknown.email=Unbekannte Email
+error.confirm=Bestätigung gescheitert
+error.expiredresetlink=Token ist abgelaufen
 
 signin.signin=Sign In
-signin.your.email=Your email address
-signin.your.password=Your password
+signin.your.email=Deine Mailadresse
+signin.your.password=Dein Passwort
+forgot.password=Passwort vergessen?
 
-forgot.password=Forgot password ?
+signup.signup=Registrieren
+signup.successfull=Registrierung - Erfolgreich!
+signup.new=Neu?
+signup.reset.password=Passwort zurücksetzen
+signup.msg.created=Bestätigungsmail wurde versendet. Bitte überprüfe deine Mails um deinen Account zu aktivieren.
+signup.valid.email=Ungültige Email
 
-signup.signup=Sign Up
-signup.successfull=Sign Up - Successful !
-signup.new=New ?
-signup.reset.password=Reset your password
-signup.generate.password=Generate a password
-signup.msg.created=You will receive a confirmation email soon. Check your email to activate your account.
-signup.valid.email=Invalid Email
-
-resetpassword=Reset Password
+resetpassword=Reset Passwort
 resetpassword.notfound=Email nicht gefunden.
 resetpassword.not.valid.password=Kein gültiges Passwort.
 resetpassword.mailsent=A mail has been sent, please check your mail.
 resetpassword.success=Dein Passwort wurde gesetzt.
-resetpassword.new.password=New password :
+resetpassword.new.password=Neues Passwort:
 
-changemail.mailsent=A mail has been sent, please check your mail.
+changemail.mailsent=Eine Mail wurde versendet, bitte Mails überprüfen.
 
-mail.confirm.subject=Welcome to Acceler8 - Ask for confirmation
-mail.confirm.message=Welcome to Acceler8. <br> Click on this link : {0} to confirm your email.
+mail.confirm.subject=Willkommen bei Acceler8 - Mailadresse bestätigen
+mail.confirm.message=Willkommen bei Acceler8. <br> Besuche : {0} um deine Mailadresse zu bestätigen.
 
-mail.welcome.subject=Welcome to Acceler8
-mail.welcome.message=Welcome to Acceler8. <br> Your account is validated. Enjoy !
+mail.welcome.subject=Willkommen bei Acceler8
+mail.welcome.message=Welcome to Acceler8. <br> Dein Account ist validiert. Viel spass!
 
-mail.reset.ask.subject=Acceler8 - New password
-# Cannot use You've unescaped here, as the single quote stops the {0}
-mail.reset.ask.message=You asked for your password to be reset.  <br> Click on this link : {0} to change your password.
+mail.reset.ask.subject=Acceler8 - Neues Passwort
+mail.reset.ask.message=Ein neues Passwort wurde beantragt.  <br> Besuche : {0} um dein Passwort zu ändern.
 
-mail.reset.confirm.subject=Acceler8 - New password
-mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
+mail.reset.confirm.subject=Acceler8 - Neues Passwort
+mail.reset.confirm.message=Hallo, <br><br> Dein Passwort wurde zurückgesetzt.
 
 public.token.d=Dein öffentlicher Strava token
 public.token.p=Public token
 settings.saved=Einstellungen gespeichert
 strava.tokenexchange.success=Token erfolgreich erneuert.
 
+profile.title=Strava Profil
+profile.panel=Strava Profil Einstellungen
 profile.load.fail=Profil kann nicht abgerufen werden - Bitte Verbindung authorisieren
-profile.saved=Profile gespeichert
+profile.saved=Profil gespeichert
 profile.fullname.p=John
 profile.fullname.l=Vorname
 profile.city.p=Zürich
@@ -76,3 +77,51 @@ profile.country.p=Schweiz
 profile.country.l=Land
 profile.weight.p=100
 profile.weight.l=Gewicht
+profile.info=Diese Einstellungen werden auf dein Strava Profil synchronisiert.
+
+navigation.userprofile=Strava Profil
+navigation.settings=Einstellungen
+navigation.logout=Ausloggen
+navigation.dashboard=Dashboard
+navigation.myteams=Meine Teams
+navigation.coachedteams=Betreute Teams
+navigation.allteams=Alle Teams
+navigation.createteam=Team erstellen
+
+dashboard.title=Dashboard
+dashboard.points=Punkte
+dashboard.activities=Aktivitäten
+dashboard.months="Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"
+dashboard.profile=Strava Profil
+dashboard.firstname=Vorname
+dashboard.lastname=Nachname
+dashboard.city=Stadt
+dashboard.country=Land
+dashboard.followers=Followers
+dashboard.activityname=Aktivitätsname
+dashboard.distance=Distanz in Km
+dashboard.time=Zeit 
+dashboard.moving=Zeit in Bewegung
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

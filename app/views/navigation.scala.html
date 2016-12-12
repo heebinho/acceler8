@@ -1,6 +1,3 @@
-@()
-
-
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -15,41 +12,18 @@
     <ul class="nav navbar-top-links navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-messages">
-                <li>
-                    <!--<a href="#"> -->
-                        <div>
-                            <strong>TEAM RMG</strong>
-                            <span class="pull-right text-muted">
-                                <em>Yesterday</em>
-                            </span>
-                        </div>
-                        <div>Welcome to Acceler8...</div>
-                    <!--</a>-->
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a class="text-center" onclick="alert('Second Release...')">
-                        <strong>Read All Messages</strong>
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="@controllers.account.routes.ProfileController.index"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                <li>
+                	<a href="@controllers.account.routes.ProfileController.index"><i class="fa fa-user fa-fw"></i> @Messages("navigation.userprofile")</a>
                 </li>
-                <li><a href="@controllers.account.routes.SettingsController.index"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                <li>
+                	<a href="@controllers.account.routes.SettingsController.index"><i class="fa fa-gear fa-fw"></i> @Messages("navigation.settings")</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="@routes.HomeController.logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li>
+                	<a href="@routes.HomeController.logout"><i class="fa fa-sign-out fa-fw"></i> @Messages("navigation.logout")</a>
                 </li>
             </ul>
         </li>
@@ -59,19 +33,19 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
-                    <a href="@routes.DashboardController.index()"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="@routes.DashboardController.index()"><i class="fa fa-dashboard fa-fw"></i> @Messages("navigation.dashboard")</a>
                 </li>
                 <li>
-                    <a href="@routes.TeamController.my()"><i class="fa fa-heart fa-fw"></i> My Teams</a>
+                    <a href="@routes.TeamController.my()"><i class="fa fa-heart fa-fw"></i> @Messages("navigation.myteams")</a>
                 </li>
                 <li>
-                    <a href="@routes.TeamController.coached()"><i class="fa fa-gavel fa-fw"></i> Coached Teams</a>
+                    <a href="@routes.TeamController.coached()"><i class="fa fa-gavel fa-fw"></i> @Messages("navigation.coachedteams")</a>
                 </li>
                 <li>
-                    <a href="@routes.TeamController.index()"><i class="fa fa-list fa-fw"></i> All Teams</a>
+                    <a href="@routes.TeamController.index()"><i class="fa fa-list fa-fw"></i> @Messages("navigation.allteams")</a>
                 </li>
                 <li>
-                    <a href="@routes.TeamController.newTeam()"><i class="fa fa-plus fa-fw"></i> Create Team</a>
+                    <a href="@routes.TeamController.newTeam()"><i class="fa fa-plus fa-fw"></i> @Messages("navigation.createteam")</a>
                 </li>
             </ul>
         </div>
