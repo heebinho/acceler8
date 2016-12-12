@@ -12,8 +12,6 @@ import models.vm.Login;
 import models.vm.Password;
 import models.vm.Signup;
 
-import org.apache.commons.mail.EmailException;
-
 import controllers.BaseController;
 import play.Configuration;
 import play.Logger;
@@ -118,6 +116,13 @@ public class ResetController extends BaseController {
         return badRequest(ask.render(askForm));
     }
 
+    /**
+     * Reset action.
+     * Render reset view.
+     * 
+     * @param token to lookup
+     * @return Result rendered reset view
+     */
     @Transactional
     public Result reset(String token) {
 
@@ -148,9 +153,13 @@ public class ResetController extends BaseController {
         return ok(reset.render(resetForm, token));
     }
 
-    /**
-     * @return reset password form
-     */
+	/**
+	 * RunReset action.
+	 * Set the new password.
+	 * 
+	 * @param token
+	 * @return Result render login view.
+	 */
     @Transactional
     public Result runReset(String token) {
         Form<Password> resetForm = formFactory.form(Password.class).bindFromRequest();
@@ -191,7 +200,11 @@ public class ResetController extends BaseController {
             uDao.save(user);
 
             // Send email saying that the password has just been changed.
-            sendPasswordChanged(user);
+            String subject = getMessage("mail.reset.confirm.subject");
+            String message = getMessage("mail.reset.confirm.message");
+            Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
+            Mail mailer = new Mail(mailerClient);
+            mailer.sendMail(envelop);
             flash("success", getMessage("resetpassword.success"));
             return ok(index.render(
             		formFactory.form(Signup.class), 
@@ -203,17 +216,4 @@ public class ResetController extends BaseController {
 
     }
 
-    /**
-     * Send mail with the new password.
-     *
-     * @param user user created
-     * @throws EmailException Exception when sending mail
-     */
-    private void sendPasswordChanged(User user) throws EmailException {
-        String subject = getMessage("mail.reset.confirm.subject");
-        String message = getMessage("mail.reset.confirm.message");
-        Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
-        Mail mailer = new Mail(mailerClient);
-        mailer.sendMail(envelop);
-    }
 }

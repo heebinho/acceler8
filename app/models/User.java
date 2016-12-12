@@ -10,7 +10,7 @@ import play.data.validation.Constraints.*;
 import services.crypt.HashHelper;
 
 /**
- * Represents the user
+ * User model
  * 
  * @author TEAM RMG
  * 
@@ -67,7 +67,7 @@ public class User extends Model {
 	}
 
 	public void setPassword(String clearPassword) {
-		//encrypt password (BCrypt)
+		//encrypt password with (BCrypt)
 		this.password = HashHelper.createPassword(clearPassword); 
 	}
 	

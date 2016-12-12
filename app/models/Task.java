@@ -2,10 +2,7 @@ package models;
 
 
 import java.util.Date;
-
 import javax.persistence.*;
-
-import play.data.format.Formats;
 import play.data.validation.Constraints.Required;
 
 /**
