@@ -11,6 +11,9 @@ validate=Bestätige
 reset=Reset
 save=Speichern
 cancel=Abbrechen
+delete=Löschen
+remove=Entfernen
+close=Schliessen
 male=Männlich
 female=Weiblich
 sex=Geschlecht
@@ -113,8 +116,7 @@ myteams.title=Meine Teams
 myteams.panel.title=Du bist ein Mitglied folgender Teams:
 myteams.join=Team beitreten...
 
-
-coachedteams.title=Coached teams
+coachedteams.title=Betreute Teams
 coachedteams.panel.title=Du bist der Gründer und der Betreuer folgender Teams:
 coachedteams.create=Team erstellen ...
 
@@ -140,13 +142,22 @@ team.info2=Du kannst das Team als Mitglied verlassen und das Team weiter betreue
 
 team.name.not.available=Team Name ist nicht verfügbar
 team.saved=Team gespeichert: {0}
-
-
-
-
-
-
-
-
-
-
+team.leave=Verlassen
+team.join=Beitreten
+team.delete=!Team löschen
+team.task.add=Neuen Task hinzufügen
+team.task.name.l=Task Name
+team.task.name.p=Intervall Training
+team.task.meters.l=Meter
+team.task.onlycoach=Nur der Betreuer darf Tasks hinzufügen
+team.task.haserrors=Kein gültiger Task
+team.task.saved=Task gespeichert
+team.points=Punkte
+team.month=Monat
+team.week=Woche
+team.invite=Einladen
+team.invite.l=Freund Einladen
+team.invite.p=jack.pot@gmail.com
+team.invite.msg.title=Einladung
+team.invite.sent=Die Einladung wurde versendet!
+team.invite.not.sent=Die Einladung konnte nicht versendet werden!
