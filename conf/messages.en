@@ -14,6 +14,7 @@ cancel=Cancel
 male=Male
 female=Female
 sex=Gender
+form.haserrors=Please correct the form below.
 
 account.not.validated.check.mail=Account not validated. Check your emails.
 account.successfully.validated=Account successfully validated
@@ -133,7 +134,11 @@ team.website.p=www.yoursite.com
 team.website.l=Your website
 team.isprivate.l=Private team
 team.isprivate.d=Is this a private team?
+team.info=You will be the coach of the created team. We will add you also as a member of the team.
+team.info2=You can leave the team as a member and still coach it.
 
+team.name.not.available=Team name is not available
+team.saved=Saved team: {0}
 
 
 

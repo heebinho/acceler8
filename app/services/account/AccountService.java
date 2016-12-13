@@ -35,7 +35,7 @@ public class AccountService extends Service implements IAccountService {
 	 */
 	@Override
 	public User authenticate(String email, String password) {
-		IUserDao dao = new UserDao(getEntityManager());
+		IUserDao dao = new UserDao(em());
 		User user = dao.findByEmail(email);
 		if (user != null) {
 			if (HashHelper.checkPassword(password, user.getPassword()))
@@ -57,7 +57,7 @@ public class AccountService extends Service implements IAccountService {
 		}
 
 		user.setValidated(true);
-		IUserDao dao = new UserDao(getEntityManager());
+		IUserDao dao = new UserDao(em());
 		return dao.save(user);
 	}
 
@@ -71,7 +71,7 @@ public class AccountService extends Service implements IAccountService {
      */
 	@Override
 	public Token findByTokenAndType(String uuid, String type) {
-		ITokenDao dao = new TokenDao(getEntityManager());
+		ITokenDao dao = new TokenDao(em());
 		return dao.findByTokenAndType(uuid, type);
 	}
 
@@ -82,7 +82,7 @@ public class AccountService extends Service implements IAccountService {
 	 */
 	@Override
 	public void deleteToken(Token token) {
-		ITokenDao dao = new TokenDao(getEntityManager());
+		ITokenDao dao = new TokenDao(em());
 		dao.delete(token);
 	}
 
@@ -102,7 +102,7 @@ public class AccountService extends Service implements IAccountService {
 		token.setType(type);;
 		token.setEmail(email);
 
-		ITokenDao dao = new TokenDao(getEntityManager());
+		ITokenDao dao = new TokenDao(em());
 		return dao.save(token);
 	}
 

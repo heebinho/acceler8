@@ -49,7 +49,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public Team addNewMember(User user, int teamId) {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		Team team = dao.findById(teamId);
 		team.getUsers().add(user);
 		return dao.save(team);
@@ -64,7 +64,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public boolean removeMember(User user, int teamId) {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		Team team = dao.findById(teamId);
 		return team.getUsers().remove(user);
 	}
@@ -77,7 +77,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public Team findById(int id) {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		return dao.findById(id);
 	}
 
@@ -89,7 +89,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public List<Team> getTeamsByUser(Integer userId) {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		return dao.getTeamsByUser(userId);
 	}
 	
@@ -101,7 +101,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public List<Team> getCoachedTeamsByUser(User user) {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		return dao.getCoachedTeamsByUser(user);
 	}
 
@@ -112,7 +112,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public List<Team> findPublicTeams() {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		return dao.getPublicTeams();
 	}
 
@@ -124,7 +124,7 @@ public class TeamService extends Service implements ITeamService {
      */
 	@Override
 	public Team persistTeam(Team team) {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		return dao.save(team);
 	}
 
@@ -136,7 +136,7 @@ public class TeamService extends Service implements ITeamService {
 	@Override
 	public void deleteTeam(Team team) {
 		team.getUsers().clear();
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		dao.delete(team);
 	}
 
@@ -147,7 +147,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public List<Team> findAllTeams() {
-		ITeamDao dao = new TeamDao(getEntityManager());
+		ITeamDao dao = new TeamDao(em());
 		return dao.findAll();
 	}
 
@@ -163,7 +163,7 @@ public class TeamService extends Service implements ITeamService {
 	public Task addNewTask(Task task, Team team) {
 
 		task.setTeam(team);
-		ITaskDao taskDao = new TaskDao(getEntityManager());
+		ITaskDao taskDao = new TaskDao(em());
 		return taskDao.save(task);
 	}
 
@@ -174,7 +174,7 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public void removeTask(int id) {
-		ITaskDao dao = new TaskDao(getEntityManager());
+		ITaskDao dao = new TaskDao(em());
 		Task task = dao.findById(id);
 		dao.delete(task);
 	}
@@ -186,8 +186,21 @@ public class TeamService extends Service implements ITeamService {
 	 */
 	@Override
 	public List<Task> findAllTasks(Team team) {
-		ITaskDao dao = new TaskDao(getEntityManager());
+		ITaskDao dao = new TaskDao(em());
 		return dao.findAllTasksByTeam(team);
+	}
+	
+	/**
+	 * Check if name is available
+	 * 
+	 * @param name Team name
+	 * @return true if name is available
+	 */
+	@Override
+	public boolean isAvailable(String name) {
+		
+		ITeamDao dao = new TeamDao(em());
+		return dao.isAvailable(name);
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,6 +14,7 @@ import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.reference.StravaActivityType;
 import models.Task;
 import models.vm.UserViewModel;
+import play.Logger;
 
 
 /**
@@ -89,19 +91,30 @@ public class RatingService implements IRatingService {
 	@Override
 	public void rateUserTasksScore(List<Task> tasks, UserViewModel vm) {
 		
-		int totalTodoMeters = tasks.stream().mapToInt(t->t.getMeters()).sum();
+		int completed = 100; //no tasks at all -> so everything completed at the moment 100%
 		
-		//get timestamp of first task
-		Date start = tasks.stream().map(u -> u.getTs()).min(Date::compareTo).get();
-		Instant tsInstant = start.toInstant();
-		
-		//find relevant activities - we'll ignore older activities
-		Stream<StravaActivity> activities = vm.getActivities().stream()
-				.filter(act-> act.getStartDate().toInstant().isAfter(tsInstant) );
-		
-		double metersDone = activities.mapToDouble(ma->ma.getDistance()).sum();
-		
-		int completed = calculateCompleteness(totalTodoMeters, metersDone);
+		if(tasks.size() > 0){
+			try {
+				int totalTodoMeters = tasks.stream().mapToInt(t->t.getMeters()).sum();
+				
+				//get timestamp of first task
+				Optional<Date> start = tasks.stream().map(u -> u.getTs()).min(Date::compareTo);
+				if(start.isPresent()){
+					Instant tsInstant = start.get().toInstant();
+					
+					//find relevant activities - we'll ignore older activities
+					Stream<StravaActivity> activities = vm.getActivities().stream()
+							.filter(act-> act.getStartDate().toInstant().isAfter(tsInstant) );
+					
+					double metersDone = activities.mapToDouble(ma->ma.getDistance()).sum();
+					completed = calculateCompleteness(totalTodoMeters, metersDone);
+				}	
+			} catch (Exception any) {
+				Logger.error("not able to calculate percentage of completed tasks", any.getMessage());
+				completed = 0;
+			}
+		}
+
 		vm.setCompleted(completed);
 	}
 	

@@ -27,7 +27,7 @@ public class TeamDao extends Dao<Team, Integer> implements ITeamDao {
 	 * @return true if name is available
 	 */
 	@Override
-	public boolean checkAvailable(String name) {
+	public boolean isAvailable(String name) {
 		
 		Query query = getEntityManager()
 				.createQuery("select count(*) from " + getPersistentClass().getSimpleName()

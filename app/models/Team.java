@@ -51,7 +51,7 @@ public class Team extends Model {
 	
 	private boolean isPrivate = false;
 	
-	@OneToMany()
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="team")
     private Set<Task> tasks = new HashSet<Task>();
 
     public Set<User> getUsers() {

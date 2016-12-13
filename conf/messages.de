@@ -14,6 +14,7 @@ cancel=Abbrechen
 male=Männlich
 female=Weiblich
 sex=Geschlecht
+form.haserrors=Bitte die Eingaben überprüfen.
 
 account.not.validated.check.mail=Account nicht bestätigt. Bitte Mails überprüfen.
 account.successfully.validated=Account erfolgreich bestätigt.
@@ -122,7 +123,7 @@ allteams.panel.title=Alle öffentlichen und privaten Teams:
 
 team.title=Team
 team.panel.title=Team
-team.name.p=Team Name z.B. Running club
+team.name.p=Team Name z.B. Running Club
 team.name.l=Team Name
 team.description.p=Zurich city runners
 team.description.l=Team Beschreibung
@@ -134,10 +135,11 @@ team.website.p=www.yoursite.com
 team.website.l=Website
 team.isprivate.l=Privates Team
 team.isprivate.d=Ist dies ein privates Team?
+team.info=Du wirst zum Betreuer des erstellten Teams. Wir fügen dich auch als Mitglied hinzu.
+team.info2=Du kannst das Team als Mitglied verlassen und das Team weiter betreuen.
 
-
-
-
+team.name.not.available=Team Name ist nicht verfügbar
+team.saved=Team gespeichert: {0}
 
 
 
