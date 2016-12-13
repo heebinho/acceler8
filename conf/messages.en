@@ -60,11 +60,6 @@ mail.reset.ask.message=You asked for your password to be reset.  <br> Click on t
 mail.reset.confirm.subject=Acceler8 - New password
 mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
 
-public.token.d=Your public Strava token
-public.token.p=Public token
-settings.saved=Your settings have been saved
-strava.tokenexchange.success=We were able to get an access token
-
 profile.title=Strava profile
 profile.panel=Strava profile settings
 profile.load.fail=Cannot load Strava profile - please reconnect your Strava account
@@ -103,14 +98,41 @@ dashboard.distance=Distance in Km
 dashboard.time=Time
 dashboard.moving=Moving
 
+settings.title=Settings
+settings.panel.title=Account settings
+settings.publictoken.l=Your public Strava token
+settings.publictoken.p=Public token
+settings.saved=Your settings have been saved
+settings.tokenexchange.success=We were able to get an access token
+settings.info.notauthorized=You are not authorized - Please authorize!
+settings.info.authorized=You are authorized!
+settings.info.deauthorize=deauthorize!
 
+myteams.title=My Teams
+myteams.panel.title=You're a member of the following teams:
+myteams.join=Join a team ...
 
+coachedteams.title=Coached teams
+coachedteams.panel.title=You're the founder and also the coach of these teams:
+coachedteams.create=Create team ...
 
+allteams.title=All teams
+allteams.panel.title=All public and private teams:
 
-
-
-
-
+team.title=Team
+team.panel.title=Team
+team.name.p=Team name e.g. Running club
+team.name.l=Team name
+team.description.p=Zurich city runners
+team.description.l=Team description
+team.city.p=Zurich
+team.city.l=City
+team.country.p=Switzerland
+team.country.l=Country
+team.website.p=www.yoursite.com
+team.website.l=Your website
+team.isprivate.l=Private team
+team.isprivate.d=Is this a private team?
 
 
 

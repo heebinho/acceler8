@@ -1,25 +1,22 @@
 @(teams: List[Team])
 
+@main(Messages("title") + " - " + Messages("myteams.title")) {
 
-@main("Acceler8") {
-
-    
     @navigation()
 				
-	
 	<div id="page-wrapper">			
         <div class="row">
             <div class="col-lg-12">
-		        <h1 class="page-header">My Teams</h1>
+		        <h1 class="page-header">@Messages("myteams.title")</h1>
             </div>
         </div>
         
         
         <div class="row">
         	<div class="col-lg-8 col-md-8">
-	            <div class="panel panel-success">
+	            <div class="panel panel-green">
 	                <div class="panel-heading">
-	                    <i class="fa fa-heart fa-fw"></i> You're a member of the following teams:
+	                    <i class="fa fa-heart fa-fw"></i> @Messages("myteams.panel.title")
 	                </div>
 	
 	                <div class="panel-body">
@@ -33,7 +30,7 @@
 	                    </div>
 	                    }
 	                    
-	                    <a href="@routes.TeamController.index()" class="btn btn-default btn-block alert-success">Join a team ...</a>
+	                    <a href="@routes.TeamController.index()" class="btn btn-success btn-block">@Messages("myteams.join")</a>
 	                </div>
 	            </div>    
         	</div>

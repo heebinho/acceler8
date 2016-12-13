@@ -83,7 +83,7 @@ public class SettingsController extends BaseController {
     	if(user == null){
     		flash("error", getMessage("error.technical"));
     	}
-    	flash("success", getMessage("strava.tokenexchange.success"));
+    	flash("success", getMessage("settings.tokenexchange.success"));
     	return index();
 	}
 
