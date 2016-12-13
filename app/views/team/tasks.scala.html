@@ -28,7 +28,7 @@
 </script>
 }
 
-@main("Acceler8", null, scripts) {
+@main("Acceler8 - Team Tasks", null, scripts) {
 
     @navigation()
 				
@@ -45,12 +45,12 @@
 	            <div class="col-lg-12">
 	            
 	            @if(vm.isMember) {
-				  	<a href="@routes.TeamController.leave(vm.getTeam.getId)" class="btn btn-warning btn-md" role="button">Leave</a>					
+				  	<a href="@routes.TeamController.leave(vm.getTeam.getId)" class="btn btn-warning btn-md" role="button">@Messages("team.leave")</a>					
 				}else{
-					<a href="@routes.TeamController.join(vm.getTeam.getId)" class="btn btn-success btn-md" role="button">Join</a>
+					<a href="@routes.TeamController.join(vm.getTeam.getId)" class="btn btn-success btn-md" role="button">@Messages("team.leave")</a>
 				}
 				@if(vm.getTeam.getCoach.getId == vm.getUser.getId) {
-					<a onclick="del('@routes.TeamController.delete(vm.getTeam.getId)', '@routes.TeamController.my')" class="btn btn-danger btn-md" role="button">!Delete Team</a>
+					<a onclick="del('@routes.TeamController.delete(vm.getTeam.getId)', '@routes.TeamController.my')" class="btn btn-danger btn-md" role="button">@Messages("team.delete")</a>
 				}
 	            </div>
             </div>
@@ -68,7 +68,7 @@
 
   				<div class="panel panel-default">
 	                <div class="panel-heading">
-	                    <i class="fa fa-tasks fa-fw"></i> Add a new task 
+	                    <i class="fa fa-tasks fa-fw"></i> @Messages("team.task.add") 
 	                </div>
 	                <div class="panel-body">
 						@helper.form(action = routes.TeamController.savetask(vm.getTeam.getId), 'role -> "form") {
@@ -76,26 +76,26 @@
 							
 							@helper.inputText(
 					            taskForm("name"),
-					            '_label -> Messages("Name"),
+					            'placeholder -> Messages("team.task.name.p"),
+					            '_label -> Messages("team.task.name.l"),
 					            'class -> "form-control",
 					            '_showConstraints -> false
 					        )
 							
 							@helper.inputText(
 					            taskForm("meters"),
-					            '_label -> Messages("Meters"),
+					            'placeholder -> Messages("10000"),
+					            '_label -> Messages("team.task.meters.l"),
 					            'class -> "form-control",
 					            '_showConstraints -> false
 					        )
-							
-					       
 					        
 					        
 							<div class="form-group">
 							  <label class="control-label" for="submit"></label>
 							  <div class="controls">
-							    <button id="submit" name="submit" class="btn btn-primary">Save</button>
-							    <a class="btn" href="@routes.TeamController.show(vm.getTeam.getId)">Cancel</a>
+							    <button id="submit" name="submit" class="btn btn-primary">@Messages("save")</button>
+							    <a class="btn" href="@routes.TeamController.show(vm.getTeam.getId)">@Messages("cancel")</a>
 							  </div>
 							</div>
 							
@@ -112,9 +112,9 @@
 	        <div class="table-responsive">
 	        <table id="mytable" class="table table-bordred table-striped">        
 			<thead>
-				<th>Task name</th>
-				<th>Meters</th>
-				<th>Delete</th>
+				<th>@Messages("team.task.name.l")</th>
+				<th>@Messages("team.task.meters.l")</th>
+				<th>@Messages("delete")</th>
 			</thead>
 	    	<tbody>
 			
@@ -123,7 +123,7 @@
 			    <td>@task.getName</td>
 			    <td>@task.getMeters</td>
 			    <td>
-			    	<p data-placement="top" data-toggle="tooltip" title="Delete">
+			    	<p data-placement="top" data-toggle="tooltip" title="@Messages("delete")">
 			    		<a class="btn btn-danger btn-sm" role="button" onclick="del('@routes.TeamController.deletetask(task.getId)','@routes.TeamController.tasks(vm.getTeam.getId)');"><span class="fa fa-trash fa-fw"></span></a>
 			    	</p>
 			    </td>
@@ -131,7 +131,6 @@
 			}
 			
 		    </tbody>
-	        
 			</table>
 	
 			@*

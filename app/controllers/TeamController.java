@@ -405,7 +405,7 @@ public class TeamController extends BaseController {
 	public Result savetask(int id){
 		Form<Task> taskForm = formFactory.form(Task.class).bindFromRequest();
 		if(taskForm.hasErrors()){
-			flash("error", "Not a valid task...");
+			flash("error", getMessage("team.task.haserrors"));
 			return tasks(id);
 		}
 		try {
@@ -417,14 +417,14 @@ public class TeamController extends BaseController {
 			Team team = teamService.findById(id);
 	    	
 	    	if(user.getId() != team.getCoach().getId()){
-	    		flash("error", "Only the coach is allowed to add tasks.");
+	    		flash("error", getMessage("team.task.onlycoach"));
 	    		return redirect(routes.TeamController.tasks(id));
 	    	}
 			
 	    	Task task  = taskForm.get();
 			teamService.addNewTask(task, team);
 			
-			flash("success", String.format("Saved task"));
+			flash("success", getMessage("team.task.saved"));
 			return redirect(routes.TeamController.tasks(id));
 			
 		} catch (Exception any) {
