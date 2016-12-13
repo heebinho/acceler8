@@ -20,7 +20,7 @@ public interface ITeamDao extends IDao<Team, Integer> {
 	 * @param name Team name
 	 * @return true if name is available
 	 */
-	boolean checkAvailable(String name);
+	boolean isAvailable(String name);
 		
 	/**
 	 * All the teams of the user

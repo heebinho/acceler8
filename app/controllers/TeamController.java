@@ -210,7 +210,7 @@ public class TeamController extends BaseController {
 	public Result save(){
 		Form<Team> teamForm = formFactory.form(Team.class).bindFromRequest();
 		if(teamForm.hasErrors()){
-			flash("error", "Please correct the form below.");
+			flash("error", getMessage("form.haserrors"));
 			return badRequest(detail.render(teamForm));
 		}
 		try {
@@ -218,19 +218,25 @@ public class TeamController extends BaseController {
 	    	IUserService userService = new UserService(em());
 	    	User user = userService.findByEmail(email);
 			
+	    	ITeamService teamService = new TeamService(em());
 	    	Team team  = teamForm.get();
+	    	if(!teamService.isAvailable(team.getName())){
+	    		flash("error", getMessage("team.name.not.available"));
+				return badRequest(detail.render(teamForm));
+	    	}
+	    	
 			team.setCoach(user);
 			team.getUsers().add(user);
 			
-			ITeamService teamService = new TeamService(em());
+			
 			Team savedTeam = teamService.persistTeam(team);
 			
-			flash("success", String.format("Saved team %s", team));
+			flash("success", getMessage("team.saved", team));
 			return redirect(routes.TeamController.show(savedTeam.getId()));
 			
 		} catch (Exception any) {
 			Logger.error(any.getMessage());
-			flash("error", "not able to save team");
+			flash("error", getMessage("error.technical"));
 			return redirect(routes.HomeController.index());
 		}
 	}
@@ -247,7 +253,6 @@ public class TeamController extends BaseController {
 		try {
 			ITeamService teamService = new TeamService(em());
 			Team team = teamService.findById(id);
-			team.getUsers().clear();
 			teamService.deleteTeam(team);
 
 			return ok();			
@@ -352,7 +357,7 @@ public class TeamController extends BaseController {
     	
     	} catch (Exception any) {
 			Logger.error(any.getMessage());
-			flash("error", "cannot load team: " + id );
+			flash("error", getMessage("error.technical" ));
 			return redirect(routes.HomeController.index());
 		}
     }
@@ -378,6 +383,7 @@ public class TeamController extends BaseController {
 	    	Team team = service.findById(id); 
 	    	vm.setTeam(team);
 	    	vm.setTasks(service.findAllTasks(team));
+    		vm.setMember(team.getUsers().contains(user));
 	    	
 	    	Form<Task> taskForm = formFactory.form(Task.class);
 	    	return ok(tasks.render(vm, taskForm));

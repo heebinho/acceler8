@@ -1,5 +1,7 @@
 package services.user;
 
+import javax.persistence.Query;
+
 import javastrava.api.v3.auth.model.Token;
 import models.User;
 import models.vm.Profile;
@@ -92,5 +94,7 @@ public interface IUserService {
 	 * @return User deauthorized
 	 */
 	User deauthorize(User user);
+
+
 	
 }

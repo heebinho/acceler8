@@ -27,7 +27,7 @@ public abstract class Service {
 	 * 
 	 * @return EntityManager
 	 */
-	public EntityManager getEntityManager() {
+	public EntityManager em() {
 		return entityManager;
 	}
 

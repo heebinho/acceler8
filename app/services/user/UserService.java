@@ -42,7 +42,7 @@ public class UserService extends Service implements IUserService {
      */
 	@Override
 	public User findById(int id) {
-		IUserDao dao = new UserDao(getEntityManager());
+		IUserDao dao = new UserDao(em());
 		return dao.findById(id);
 	}
 	
@@ -54,7 +54,7 @@ public class UserService extends Service implements IUserService {
      */
     @Override
     public User findByEmail(String email){
-    	IUserDao dao = new UserDao(getEntityManager());
+    	IUserDao dao = new UserDao(em());
     	return dao.findByEmail(email);
     }
 
@@ -65,7 +65,7 @@ public class UserService extends Service implements IUserService {
 	 */
 	@Override
 	public User findByAthleteId(int id) {
-		IUserDao dao = new UserDao(getEntityManager()); 
+		IUserDao dao = new UserDao(em()); 
 		return dao.findByAthleteId(id);
 	}
 	
@@ -77,7 +77,7 @@ public class UserService extends Service implements IUserService {
      */
 	@Override
 	public User persistUser(User user) {
-		IUserDao dao = new UserDao(getEntityManager());
+		IUserDao dao = new UserDao(em());
 		return dao.save(user);
 	}
 
@@ -89,7 +89,7 @@ public class UserService extends Service implements IUserService {
      */
 	@Override
 	public User findByConfirmationToken(String token) {
-		IUserDao dao = new UserDao(getEntityManager());
+		IUserDao dao = new UserDao(em());
 		return dao.findByConfirmationToken(token);
 	}
 
@@ -227,5 +227,6 @@ public class UserService extends Service implements IUserService {
 		user.setStrava_token(null);
 		return this.persistUser(user);
 	}
+	
 
 }

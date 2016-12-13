@@ -116,5 +116,13 @@ public interface ITeamService {
 	 * @param team
 	 */
 	List<Task> findAllTasks(Team team);
+
+	/**
+	 * Check if name is available
+	 * 
+	 * @param name Team name
+	 * @return true if name is available
+	 */
+	boolean isAvailable(String name);
 	
 }
