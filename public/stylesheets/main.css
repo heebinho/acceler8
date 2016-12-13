@@ -1,8 +1,4 @@
 
-/*
-_pointer.style.backgroundImage = 'url(/assets/images/repeater_1x4.jpg)';
-*/
-
 body {
   background-color: #f8f8f8;
 }
@@ -296,7 +292,7 @@ table.dataTable thead .sorting:after {
 .profile-header-img > img.img-circle {
     width: 220px;
     height: 220px;
-    border: 2px solid blue;
+    border: 5px solid #337ab7;
 }
 
 .profile-header {
@@ -317,7 +313,48 @@ table.dataTable thead .sorting:after {
     padding: 5px 10px 5px 10px;
     border-radius: 27px;
 }
-
+/*
 .panel-default > .panel-heading-strava {
-background: #fc4c02; color: #fff; }
+	background: #fc4c02; 
+	color: #fff; 
+	border-color: #fc4c02;
+}
+*/
 
+.panel-strava {
+  border-color: #fc4c02;
+}
+.panel-strava > .panel-heading {
+  color: #fff;
+  background-color: #fc4c02;
+  border-color: #fc4c02;
+}
+.panel-strava > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #fc4c02;
+}
+.panel-strava > .panel-heading .badge {
+  color: #fc4c02;
+  background-color: #fff;
+}
+.panel-strava > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #fc4c02;
+}
+
+.panel-special {
+  border-color: #888a85;
+}
+.panel-special > .panel-heading {
+  color: #fff;
+  background-color: #888a85;
+  border-color: #888a85;
+}
+.panel-special > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #888a85;
+}
+.panel-special > .panel-heading .badge {
+  color: #888a85;
+  background-color: #fff;
+}
+.panel-special > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #888a85;
+}

@@ -1,24 +1,22 @@
 @(teams: List[Team])
 
-@main("Teams") {
-
+@main(Messages("title") + " - " + Messages("allteams.title")) {
 
     @navigation()
-				
-	
+					
 	<div id="page-wrapper">			
         <div class="row">
             <div class="col-lg-12">
-		        <h1 class="page-header">Teams</h1>
+		        <h1 class="page-header">@Messages("allteams.title")</h1>
             </div>
         </div>
         
         
         <div class="row">
         	<div class="col-lg-8 col-md-8">
-	            <div class="panel panel-default">
+	            <div class="panel panel-special">
 	                <div class="panel-heading">
-	                    <i class="fa fa-list fa-fw"></i> All teams:
+	                    <i class="fa fa-list fa-fw"></i> @Messages("allteams.panel.title")
 	                </div>
 	
 	                <div class="panel-body">
