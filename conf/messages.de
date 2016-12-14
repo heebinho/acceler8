@@ -31,7 +31,7 @@ error.unknown.email=Unbekannte Email
 error.confirm=Bestätigung gescheitert
 error.expiredresetlink=Token ist abgelaufen
 
-signin.signin=Sign In
+signin.signin=Anmelden
 signin.your.email=Deine Mailadresse
 signin.your.password=Dein Passwort
 forgot.password=Passwort vergessen?

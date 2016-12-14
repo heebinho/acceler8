@@ -32,30 +32,35 @@ public class RatingService implements IRatingService {
      */
 	@Override
 	public void rateUserScore(UserViewModel vm) {
-		
-		//All activities
-		vm.setTotalPoints(calculateScore(vm.getActivities()));
-		
-		LocalDateTime now = LocalDate.now().atStartOfDay();
-		//Monthly activities
-		Stream<StravaActivity> monthlyActivities = vm.getActivities().stream()
-				.filter(act->
-						act.getStartDateLocal().getYear() == now.getYear() &&
-						act.getStartDateLocal().getMonth() == now.getMonth());
-		vm.setMonthlyPoints(calculateScore(monthlyActivities.collect(Collectors.toList())));
-		//Weekly activities
-		LocalDateTime weekStart = now.with(DayOfWeek.MONDAY);
-		Stream<StravaActivity> weeklyActivities = vm.getActivities().stream()
-				.filter(act->
-						act.getStartDateLocal().getYear() == now.getYear() &&
-						act.getStartDateLocal().getMonth() == now.getMonth() && 
-						act.getStartDateLocal().getDayOfYear() >= weekStart.getDayOfYear());
-		vm.setWeeklyPoints(calculateScore(weeklyActivities.collect(Collectors.toList())));
-		
+		try {
+			//All activities
+			vm.setTotalPoints(calculateScore(vm.getActivities()));
+			
+			LocalDateTime now = LocalDate.now().atStartOfDay();
+			//Monthly activities
+			Stream<StravaActivity> monthlyActivities = vm.getActivities().stream()
+					.filter(act->
+							act.getStartDateLocal().getYear() == now.getYear() &&
+							act.getStartDateLocal().getMonth() == now.getMonth());
+			vm.setMonthlyPoints(calculateScore(monthlyActivities.collect(Collectors.toList())));
+			//Weekly activities
+			LocalDateTime weekStart = now.with(DayOfWeek.MONDAY);
+			Stream<StravaActivity> weeklyActivities = vm.getActivities().stream()
+					.filter(act->
+							act.getStartDateLocal().getYear() == now.getYear() &&
+							act.getStartDateLocal().getMonth() == now.getMonth() && 
+							act.getStartDateLocal().getDayOfYear() >= weekStart.getDayOfYear());
+			vm.setWeeklyPoints(calculateScore(weeklyActivities.collect(Collectors.toList())));
+			
+		} catch (Exception any) {
+			Logger.error(any.getMessage());
+		}
+
 	}
 	
 	/**
-	 * Ratio ride:run 17:4 --> Ironman ratio
+	 * Ironman Ratio --> ride:run 17:4 
+	 * We use		 --> ride:run 16:4 --> 4:1
 	 * 
 	 * @param activities
 	 * @return score
@@ -63,22 +68,56 @@ public class RatingService implements IRatingService {
 	public int calculateScore(List<StravaActivity> activities){
 		
 		int points = 0;
-		int runMeters = 0;
-		int rideMeters = 0;
+		float runMeters = 0;
+		float rideMeters = 0;
+		float averageSpeed = 0;
+		float performanceRewardFactor;
+		
 		for (StravaActivity activity : activities) {
-			if(activity.getType() == StravaActivityType.RUN){
-				runMeters += activity.getDistance();	
-			}else if (activity.getType() == StravaActivityType.RIDE){
-				rideMeters += activity.getDistance();
-			}
 			
-			//float speed = activity.getAverageSpeed();
-			//for a future version we can include the average speed
-			//to calculate a more accurate rating
+			if(activity.getAverageSpeed() != null)
+				averageSpeed = activity.getAverageSpeed();
+			if(activity.getType() == StravaActivityType.RUN){
+				runMeters = activity.getDistance();
+				performanceRewardFactor = getRunPerformanceRewardFactor(averageSpeed);
+				points += Math.round((4 * runMeters/1000) * performanceRewardFactor);
+			}else if (activity.getType() == StravaActivityType.RIDE){
+				rideMeters = activity.getDistance();
+				performanceRewardFactor = getRidePerformanceRewardFactor(averageSpeed);
+				points += Math.round((rideMeters/1000) * performanceRewardFactor);
+			}
 		}
-		points += Math.round((17 * runMeters/1000));
-		points += Math.round((4  * rideMeters/1000));
+		
 		return points;
+	}
+	
+	public float getRunPerformanceRewardFactor(float speed){
+
+		if (isBetween(speed, 0f, 2.81f))
+			 return 1.1f;
+		else if (isBetween(speed, 2.81f, 3.17f))
+			return 1.2f;
+		else if (isBetween(speed, 3.17f, 3.62f))
+			return 1.3f;
+		else if (isBetween(speed, 3.62f, 4.22f))
+			return 1.4f;
+		else if (isBetween(speed, 4.22f, 5.06f))
+			return 1.5f;
+		else if (isBetween(speed, 5.06f, 6.33f))
+			return 1.6f;
+		else
+			return 1.7f; //probably not a human being :)
+	}
+	
+	public float getRidePerformanceRewardFactor(float speed){
+		
+		//ride performance factors will be added in a future version
+		//we can also make these settings editable for the user.
+		return 1f;
+	} 
+	
+	private static boolean isBetween(float x, float lower, float upper){
+		return lower <= x && x<= upper;
 	}
 
 	/**
@@ -136,5 +175,8 @@ public class RatingService implements IRatingService {
 		if(completed > 100) completed = 100;
 		return completed;
 	} 
+	
+	
+
 
 }
