@@ -40,7 +40,7 @@ public class Token {
 
     @Constraints.Required
     @Formats.NonEmpty
-    private Integer userId;
+    private Integer user_id;
 
     @Constraints.Required
     private String type;
@@ -60,12 +60,12 @@ public class Token {
 		this.token = token;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public Integer getUser_id() {
+		return user_id;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setUser_id(Integer userId) {
+		this.user_id = userId;
 	}
 
 	public String getType() {

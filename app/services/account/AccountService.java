@@ -98,7 +98,7 @@ public class AccountService extends Service implements IAccountService {
 	public Token getNewToken(User user, String type, String email) {
 		Token token = new Token();
 		token.setToken(UUID.randomUUID().toString());
-		token.setUserId(user.getId());
+		token.setUser_id(user.getId());
 		token.setType(type);;
 		token.setEmail(email);
 
