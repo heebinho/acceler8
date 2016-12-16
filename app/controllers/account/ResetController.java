@@ -186,7 +186,7 @@ public class ResetController extends BaseController {
 
             // check email
             IUserDao uDao = new UserDao(em());
-            User user = uDao.findById(resetToken.getUserId());
+            User user = uDao.findById(resetToken.getUser_id());
             
             if (user == null) {
                 // display no detail (email unknown for example) to
