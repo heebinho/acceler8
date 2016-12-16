@@ -42,7 +42,7 @@ public class ProfileController extends BaseController {
         if(profile == null){
         	flash("error", getMessage("profile.load.fail"));
         	//rediret to settings, so that the user can establish a connection
-			redirect(routes.SettingsController.index());
+			return redirect(routes.SettingsController.index());
         }
         Form<Profile> profileForm = formFactory.form(Profile.class).fill(profile);
         return ok(userprofile.render(profileForm));
