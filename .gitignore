@@ -12,3 +12,4 @@ project/.sbtserver
 .sbtserver
 bin
 .metadata
+/doc/generated
