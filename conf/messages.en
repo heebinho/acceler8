@@ -161,8 +161,8 @@ team.invite.p=jack.pot@gmail.com
 team.invite.msg.title=Invitation
 team.invite.sent=The invitation has been sent!
 team.invite.not.sent=The invitation has not been sent!
-
-
+team.invite.mail.subject=Join team {0} on Acceler8
+team.invite.mail.message=Join team {0}. Follow link at:
 
 
 

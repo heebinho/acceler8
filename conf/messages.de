@@ -161,3 +161,5 @@ team.invite.p=jack.pot@gmail.com
 team.invite.msg.title=Einladung
 team.invite.sent=Die Einladung wurde versendet!
 team.invite.not.sent=Die Einladung konnte nicht versendet werden!
+team.invite.mail.subject=Acceler8 Einladung von Team {0}
+team.invite.mail.message=Trete dem Team {0} bei. Folge dazu folgendem Link:

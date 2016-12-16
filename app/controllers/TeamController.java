@@ -126,8 +126,10 @@ public class TeamController extends BaseController {
 		
 		try{
 			Invite invite = inviteForm.get();
-	        String subject = getMessage("mail.invite.subject");
-	        String message = getMessage("mail.invite.message") + "\n\n";
+			ITeamService teamService = new TeamService(em());
+			Team team = teamService.findById(invite.getTeamId());
+	        String subject = getMessage("team.invite.mail.subject", team.getName());
+	        String message = getMessage("team.invite.mail.message", team.getName()) + "\n\n";
 	        message += routes.TeamController.join(invite.getTeamId()).absoluteURL(request());
 	        
 	        Mail.Envelop envelop = new Mail.Envelop(subject, message, invite.getEmail() );
@@ -329,27 +331,29 @@ public class TeamController extends BaseController {
 	    	List<Task> tasks = service.findAllTasks(team);
 	    	IRatingService rate = new RatingService();
 	    	for (User teamMember : vm.getTeam().getUsers()) {
-	    		UserViewModel uVm = new UserViewModel();
-	    		StravaAthlete athlete = stravaService.getAthlete(teamMember.getStrava_id());
-	    		vm.addMember(uVm);
-	    		uVm.setAthlete(athlete);
-	    		uVm.setUser(teamMember);
-	    		
-	    		if(teamMember.getStrava_id().equals(authenticatedAthlete.getId())){
-	    			uVm.setActivities(stravaService.listAllAuthenticatedAthleteActivities());
-	    		}else {
-	        		Stream<StravaActivity> activities = friendActivities.stream()
-	        				.filter(act->act.getAthlete().getId().equals(athlete.getId()) );
-	        		uVm.setActivities(activities.collect(Collectors.toList()));    			
+	    		UserViewModel uvm = new UserViewModel();
+	    		if(teamMember.getStrava_id()!= null){
+		    		StravaAthlete athlete = stravaService.getAthlete(teamMember.getStrava_id());
+		    		uvm.setAthlete(athlete);
+		    		uvm.setUser(teamMember);
+		    		
+		    		if(teamMember.getStrava_id().equals(authenticatedAthlete.getId())){
+		    			uvm.setActivities(stravaService.listAllAuthenticatedAthleteActivities());
+		    		}else {
+		        		Stream<StravaActivity> activities = friendActivities.stream()
+		        				.filter(act->act.getAthlete().getId().equals(athlete.getId()) );
+		        		uvm.setActivities(activities.collect(Collectors.toList()));    			
+		    		}
+		    		rate.rateUserScore(uvm);
+		    		rate.rateUserTasksScore(tasks, uvm);
+		    		
+		    		if(athlete.getProfileMedium().startsWith("http"))
+		    			uvm.setProfileImage(athlete.getProfileMedium());
+		    		
+		    		if(user.getId() == teamMember.getId())
+		    			vm.setMember(true);
+		    		vm.addMember(uvm);	
 	    		}
-	    		rate.rateUserScore(uVm);
-	    		rate.rateUserTasksScore(tasks, uVm);
-	    		
-	    		if(athlete.getProfileMedium().startsWith("http"))
-	    			uVm.setProfileImage(athlete.getProfileMedium());
-	    		
-	    		if(user.getId() == teamMember.getId())
-	    			vm.setMember(true);
 			}
 	    	
 	    	Form<Invite> inviteForm = formFactory.form(Invite.class);
