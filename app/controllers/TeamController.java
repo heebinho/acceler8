@@ -188,9 +188,6 @@ public class TeamController extends BaseController {
 	@Transactional(readOnly=true)
 	public Result details(int id){
 
-		//EntityManager em = jpa.em();
-		//final Team team = em.find(Team.class, id);
-		
 		TeamDao dao = new TeamDao(jpa.em());
 		final Team team = dao.findById(id);
 		
