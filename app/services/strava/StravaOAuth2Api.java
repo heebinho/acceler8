@@ -26,7 +26,7 @@ public class StravaOAuth2Api extends DefaultApi20 {
     	ServiceBuilder builder = new ServiceBuilder();
     	builder.apiKey(SettingsReader.getKey(SettingsReader.CLIENT_ID));
     	builder.apiSecret(SettingsReader.getKey(SettingsReader.CLIENT_SECRET));
-    	//builder.callback("http://localhost:9000/settings/strava/callback");
+    	//"http://localhost:9000/settings/strava/callback";
     	builder.callback(callback.substring(0, callback.indexOf("?")));
     	builder.responseType("code");
     	builder.scope("view_private,write");
