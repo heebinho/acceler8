@@ -111,9 +111,21 @@ public class RatingService implements IRatingService {
 	
 	public float getRidePerformanceRewardFactor(float speed){
 		
-		//ride performance factors will be added in a future version
-		//we can also make these settings editable for the user.
-		return 1f;
+		//we can also make these settings editable for the coach in a future version.
+		if (isBetween(speed, 0f, 5f))
+			 return 1.1f;
+		else if (isBetween(speed, 5f, 10f))
+			return 1.2f;
+		else if (isBetween(speed, 10f, 15f))
+			return 1.3f;
+		else if (isBetween(speed, 15f, 20f))
+			return 1.4f;
+		else if (isBetween(speed, 20f, 25f))
+			return 1.5f;
+		else if (isBetween(speed, 25f, 30f))
+			return 1.6f;
+		else
+			return 1.7f; //probably a motorcycle
 	} 
 	
 	private static boolean isBetween(float x, float lower, float upper){
