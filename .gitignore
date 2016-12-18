@@ -13,3 +13,5 @@ project/.sbtserver
 bin
 .metadata
 /doc/generated
+vm
+doc/*.png
