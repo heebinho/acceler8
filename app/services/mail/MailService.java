@@ -50,11 +50,11 @@ public class MailService {
      */
     static class MailJob implements Runnable {
         MailerClient mailerClient;
-        MailMessage envelop;
+        MailMessage mailMessage;
 
 
         public MailJob(MailMessage envelop, MailerClient mailerClient) {
-            this.envelop = envelop;
+            this.mailMessage = envelop;
             this.mailerClient = mailerClient;
         }
 
@@ -66,10 +66,10 @@ public class MailService {
             final String mailSign = root.getString("mail.sign");
 
             email.setFrom(mailFrom);
-            email.setSubject(envelop.subject);
-            email.setBodyText(envelop.message + "\n\n " + mailSign);
-            email.setBodyHtml(envelop.message + "<br><br>--<br>" + mailSign);
-            for (String toEmail : envelop.toEmails) {
+            email.setSubject(mailMessage.getSubject());
+            email.setBodyText(mailMessage.getMessage() + "\n\n " + mailSign);
+            email.setBodyHtml(mailMessage.getMessage() + "<br><br>--<br>" + mailSign);
+            for (String toEmail : mailMessage.getToEmails()) {
                 email.addTo(toEmail);
                 Logger.debug("Mail.sendMail: Mail will be sent to " + toEmail);
             }
