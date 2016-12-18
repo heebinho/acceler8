@@ -6,7 +6,7 @@ import models.dao.ITokenDao;
 import models.dao.IUserDao;
 import models.dao.TokenDao;
 import models.dao.UserDao;
-import models.Mail;
+import models.MailMessage;
 import models.vm.EMail;
 import models.vm.Login;
 import models.vm.Password;
@@ -21,6 +21,7 @@ import play.db.jpa.Transactional;
 import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
+import services.mail.MailService;
 import views.html.index;
 import views.html.account.reset.ask;
 import play.libs.mailer.MailerClient;
@@ -100,9 +101,9 @@ public class ResetController extends BaseController {
     		String toMail = user.getEmail();
 
 
-    		Mail.Envelop envelop = new Mail.Envelop(subject, message, toMail);
-    		Mail mail = new Mail(mailerClient);
-    		mail.sendMail(envelop);
+    		MailMessage mailMessage = new MailMessage(subject, message, toMail);
+    		MailService mailService = new MailService(mailerClient);
+    		mailService.sendMail(mailMessage);
             
             
             flash("success", getMessage("resetpassword.mailsent"));
@@ -202,9 +203,9 @@ public class ResetController extends BaseController {
             // Send email saying that the password has just been changed.
             String subject = getMessage("mail.reset.confirm.subject");
             String message = getMessage("mail.reset.confirm.message");
-            Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
-            Mail mailer = new Mail(mailerClient);
-            mailer.sendMail(envelop);
+            MailMessage mailMessage = new MailMessage(subject, message, user.getEmail());
+            MailService mailService = new MailService(mailerClient);
+            mailService.sendMail(mailMessage);
             flash("success", getMessage("resetpassword.success"));
             return ok(index.render(
             		formFactory.form(Signup.class), 

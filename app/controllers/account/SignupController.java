@@ -3,7 +3,7 @@ package controllers.account;
 import models.User;
 import models.vm.Login;
 import models.vm.Signup;
-import models.Mail;
+import models.MailMessage;
 
 import org.apache.commons.mail.EmailException;
 
@@ -16,6 +16,7 @@ import play.db.jpa.Transactional;
 import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
+import services.mail.MailService;
 import services.user.IUserService;
 import services.user.UserService;
 import play.libs.mailer.MailerClient;
@@ -101,8 +102,8 @@ public class SignupController extends BaseController {
         
         String message = getMessage("mail.confirm.message", urlString);
 
-        Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
-        Mail mailer = new Mail(mailerClient);
+        MailMessage envelop = new MailMessage(subject, message, user.getEmail());
+        MailService mailer = new MailService(mailerClient);
         mailer.sendMail(envelop);
     }
 
@@ -170,8 +171,8 @@ public class SignupController extends BaseController {
     private void sendMailConfirmation(User user) throws EmailException {
         String subject = getMessage("mail.welcome.subject");
         String message = getMessage("mail.welcome.message");
-        Mail.Envelop envelop = new Mail.Envelop(subject, message, user.getEmail());
-        Mail mailer = new Mail(mailerClient);
-        mailer.sendMail(envelop);
+        MailMessage mailMessage = new MailMessage(subject, message, user.getEmail());
+        MailService mailer = new MailService(mailerClient);
+        mailer.sendMail(mailMessage);
     }
 }

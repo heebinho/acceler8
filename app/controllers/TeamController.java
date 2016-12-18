@@ -1,6 +1,7 @@
 package controllers;
 
 import play.mvc.*;
+import services.mail.MailService;
 import services.rating.IRatingService;
 import services.rating.RatingService;
 import services.team.ITeamService;
@@ -26,7 +27,7 @@ import javastrava.api.v3.auth.ref.AuthorisationScope;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.service.Strava;
-import models.Mail;
+import models.MailMessage;
 import models.Task;
 import models.Team;
 import models.User;
@@ -132,9 +133,9 @@ public class TeamController extends BaseController {
 	        String message = getMessage("team.invite.mail.message", team.getName()) + "\n\n";
 	        message += routes.TeamController.join(invite.getTeamId()).absoluteURL(request());
 	        
-	        Mail.Envelop envelop = new Mail.Envelop(subject, message, invite.getEmail() );
-	        Mail mail = new Mail(mailerClient);
-	        mail.sendMail(envelop);
+	        MailMessage envelop = new MailMessage(subject, message, invite.getEmail() );
+	        MailService mailService = new MailService(mailerClient);
+	        mailService.sendMail(envelop);
 	        result.setSent(true);
 		}catch(Exception any){
 			Logger.error(any.getMessage());
