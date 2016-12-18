@@ -1,85 +1,59 @@
-package models;
+package services.mail;
 
+import java.util.concurrent.TimeUnit;
+
+import akka.actor.ActorSystem;
+import models.MailMessage;
 import play.Configuration;
 import play.Logger;
 import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
-
-import javax.inject.Inject;
-
-import akka.actor.ActorSystem;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-
 /**
- * Mail model.
+ * Mail service.
  * 
  * @author TEAM RMG
  *
  */
-public class Mail {
+public class MailService {
     MailerClient mailerClient;
 
-    public Mail(MailerClient mailerClient) {
+    public MailService(MailerClient mailerClient) {
         this.mailerClient = mailerClient;
     }
-
-    /**
-     * Envelop to prepare.
-     */
-    public static class Envelop {
-        public String subject;
-        public String message;
-        public List<String> toEmails;
-
-        /**
-         * Constructor of Envelop.
-         *
-         * @param subject  the subject
-         * @param message  a message
-         * @param toEmails list of emails adress
-         */
-        public Envelop(String subject, String message, List<String> toEmails) {
-            this.subject = subject;
-            this.message = message;
-            this.toEmails = toEmails;
-        }
-
-        public Envelop(String subject, String message, String email) {
-            this.message = message;
-            this.subject = subject;
-            this.toEmails = new ArrayList<String>();
-            this.toEmails.add(email);
-        }
-    }
-
+    
     /**
      * Send a email, using Akka to offload it to an actor.
      *
-     * @param envelop envelop to send
+     * @param MailMessage mail to send
      */
-    public void sendMail(Mail.Envelop envelop) {
-        EnvelopJob envelopJob = new EnvelopJob(envelop, mailerClient);
+    public void sendMail(MailMessage mailMessage) {
+        MailJob mailJob = new MailJob(mailMessage, mailerClient);
         final FiniteDuration delay = Duration.create(0, TimeUnit.SECONDS);
         
         ActorSystem system = ActorSystem.apply();
         system.scheduler().scheduleOnce(
         		delay, 
-        		envelopJob, 
+        		mailJob, 
         		system.dispatcher());
     }
-
-    static class EnvelopJob implements Runnable {
+    
+    
+    /**
+     * MailJob.
+     * We implement Runnable, so that we execute it in an own thread.
+     * 
+     * @author TEAM RMG
+     *
+     */
+    static class MailJob implements Runnable {
         MailerClient mailerClient;
-        Mail.Envelop envelop;
+        MailMessage envelop;
 
-        @Inject
-        public EnvelopJob(Mail.Envelop envelop, MailerClient mailerClient) {
+
+        public MailJob(MailMessage envelop, MailerClient mailerClient) {
             this.envelop = envelop;
             this.mailerClient = mailerClient;
         }
@@ -108,4 +82,5 @@ public class Mail {
                     + " password:" + root.getString("smtp.password"));
         }
     }
+
 }
