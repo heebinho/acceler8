@@ -22,6 +22,8 @@ import play.mvc.Result;
 import services.account.AccountService;
 import services.account.IAccountService;
 import services.mail.MailService;
+import services.user.IUserService;
+import services.user.UserService;
 import views.html.index;
 import views.html.account.reset.ask;
 import play.libs.mailer.MailerClient;
@@ -77,8 +79,8 @@ public class ResetController extends BaseController {
         final String email = askForm.get().getEmail();
         Logger.debug("runAsk: email = " + email);
         
-        IUserDao dao = new UserDao(em());
-        User user = dao.findByEmail(email);
+        IUserService userService = new UserService(em());
+        User user = userService.findByEmail(email);
         
         Logger.debug("runAsk: user = " + user);
 

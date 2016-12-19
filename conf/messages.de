@@ -46,7 +46,7 @@ signup.valid.email=Ungültige Email
 resetpassword=Reset Passwort
 resetpassword.notfound=Email nicht gefunden.
 resetpassword.not.valid.password=Kein gültiges Passwort.
-resetpassword.mailsent=A mail has been sent, please check your mail.
+resetpassword.mailsent=Ein Mail wurde versendet, bitte überprüfe deinen Posteingang
 resetpassword.success=Dein Passwort wurde gesetzt.
 resetpassword.new.password=Neues Passwort:
 
