@@ -124,7 +124,7 @@
 			    <td>@task.getMeters</td>
 			    <td>
 			    	<p data-placement="top" data-toggle="tooltip" title="@Messages("delete")">
-			    		<a class="btn btn-danger btn-sm" role="button" onclick="del('@routes.TeamController.deletetask(task.getId)','@routes.TeamController.tasks(vm.getTeam.getId)');"><span class="fa fa-trash fa-fw"></span></a>
+			    		<a class="btn btn-danger btn-sm" role="button" onclick="del('@routes.TeamController.deletetask(vm.getTeam.getId,task.getId)','@routes.TeamController.tasks(vm.getTeam.getId)');"><span class="fa fa-trash fa-fw"></span></a>
 			    	</p>
 			    </td>
 			</tr>

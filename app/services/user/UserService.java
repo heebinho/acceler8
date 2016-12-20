@@ -184,7 +184,9 @@ public class UserService extends Service implements IUserService {
 	/**
 	 * Write profile settings back to strava
 	 * 
+	 * @param user User
 	 * @param profile The new profile
+	 * @throws Exception 
 	 */
 	@Override
 	public void setStravaProfile(User user, Profile profile) throws Exception {

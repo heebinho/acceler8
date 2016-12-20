@@ -80,7 +80,9 @@ public interface IUserService {
 	/**
 	 * Write profile settings back to strava
 	 * 
+	 * @param user User
 	 * @param profile The new profile
+	 * @throws Exception 
 	 */
 	void setStravaProfile(User user, Profile profile) throws Exception;
 
