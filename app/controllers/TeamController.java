@@ -446,9 +446,16 @@ public class TeamController extends BaseController {
 	@Transactional()
 	public Result deletetask(int id) {
 		try {
+			String email = ctx().session().get("email");
+	    	IUserService userService = new UserService(em());
+	    	User user = userService.findByEmail(email);
 			ITeamService teamService = new TeamService(em());
+			Team team = teamService.findById(id);
+			if(user.getId() != team.getCoach().getId()){
+	    		flash("error", getMessage("team.task.onlycoach"));
+	    	}
 			teamService.removeTask(id);
-			return ok();			
+			return ok();
 		} catch (Exception any) {
 			Logger.error(any.getMessage());
 			return redirect(routes.TeamController.index());
