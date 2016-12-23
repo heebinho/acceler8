@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Acceler8
+GenericName=Coaching4Strava
+Comment=Play web app
+Exec=/home/a8/acceler8/acceler8.sh
+Terminal=true
+Type=Application
+X-GNOME-Autostart-enabled=true
