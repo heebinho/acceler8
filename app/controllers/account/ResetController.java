@@ -13,7 +13,6 @@ import models.vm.Password;
 import models.vm.Signup;
 
 import controllers.BaseController;
-import play.Configuration;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
