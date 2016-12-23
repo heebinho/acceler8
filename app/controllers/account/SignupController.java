@@ -97,7 +97,8 @@ public class SignupController extends BaseController {
     private void sendConfirmationMail(User user) throws EmailException, MalformedURLException {
         String subject = getMessage("mail.confirm.subject");
 
-        String urlString = "http://" + Configuration.root().getString("server.hostname"); //request().host();
+        String urlString = request().host();
+        //String urlString = "http://" + Configuration.root().getString("server.hostname");
         urlString += "/confirm/" + user.getToken();
         
         String message = getMessage("mail.confirm.message", urlString);

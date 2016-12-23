@@ -96,7 +96,8 @@ public class ResetController extends BaseController {
             IAccountService accountService = new AccountService(em());
             Token token = accountService.getNewToken(user, TOKEN_TYPE, email);
             
-    		String externalServer = Configuration.root().getString("server.hostname");
+            String externalServer = request().host();
+    		//String externalServer = Configuration.root().getString("server.hostname");
     		String urlString = "http://" + externalServer + "/reset/" + token.getToken();
     		String subject = getMessage("mail.reset.ask.subject");
     		String message = getMessage("mail.reset.ask.message", urlString);
