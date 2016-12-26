@@ -1,0 +1,73 @@
+#!/bin/bash
+# chkconfig: 35 99 99
+# description: playit start/shutdown script
+# processname: playit
+#
+ 
+# Path to your Play application install folder
+PLAY_DIR=/home/ec2-user/acceler8-1.0-SNAPSHOT
+PLAY_BIN_DIR=$PLAY_DIR/bin
+PLAY=acceler8
+ 
+WHERE=/home/ec2-user/log.it
+ 
+# source function library
+. /etc/init.d/functions
+ 
+start() {
+	echo -n "Starting Acceler8 service: "
+	cd $PLAY_BIN_DIR
+	sudo -s /bin/sh  -c "$PLAY_BIN_DIR/$PLAY >> $WHERE" &
+	RETVAL=$?
+ 
+	if [ $RETVAL -eq 0 ]; then
+		echo_success
+	else
+		echo_failure
+	fi
+	echo
+}
+stop() {
+	echo -n "Shutting down Acceler8 service: "
+ 
+	sudo kill `cat $PLAY_DIR/RUNNING_PID`
+ 
+	RETVAL=$?
+ 
+	if [ $RETVAL -eq 0 ]; then
+		echo_success
+	else
+		echo_failure
+	fi
+	echo
+}
+status() {
+ 
+	RETVAL=$?
+}
+clean() {
+	RETVAL=$?
+}
+case "$1" in
+	start)
+	clean
+	start
+	;;
+	stop)
+	stop
+	;;
+	restart|reload)
+	stop
+	sleep 10
+	start
+	;;
+	status)
+	status
+	;;
+	clean)
+	clean
+	;;
+	*)
+	echo "Usage: $0 {start|stop|restart|status}"
+esac
+exit 0
