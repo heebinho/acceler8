@@ -13,7 +13,8 @@
 				  ykeys: barData.ykeys,
 				  labels: barData.labels,
 				  xLabelFormat: function (x) {
-				        var month = months[x.x];
+				        //var month = months[x.x];
+				        var month = months[parseInt(x.src.period.split('-')[1])-1]
 				        return month;
 				  },
 				  resize: true
